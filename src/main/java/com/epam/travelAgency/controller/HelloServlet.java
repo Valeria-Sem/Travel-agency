@@ -1,4 +1,4 @@
-package com.example.FirstWebProject;
+package com.epam.travelAgency.controller;
 
 import java.io.*;
 import javax.servlet.http.*;
