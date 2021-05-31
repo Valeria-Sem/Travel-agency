@@ -1,4 +1,4 @@
-package com.epam.travelAgency.dao;
+package com.epam.travelAgency.dao.pool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
