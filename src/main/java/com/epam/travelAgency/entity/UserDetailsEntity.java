@@ -1,26 +1,28 @@
 package com.epam.travelAgency.entity;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class UserDetailsEntity {
+public class UserDetailsEntity implements Serializable {
     private int id;
     private int idUser;
     private String name;
     private String surname;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String citizenship;
     private String passport;
-    private String dateOfIssue;
-    private String expirationDate;
+    private LocalDate dateOfIssue;
+    private LocalDate expirationDate;
     private int idWallet;
 
     public UserDetailsEntity() {
     }
 
     public UserDetailsEntity(int id, int idUser, String name,
-                             String surname, String dateOfBirth,
+                             String surname, LocalDate dateOfBirth,
                              String citizenship, String passport,
-                             String dateOfIssue, String expirationDate,
+                             LocalDate dateOfIssue, LocalDate expirationDate,
                              int idWallet) {
         this.id = id;
         this.idUser = idUser;
@@ -35,9 +37,9 @@ public class UserDetailsEntity {
     }
 
     public UserDetailsEntity(int idUser, String name,
-                             String surname, String dateOfBirth,
+                             String surname, LocalDate dateOfBirth,
                              String citizenship, String passport,
-                             String dateOfIssue, String expirationDate,
+                             LocalDate dateOfIssue, LocalDate expirationDate,
                              int idWallet) {
         this.idUser = idUser;
         this.name = name;
@@ -51,9 +53,9 @@ public class UserDetailsEntity {
     }
 
     public UserDetailsEntity(String name,
-                             String surname, String dateOfBirth,
+                             String surname, LocalDate dateOfBirth,
                              String citizenship, String passport,
-                             String dateOfIssue, String expirationDate) {
+                             LocalDate dateOfIssue, LocalDate expirationDate) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
@@ -95,11 +97,11 @@ public class UserDetailsEntity {
         this.surname = surname;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -119,19 +121,19 @@ public class UserDetailsEntity {
         this.passport = passport;
     }
 
-    public String getDateOfIssue() {
+    public LocalDate getDateOfIssue() {
         return dateOfIssue;
     }
 
-    public void setDateOfIssue(String dateOfIssue) {
+    public void setDateOfIssue(LocalDate dateOfIssue) {
         this.dateOfIssue = dateOfIssue;
     }
 
-    public String getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(String expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 

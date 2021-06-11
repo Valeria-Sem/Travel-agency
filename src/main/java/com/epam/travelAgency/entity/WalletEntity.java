@@ -1,20 +1,21 @@
 package com.epam.travelAgency.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class WalletEntity {
+public class WalletEntity implements Serializable {
     private int id;
-    private int balance;
+    private double balance;
 
     public WalletEntity() {
     }
 
-    public WalletEntity(int id, int balance) {
+    public WalletEntity(int id, double balance) {
         this.id = id;
         this.balance = balance;
     }
 
-    public WalletEntity(int balance) {
+    public WalletEntity(double balance) {
         this.balance = balance;
     }
 
@@ -26,11 +27,11 @@ public class WalletEntity {
         this.id = id;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

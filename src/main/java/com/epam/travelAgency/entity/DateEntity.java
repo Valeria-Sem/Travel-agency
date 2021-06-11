@@ -1,10 +1,11 @@
 package com.epam.travelAgency.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
-public class DateEntity {
+public class DateEntity implements Serializable {
     private int id;
     private LocalDate date;
 

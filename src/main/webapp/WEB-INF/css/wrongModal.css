@@ -1,0 +1,10 @@
+#myModal{
+    display: block;
+    /*position: absolute;*/
+    top: 5px;
+
+}
+
+.alert{
+    text-align: center
+}

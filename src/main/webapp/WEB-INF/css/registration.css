@@ -1,0 +1,46 @@
+.form-registration{
+    margin-left: 25%;
+    margin-right: 10%;
+    margin-top: 5%;
+}
+
+.form-check{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.form-control{
+    text-transform: uppercase;
+}
+
+.datepicker {
+    font-size: 0.875em;
+}
+/* solution 2: the original datepicker use 20px so replace with the following:*/
+
+.datepicker td, .datepicker th {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.col-13{
+    margin-left: 30%;
+}
+
+.my{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.vl{
+    border-left: 3px solid grey;
+    height: 250px;
+}
+
+html,
+
+h1{
+    margin-bottom: 50px;
+    margin-top: 35px;
+    text-align: center
+}

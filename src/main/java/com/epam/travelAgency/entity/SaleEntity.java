@@ -1,8 +1,9 @@
 package com.epam.travelAgency.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class SaleEntity {
+public class SaleEntity implements Serializable {
     private int id;
     private int idUserDet;
     private int sale;

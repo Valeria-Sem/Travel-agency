@@ -1,20 +1,14 @@
 package com.epam.travelAgency.main;
 
-import com.epam.travelAgency.dao.UserDao;
-import com.epam.travelAgency.dao.impl.UserDaoImpl;
-import com.epam.travelAgency.dao.pool.ConnectionPool;
+import com.epam.travelAgency.entity.CategoryEntity;
 import com.epam.travelAgency.entity.UserEntity;
-import com.epam.travelAgency.entity.enums.UserRole;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.util.ResourceBundle;
+import com.epam.travelAgency.service.CategoryService;
+import com.epam.travelAgency.service.ServiceException;
+import com.epam.travelAgency.service.ServiceProvider;
+import com.epam.travelAgency.service.UserService;
 
 public class TestPool {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ServiceException {
 //        ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 //        String dbUrl = resourceBundle.getString("dbUrl");
 //        String dbUser = resourceBundle.getString("dbUser");
@@ -78,12 +72,37 @@ public class TestPool {
 //                }
 //            }
 //        }
-        UserDaoImpl userDao = new UserDaoImpl();
-//        UserEntity user = userDao.getUserByEmailAndPassword("'lerasemenenya@gmail.com'", "111");
+        ServiceProvider provider = ServiceProvider.getInstance();
+        UserService userService = provider.getUserService();
+        CategoryService categoryService = provider.getCategoryService();
+        UserEntity user = null;
+      //  UserDaoImpl userDao = new UserDaoImpl();
+//        UserEntity user = userDao.getUserByEmailAndPassword("lerasemenenya@gmail.com", "111");
 //        System.out.println(user.toString());
-
-        UserEntity user = new UserEntity("lera", "ttt", UserRole.AGENT);
-
-        userDao.addUser(user);
+//
+//        List<UserEntity> users = userDao.getAllUsers();
+//         System.out.println(users);
+//
+//        UserEntity usert = new UserEntity("lera", "ttt", UserRole.AGENT);
+//
+//      //  userDao.addUser(usert);
+//
+       // UserEntity user = null;
+//        try {
+//            user = userService.getUserByEmailAndPassword("lera", "ttt");
+//        } catch ( ServiceException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(user.toString());
+//        Iterable<CategoryEntity> categories = categoryService.getAllCategories();
+//
+//        for(CategoryEntity categoryEntity: categories){
+//           System.out.println(categoryEntity.getName());
+//        }
+    //    System.out.println();
+   //     userDao.deleteUser(17);
+//        userDao.deleteUser(14);
+//        userDao.deleteUser(15);
+//        userDao.deleteUser(16);
     }
 }

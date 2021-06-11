@@ -1,10 +1,9 @@
 package com.epam.travelAgency.entity;
 
-import com.epam.travelAgency.entity.enums.TourStatus;
-
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ToutEntity {
+public class ToutEntity implements Serializable {
     private int id;
     private String name;
     private String description;

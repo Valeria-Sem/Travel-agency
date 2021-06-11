@@ -102,3 +102,21 @@
 /**, ::after, ::before {*/
 /*    box-sizing: border-box;*/
 /*}*/
+
+.me-2{
+    margin-right: .5rem!important;
+}
+
+.btn-search-style{
+    margin-left: 10px;
+    margin-right: 30px;
+}
+
+.link{
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.link:hover {
+    color: #6495ed;
+}

@@ -1,10 +1,9 @@
 package com.epam.travelAgency.entity;
 
-import com.epam.travelAgency.entity.enums.UserRole;
-
+import java.io.Serializable;
 import java.util.Objects;
 
-public class UserEntity {
+public class UserEntity implements Serializable {
     private int id;
     private String email;
     private String password;

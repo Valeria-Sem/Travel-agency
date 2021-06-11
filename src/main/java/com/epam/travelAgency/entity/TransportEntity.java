@@ -1,8 +1,9 @@
 package com.epam.travelAgency.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class TransportEntity {
+public class TransportEntity implements Serializable {
     private int id;
     private String name;
 
