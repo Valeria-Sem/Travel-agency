@@ -2,7 +2,7 @@
 
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"--%>
 <%--"http://www.w3.org/TR/html4/loose.dtd">--%>
-<jsp:include page="header.jsp"/>
+<jsp:include page="../header/header.jsp"/>
 <html >
 <head>
     <!-- Обязательные метатеги -->
@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <style>
-        <%@include file='/WEB-INF/css/mainPage.css' %>
+        <%@include file='/WEB-INF/jsp/main/mainPage.css' %>
     </style>
     <title>Турагенство</title>
 </head>

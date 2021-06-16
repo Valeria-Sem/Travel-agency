@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class GoToLoginPage implements Command {
     private final String currUser = "current_user";
-    private final String pathToLoginPage = "/WEB-INF/jsp/loginPage.jsp";
+    private final String pathToLoginPage = "/WEB-INF/jsp/authorisation/loginPage.jsp";
     private final String pathToUserPage = "controller?command=gotouserpage";
 
     public GoToLoginPage() {

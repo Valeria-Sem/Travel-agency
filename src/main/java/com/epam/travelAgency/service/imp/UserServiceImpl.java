@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(UserEntity userEntity) throws ServiceException {
-        boolean isAdded = false;
+        boolean isAdded;
 
         DAOProvider provider = DAOProvider.getInstance();
         UserDao userDao = provider.getUserDAO();
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(int id) throws ServiceException {
-        boolean isDeleted = false;
+        boolean isDeleted;
 
         DAOProvider provider = DAOProvider.getInstance();
         UserDao userDao = provider.getUserDAO();

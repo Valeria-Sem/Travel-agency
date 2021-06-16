@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class GoToUserPage implements Command {
-    private static final String userPagePath = "WEB-INF/jsp/userPage.jsp";
+    private static final String userPagePath = "WEB-INF/jsp/user/userPage.jsp";
 
     public GoToUserPage(){
 

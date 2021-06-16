@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="loginPage.jsp"/>
+<jsp:include page="../authorisation/loginPage.jsp"/>
 <html lang="ru"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,8 +11,8 @@
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <style>
-        <%@include file='/WEB-INF/css/login.css' %>
-        <%@include file='/WEB-INF/css/wrongModal.css' %>
+        <%@include file='/WEB-INF/jsp/authorisation/login.css' %>
+        <%@include file='/WEB-INF/jsp/wrongModal/wrongModal.css' %>
     </style>
 
 

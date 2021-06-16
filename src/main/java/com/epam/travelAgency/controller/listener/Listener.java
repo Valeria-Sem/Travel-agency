@@ -18,7 +18,7 @@ public class Listener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-      //  ConnectionPool.getInstance().closeConnection();
+//        ConnectionPool.getInstance().closeConnection();
     }
 
 }

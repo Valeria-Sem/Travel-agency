@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class GoToMainPage implements Command {
-    private final String pathToMainPage = "WEB-INF/jsp/mainPage.jsp";
+    private final String pathToMainPage = "WEB-INF/jsp/main/mainPage.jsp";
 
     public GoToMainPage(){
 

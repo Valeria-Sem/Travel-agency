@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class GoToRegistrationPage implements Command {
-    private final String pathToRegistrationPage = "WEB-INF/jsp/registrationPage.jsp";
+    private final String pathToRegistrationPage = "WEB-INF/jsp/registration/registrationPage.jsp";
 
     public GoToRegistrationPage(){
 
