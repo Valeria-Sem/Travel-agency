@@ -1,9 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="nav.category" var="categ"/>
+<fmt:message bundle="${loc}" key="nav.hot" var="hot"/>
+<fmt:message bundle="${loc}" key="nav.tours" var="tours"/>
+<fmt:message bundle="${loc}" key="nav.about" var="about"/>
+<fmt:message bundle="${loc}" key="nav.help" var="help"/>
+<fmt:message bundle="${loc}" key="nav.my-account" var="acc"/>
+
 
 <html >
 <head>
-    <!-- Обязательные метатеги -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,11 +28,8 @@
     <title>Турагенство</title>
 </head>
 <body>
-<%@ page import="com.epam.travelAgency.entity.CategoryEntity" %>
-<%@ page import="java.util.List" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<%--<script src="js/bootstrap.min.js"></script>--%>
 
 <form action="controller?command=showcategories" method="get">
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
@@ -44,10 +51,10 @@
                    <a class="nav-link dropdown-toggle"
                        role="button" id="navbarDropdown"
                        data-bs-toggle="dropdown" aria-expanded="false"
-                       href="controller?command=showcategories">Категории тура</a>
+                       href="controller?command=showcategories">
+                       <c:out value="${categ}"/>
+                   </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-<%--                        <% List<CategoryEntity> categories = (List<CategoryEntity>) session.getAttribute("categories"); %>--%>
                         <c:forEach items="${categories}" var="category" >
                             <li><a class="dropdown-item" href="#">
                                 ${category.name}</a></li>
@@ -56,21 +63,35 @@
                     </ul>
 
                 </li>
-                <div class="vl"></div>
+<%--                <div class="vl"></div>--%>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">HOT</a>
+                    <a class="nav-link" href="#"><c:out value="${hot}"/></a>
                 </li>
-                <div class="vl"></div>
+<%--                <div class="vl"></div>--%>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">О нас</a>
+                    <a class="nav-link" href="#"><c:out value="${tours}"/></a>
                 </li>
-                <div class="vl"></div>
+<%--                <div class="vl"></div>--%>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Помощь</a>
+                    <a class="nav-link" href="#"><c:out value="${about}"/></a>
+                </li>
+<%--                <div class="vl"></div>--%>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">
+                        <c:out value="${help}"/>
+                    </a>
                 </li>
             </ul>
 
-<%--            <div class="option-field-inner">--%>
+            <div class="lang-buttons">
+                <a class="btn btn-outline-warning translate" id="en" href="controller?command=gotomainpage&locale=en">
+                    <img src="https://pngicon.ru/file/uploads/Flag-SShA.png" style="height: 20px; width: 30px">
+                </a>
+                <a class="btn btn-outline-warning" id="ru" href="controller?command=gotomainpage&locale=ru">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/250px-Flag_of_Russia.svg.png"
+                         style="height: 20px; width: 30px">
+                </a>
+            </div>
                 <div class="option-icon field-i">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
@@ -83,73 +104,18 @@
                 <div id="userInfo-place" class="field-i">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="controller?command=gotologinpage" >Личный кабинет</a>
+                        <a class="nav-link" aria-current="page" href="controller?command=gotologinpage">
+                            <c:out value="${acc}"/>
+                        </a>
                         </li>
                     </ul>
-<%--                    <script type="text/javascript" wfd-invisible="true">--%>
-<%--                        var HEADER_CHOSEN = 'Избранное',--%>
-<%--                            HEADER_USER = 'Профиль',--%>
-<%--                            HEADER_ORDERS = 'Мои заказы',--%>
-<%--                            HEADER_MORE = 'header.more',--%>
-<%--                            SIGN_OUT = 'Выход',--%>
-<%--                            SIGN_IN = 'Мой кабинет',--%>
-<%--                            REG = 'Регистрация',--%>
-<%--                            SCRIPT_ADDRESS = 'https://r.tez-tour.com/portal/scripts/',--%>
-<%--                            LANG = 'ru',--%>
-<%--                            RUSSIA_CITY = 'false',--%>
-<%--                            UKRAINE_CITY = 'false',--%>
-<%--                            VILNIUS_CITY = 'false',--%>
-<%--                            BELARUS_CITY = 'true',--%>
-<%--                            BULGARIA_CITY = 'false',--%>
-<%--                            ESTONIA_CITY = 'false',--%>
-<%--                            DOMAIN = 'tez-tour.com',--%>
-<%--                            IS_AGENT_COUNTRY = true,--%>
-<%--                            ALLADYN_LOGIN_URL = 'https://tourist.teztour.by/?login=1',--%>
-<%--                            PREFIX_URL = '/ru/minsk/';--%>
+     </div>
 
-<%--                        var src = ((BELARUS_CITY || BULGARIA_CITY) || (undefined != Helper.getCookie('_atl') && '1'=== Helper.getCookie('_atl'))) ? "userInfo.js" : "userInfo.js";--%>
-<%--                        var script = document.createElement( 'script' );--%>
-<%--                        script.type = 'text/javascript';--%>
-<%--                        script.src = "https://r.tez-tour.com/portal/scripts/" + src;--%>
-<%--                        $("#userInfo-place").append( script );--%>
-
-<%--                    </script>--%>
-
-<%--                    <div class="userInfoId-html" style="display: none" wfd-invisible="true">--%>
-<%--                        <div class="modal-small-container">--%>
-<%--                            <div class="userInfo-version-select">--%>
-<%--                                <b>Какую версию кабинета для агентств использовать?</b>--%>
-<%--                                <div class="text-center content-spacer">--%>
-<%--                                    <a class="std-main-btn" href="https://online.tez-tour.com">Кабинет агентства</a>--%>
-
-
-
-
-
-
-
-<%--                                    <a class="std-main-btn" href="https://agent.teztour.by">Новый онлайн кабинет  (TEZ Plus)</a>--%>
-
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-            </div>
-<%--            <form class="d-flex form-inline my-2 my-lg-0" action="controller?command=gotologinpage" method="post">--%>
-<%--                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">--%>
-<%--                <button class="btn btn-outline-primary btn-search-style" type="submit">Search</button>--%>
-<%--            </form>--%>
         </div>
     </div>
 <%--    </div>--%>
 </form>
 </nav>
 
-<%--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>--%>
-<%--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>--%>
-<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>--%>
-<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>--%>
 </body>
 </html>

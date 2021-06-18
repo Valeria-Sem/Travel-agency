@@ -1,6 +1,7 @@
 package com.epam.travelAgency.controller.command.impl;
 
 import com.epam.travelAgency.controller.command.Command;
+import com.epam.travelAgency.service.validation.impl.ValidationImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import java.io.IOException;
 
 public class GoToRegistrationPage implements Command {
     private final String pathToRegistrationPage = "WEB-INF/jsp/registration/registrationPage.jsp";
+    private final String locale = "locale";
+    private final String lang = "lang";
 
     public GoToRegistrationPage(){
 
@@ -20,8 +23,13 @@ public class GoToRegistrationPage implements Command {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(pathToRegistrationPage);
-        dispatcher.forward(req, resp);
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getParameter(locale) != null){
+            ValidationImpl.userLocale = request.getParameter(locale);
+        }
+        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToRegistrationPage);
+        dispatcher.forward(request, response);
     }
 }

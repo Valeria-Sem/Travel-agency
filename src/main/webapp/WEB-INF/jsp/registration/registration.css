@@ -44,7 +44,7 @@ input:valid {
 
 .my{
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 35%;
 }
 
 .vl{
@@ -52,10 +52,18 @@ input:valid {
     height: 250px;
 }
 
+.myLabel{
+    margin-top: 10px;
+}
+
+.lang-buttons{
+    margin-left: 80%;
+}
+
 html,
 
 h1{
     margin-bottom: 50px;
-    margin-top: 35px;
+    margin-top: 15px;
     text-align: center
 }

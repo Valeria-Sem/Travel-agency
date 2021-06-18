@@ -144,3 +144,7 @@
     bottom: 100%;
     margin-bottom: 0.125rem;
 }
+
+.lang-buttons{
+    margin-right: 40px;
+}

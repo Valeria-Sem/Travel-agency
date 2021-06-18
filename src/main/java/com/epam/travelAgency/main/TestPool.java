@@ -7,8 +7,20 @@ import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.UserService;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class TestPool {
     public static void main(String[] args) throws ServiceException {
+
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("lang");
+        ResourceBundle resource_en= ResourceBundle.getBundle("lang", new Locale("en", "USA"));
+        ResourceBundle resource_ru= ResourceBundle.getBundle("lang", new Locale("ru", "Ru"));
+
+        System.out.println(resourceBundle.getString("user.login.authorisation"));
+        System.out.println(resource_en.getString("user.login.authorisation"));
+        System.out.println(resource_ru.getString("user.login.authorisation"));
+
 //        ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 //        String dbUrl = resourceBundle.getString("dbUrl");
 //        String dbUser = resourceBundle.getString("dbUser");
@@ -72,10 +84,10 @@ public class TestPool {
 //                }
 //            }
 //        }
-        ServiceProvider provider = ServiceProvider.getInstance();
-        UserService userService = provider.getUserService();
-        CategoryService categoryService = provider.getCategoryService();
-        UserEntity user = null;
+//        ServiceProvider provider = ServiceProvider.getInstance();
+//        UserService userService = provider.getUserService();
+//        CategoryService categoryService = provider.getCategoryService();
+//        UserEntity user = null;
       //  UserDaoImpl userDao = new UserDaoImpl();
 //        UserEntity user = userDao.getUserByEmailAndPassword("lerasemenenya@gmail.com", "111");
 //        System.out.println(user.toString());

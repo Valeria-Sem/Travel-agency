@@ -17,6 +17,8 @@ public class CommandProvider {
         commands.put(CommandName.SHOWCATEGORIES, new ShowCategories());
         commands.put(CommandName.GOTOUSERPAGE, new GoToUserPage());
         commands.put(CommandName.GOTOREGISTRATIONPAGE, new GoToRegistrationPage());
+        commands.put(CommandName.LOGOUT, new Logout());
+
     }
 
     public Command takeCommand(String name){

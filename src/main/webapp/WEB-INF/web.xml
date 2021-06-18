@@ -16,16 +16,7 @@
         <servlet-name>Controller</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
-
-<!--    <servlet>-->
-<!--        <servlet-name>Cnontroller</servlet-name>-->
-<!--        <jsp-file>/WEB-INF/jsp/mainPage.jsp</jsp-file>-->
-<!--    </servlet>-->
-
-<!--    <servlet-mapping>-->
-<!--        <servlet-name> Cnontroller </servlet-name>-->
-<!--        <url-pattern>/main</url-pattern>-->
-<!--    </servlet-mapping>-->
+    
 <!--    <filter>-->
 <!--        <display-name>CharsetFilter</display-name>-->
 <!--        <filter-name>CharsetFilter</filter-name>-->

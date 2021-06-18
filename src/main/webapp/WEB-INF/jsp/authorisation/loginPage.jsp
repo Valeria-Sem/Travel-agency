@@ -1,13 +1,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<fmt:setLocale value="${sessionScope.local}"/>
-<fmt:setBundle basename="resources" var="loc"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
 <fmt:message bundle="${loc}" key="user.login.authorisation" var="authorisation"/>
 <fmt:message bundle="${loc}" key="user.login.email-input" var="emailInput"/>
 <fmt:message bundle="${loc}" key="user.login.password-input" var="passwordInput"/>
 <fmt:message bundle="${loc}" key="user.login.login-button" var="loginButton"/>
 <fmt:message bundle="${loc}" key="user.login.registered" var="registration"/>
+<fmt:message bundle="${loc}" key="user.login.change-lang" var="changeLang"/>
+
 
 <html lang="en">
 <head>
@@ -18,7 +21,7 @@
   <title>Форма входа</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-  <!-- Custom styles for this template -->
+
   <style>
     <%@include file='/WEB-INF/jsp/authorisation/login.css' %>
   </style>
@@ -42,13 +45,17 @@
 </head>
 <body class="text-center">
 <main class="form-signin">
-    <button class="btn btn-outline-light translate" id="en">
+
+    <div class="lang-buttons">
+        <p><c:out value="${changeLang}" /></p>
+    <a class="btn btn-outline-warning translate" id="en" href="controller?command=gotologinpage&locale=en">
         <img src="https://pngicon.ru/file/uploads/Flag-SShA.png" style="height: 30px; width: 40px">
-    </button>
-    <button class="btn btn-outline-light" id="ru">
+    </a>
+    <a class="btn btn-outline-warning" id="ru" href="controller?command=gotologinpage&locale=ru">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/250px-Flag_of_Russia.svg.png"
              style="height: 30px; width: 40px">
-    </button>
+    </a>
+    </div>
 
     <form  action="controller?command=authorisation" method="post">
 
@@ -72,7 +79,7 @@
       </label>
     </div>
 
-    <div class="checkbox mb-3">    <%--  ToDo регистрация--%>
+    <div class="checkbox mb-3">
       <a href="controller?command=gotoregistrationpage">
           <c:out value="${registration}"/>
       </a>

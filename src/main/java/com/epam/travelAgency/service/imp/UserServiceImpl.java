@@ -76,4 +76,20 @@ public class UserServiceImpl implements UserService {
 
         return isDeleted;
     }
+
+    @Override
+    public boolean isUserByEmail(String email) throws ServiceException{
+        boolean isFind;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        UserDao userDao = provider.getUserDAO();
+
+        try{
+            isFind = userDao.isUserByEmail(email);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return isFind;
+    }
 }

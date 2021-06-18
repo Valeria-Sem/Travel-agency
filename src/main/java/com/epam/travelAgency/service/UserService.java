@@ -10,4 +10,5 @@ public interface UserService {
     boolean addUser(UserEntity userEntity) throws ServiceException;
     Optional<UserEntity> getUserByEmailAndPassword(String email, String password) throws ServiceException;
     boolean deleteUser(int id) throws ServiceException;
+    boolean isUserByEmail (String email) throws ServiceException;
 }

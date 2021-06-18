@@ -12,5 +12,7 @@
 </head>
 <body>
 <h1>UserPage</h1>
+
+<a href="controller?command=logout">logout</a>
 </body>
 </html>

@@ -22,6 +22,7 @@ public class UserDaoImpl implements UserDao {
     private final String deleteQuery = "delete from user where id = ";
     private final String loginQueryByEmail = "select * from user where email = '" ;
     private final String loginQueryByPassword ="' and password = '";
+    private final String i ="'";
     private final String id ="id";
     private final String email ="email";
     private final String password ="password";
@@ -126,6 +127,35 @@ public class UserDaoImpl implements UserDao {
         }
 
         return user;
+    }
+
+    @Override
+    public boolean isUserByEmail(String email) throws DAOException {
+        boolean isFind = false;
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+
+            statement = connection.prepareStatement(loginQueryByEmail + email + i);
+            ResultSet res = statement.executeQuery();
+
+            if (res.next()){
+                isFind = true;
+            }
+
+        } catch (SQLException | ConnectionPoolException e){
+            LOGGER.error("UserDaoImpl (isUserByEmail) -> some problems with extracting user");
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
+
+        return isFind;
     }
 
     @Override
