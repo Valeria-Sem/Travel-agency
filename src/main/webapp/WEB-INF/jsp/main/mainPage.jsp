@@ -5,6 +5,20 @@
 <jsp:include page="../header/header.jsp"/>
 <jsp:useBean id="tours" scope="session" type="java.util.List"/>
 
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="main.arrival-date" var="arrDate"/>
+<fmt:message bundle="${loc}" key="main.chill" var="chill"/>
+<fmt:message bundle="${loc}" key="main.count-of-adults" var="adults"/>
+<fmt:message bundle="${loc}" key="main.count-of-children" var="children"/>
+<fmt:message bundle="${loc}" key="main.country" var="country"/>
+<fmt:message bundle="${loc}" key="main.departure-date" var="depDate"/>
+<fmt:message bundle="${loc}" key="main.details-btn" var="detailsBtn"/>
+<fmt:message bundle="${loc}" key="main.excursions" var="excursions"/>
+<fmt:message bundle="${loc}" key="main.hot-text" var="hotText"/>
+<fmt:message bundle="${loc}" key="main.search-btn" var="searchBtn"/>
+<fmt:message bundle="${loc}" key="main.shopping" var="shopping"/>
+
 <html >
 <head>
 
@@ -23,11 +37,11 @@
     <nav class="secNav">
         <div class="nav nav-tabs justify-content-md-center" id="nav-tab" role="tablist">
             <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
-                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Отдых</button>
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true"><c:out value="${chill}"/></button>
             <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Экскурсии</button>
+                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><c:out value="${excursions}"/></button>
             <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
-                    type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Шоппинг</button>
+                    type="button" role="tab" aria-controls="nav-contact" aria-selected="false"><c:out value="${shopping}"/></button>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -44,7 +58,7 @@
                                         <option value="2">Two</option>
                                         <option value="3">Three</option>
                                     </select>
-                                    <label for="floatingSelectGrid">Страна</label>
+                                    <label for="floatingSelectGrid"><c:out value="${country}"/></label>
                                 </div>
                             </div>
 
@@ -58,7 +72,7 @@
                                         <input type="date" class="form-control" name="dateOfBirth" data-format="mm-dd-yyyy"
                                                aria-label="Дата прилёта"
                                                id="datepicker1" required>
-                                        <label for="datepicker2" >Дата прилёта
+                                        <label for="datepicker2" ><c:out value="${arrDate}"/>
                                             <%--                            <c:out value="${dateBInput}"/>--%>
                                         </label>
                                     </div>
@@ -73,7 +87,8 @@
                                     <input type="date" class="form-control" name="dateOfBirth" data-format="mm-dd-yyyy"
                                            aria-label="Дата отлёта"
                                            id="datepicker2" required>
-                                    <label for="datepicker2" >Дата отлёта
+                                    <label for="datepicker2" >
+                                        <c:out value="${depDate}"/>
                                         <%--                            <c:out value="${dateBInput}"/>--%>
                                     </label>
                                 </div>
@@ -88,7 +103,7 @@
                                         <option value="3">3</option>
                                         <option value="3">4</option>
                                     </select>
-                                    <label for="floatingSelectGrid">Количество взрослых</label>
+                                    <label for="floatingSelectGrid"><c:out value="${adults}"/></label>
                                 </div>
                             </div>
 
@@ -100,13 +115,13 @@
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </select>
-                                    <label for="floatingSelectGrid">Количество детей</label>
+                                    <label for="floatingSelectGrid"><c:out value="${children}"/></label>
                                 </div>
                             </div>
                         </div>
 
                         <a class="btn btn-warning" style="margin-top: 20px; margin-left: 48%; width: 80px" href="controller?command=gotochillpage">
-                            Search
+                            <c:out value="${searchBtn}"/>
                         </a>
 
                         <hr style="margin-top: 40px"/>
@@ -124,7 +139,7 @@
         <div class="container">
             <div class="row text-center">
                     <h1><span class="badge bg-danger">HOT</span></h1>
-                    <h2>Самые горячие туры этого сезона !</h2>
+                    <h2><c:out value="${hotText}"/></h2>
 
             </div>
         </div>
@@ -152,7 +167,7 @@
                             <div class="card-footer">
                                 <a class="btn btn-outline-primary" id="${tour.id}"
                                    (click)="payAndSub(choice.monthPrise, template, choice.idProduct, choice.idOrganisation)">
-                                    Show details
+                                    <c:out value="${detailsBtn}"/>
                                 </a>
                             </div>
                         </div>

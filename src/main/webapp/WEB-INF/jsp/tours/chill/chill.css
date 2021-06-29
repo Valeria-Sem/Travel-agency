@@ -1,0 +1,22 @@
+.img {
+    width: 100%;
+    height: 200px;
+
+}
+
+.param{
+    width: 400px;
+    height: 450px;
+}
+
+.detButton{
+    vertical-align: bottom;
+}
+
+.secNav{
+    padding-top: 80px;
+}
+
+.form-control{
+    height: 58px;
+}

@@ -33,7 +33,7 @@ public class TourDaoImpl implements TourDAO {
     private final String idHotel ="id_hotel";
     private final String idMeals ="id_meals";
     private final String idTransport ="id_transport";
-    private final String idCountry ="id_country";
+    private final String countryId ="country_id";
 
     @Override
     public Iterable<TourEntity> getAllTours() throws DAOException {
@@ -64,7 +64,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(idCountry)));
+                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }
@@ -123,7 +123,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(idCountry)));
+                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }
