@@ -3,7 +3,7 @@ package com.epam.travelAgency.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ToutEntity implements Serializable {
+public class TourEntity implements Serializable {
     private int id;
     private String name;
     private String description;
@@ -16,14 +16,15 @@ public class ToutEntity implements Serializable {
     private int idHotel;
     private int idMeals;
     private int idTransport;
+    private int сountryId;
 
-    public ToutEntity() {
+    public TourEntity() {
     }
 
-    public ToutEntity(int id, String name, String description, int price,
+    public TourEntity(int id, String name, String description, int price,
                       String imgPath, TourStatus status, int adults,
                       int children, int idCategory, int idHotel,
-                      int idMeals, int idTransport) {
+                      int idMeals, int idTransport, int idCountry) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -36,12 +37,13 @@ public class ToutEntity implements Serializable {
         this.idHotel = idHotel;
         this.idMeals = idMeals;
         this.idTransport = idTransport;
+        this.сountryId = idCountry;
     }
 
-    public ToutEntity(int id, String name, String description, int price,
+    public TourEntity(int id, String name, String description, int price,
                       String imgPath, int adults,
                       int children, int idCategory, int idHotel,
-                      int idMeals, int idTransport) {
+                      int idMeals, int idTransport, int idCountry) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -53,17 +55,18 @@ public class ToutEntity implements Serializable {
         this.idHotel = idHotel;
         this.idMeals = idMeals;
         this.idTransport = idTransport;
+        this.сountryId = idCountry;
     }
 
-    public ToutEntity(int id, String name, String description,
-                      int price, String imgPath, int adults, int idCategory) {
+    public TourEntity(int id, String name, String description,
+                      int price, String imgPath, int adults, int children) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgPath = imgPath;
         this.adults = adults;
-        this.idCategory = idCategory;
+        this.children = children;
     }
 
     public int getId() {
@@ -162,19 +165,27 @@ public class ToutEntity implements Serializable {
         this.idTransport = idTransport;
     }
 
+    public int getСountryId() {
+        return сountryId;
+    }
+
+    public void setСountryId(int сountryId) {
+        this.сountryId = сountryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ToutEntity that = (ToutEntity) o;
-        return id == that.id &&
-                price == that.price &&
+        TourEntity that = (TourEntity) o;
+        return id == that.id && price == that.price &&
                 adults == that.adults &&
                 children == that.children &&
                 idCategory == that.idCategory &&
                 idHotel == that.idHotel &&
                 idMeals == that.idMeals &&
                 idTransport == that.idTransport &&
+                сountryId == that.сountryId &&
                 name.equals(that.name) &&
                 description.equals(that.description) &&
                 imgPath.equals(that.imgPath) &&
@@ -183,7 +194,28 @@ public class ToutEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, imgPath, status,
-                adults, children, idCategory, idHotel, idMeals, idTransport);
+        return Objects.hash(id, name, description,
+                price, imgPath, status, adults,
+                children, idCategory, idHotel,
+                idMeals, idTransport, сountryId);
+    }
+
+    @Override
+    public String toString() {
+        return "TourEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", imgPath='" + imgPath + '\'' +
+                ", status=" + status +
+                ", adults=" + adults +
+                ", children=" + children +
+                ", idCategory=" + idCategory +
+                ", idHotel=" + idHotel +
+                ", idMeals=" + idMeals +
+                ", idTransport=" + idTransport +
+                ", сountryId=" + сountryId +
+                '}';
     }
 }

@@ -29,9 +29,7 @@
 </head>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<%--<script src="js/bootstrap.min.js"></script>--%>
 
-<form action="controller?command=showcategories" method="get">
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
     <div class="container-fluid">
         <a href="#" class="navbar-brand">
@@ -46,24 +44,24 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item dropdown">
 
-                   <a class="nav-link dropdown-toggle"
-                       role="button" id="navbarDropdown"
-                       data-bs-toggle="dropdown" aria-expanded="false"
-                       href="controller?command=showcategories">
-                       <c:out value="${categ}"/>
-                   </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <c:forEach items="${categories}" var="category" >
-                            <li><a class="dropdown-item" href="#">
-                                ${category.name}</a></li>
+<%--                    <li class="nav-item dropdown">--%>
+<%--                       <a class="nav-link dropdown-toggle"--%>
+<%--                           role="button" id="navbarDropdown"--%>
+<%--                           data-bs-toggle="dropdown" aria-expanded="false"--%>
+<%--                           href="#">--%>
+<%--                           <c:out value="${categ}"/>--%>
+<%--                       </a>--%>
+<%--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">--%>
+<%--                            <c:forEach items="${categories}" var="category" >--%>
+<%--                                <li><a class="dropdown-item" href="#">--%>
+<%--                                    ${category.name}</a></li>--%>
 
-                        </c:forEach>
-                    </ul>
+<%--                            </c:forEach>--%>
+<%--                        </ul>--%>
 
-                </li>
-<%--                <div class="vl"></div>--%>
+<%--                    </li>--%>
+            <%--                <div class="vl"></div>--%>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><c:out value="${hot}"/></a>
                 </li>
@@ -114,7 +112,6 @@
         </div>
     </div>
 <%--    </div>--%>
-</form>
 </nav>
 
 </body>

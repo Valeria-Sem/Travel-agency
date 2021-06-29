@@ -26,3 +26,20 @@
 // }
 //
 // regBtn.addEventListener("click", register);
+
+function onHidden() {
+    event.preventDefault();
+    console.log('Dropdown is hidden');
+
+}
+
+function onShown() {
+    event.preventDefault();
+    console.log('Dropdown is shown');
+
+}
+
+function isOpenChange() {
+    event.preventDefault();
+    console.log('Dropdown state is changed');
+}

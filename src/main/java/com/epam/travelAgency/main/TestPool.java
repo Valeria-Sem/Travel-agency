@@ -1,12 +1,17 @@
 package com.epam.travelAgency.main;
 
+import com.epam.travelAgency.dao.DAOException;
+import com.epam.travelAgency.dao.TourDAO;
+import com.epam.travelAgency.dao.impl.TourDaoImpl;
 import com.epam.travelAgency.entity.CategoryEntity;
+import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.service.CategoryService;
 import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.UserService;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -88,12 +93,25 @@ public class TestPool {
 //        UserService userService = provider.getUserService();
 //        CategoryService categoryService = provider.getCategoryService();
 //        UserEntity user = null;
-      //  UserDaoImpl userDao = new UserDaoImpl();
-//        UserEntity user = userDao.getUserByEmailAndPassword("lerasemenenya@gmail.com", "111");
-//        System.out.println(user.toString());
+//        TourDAO tourDao = new TourDaoImpl();
+////        UserEntity user = userDao.getUserByEmailAndPassword("lerasemenenya@gmail.com", "111");
+////        System.out.println(user.toString());
+////
+//        try {
+//          //  List<TourEntity> tours = tourDao.getAllTours();
 //
-//        List<UserEntity> users = userDao.getAllUsers();
-//         System.out.println(users);
+//
+//
+//          //  for(TourEntity tour : tours) {
+//
+//
+//          //      System.out.println(tours);
+//
+//         //   }
+//
+//        } catch (DAOException e) {
+//            e.printStackTrace();
+//        }
 //
 //        UserEntity usert = new UserEntity("lera", "ttt", UserRole.AGENT);
 //

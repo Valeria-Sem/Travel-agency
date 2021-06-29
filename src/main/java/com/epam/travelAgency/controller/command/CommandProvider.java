@@ -18,6 +18,7 @@ public class CommandProvider {
         commands.put(CommandName.GOTOUSERPAGE, new GoToUserPage());
         commands.put(CommandName.GOTOREGISTRATIONPAGE, new GoToRegistrationPage());
         commands.put(CommandName.LOGOUT, new Logout());
+        commands.put(CommandName.GOTOCHILLPAGE, new GoToChillPage());
 
     }
 

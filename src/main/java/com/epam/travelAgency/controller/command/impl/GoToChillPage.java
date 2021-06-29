@@ -4,12 +4,8 @@ import com.epam.travelAgency.controller.command.Command;
 import com.epam.travelAgency.dao.DAOException;
 import com.epam.travelAgency.dao.TourDAO;
 import com.epam.travelAgency.dao.impl.TourDaoImpl;
-import com.epam.travelAgency.entity.CategoryEntity;
 import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.TourStatus;
-import com.epam.travelAgency.service.CategoryService;
-import com.epam.travelAgency.service.ServiceException;
-import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.validation.impl.ValidationImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -20,17 +16,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class GoToMainPage implements Command {
-    private final String pathToMainPage = "WEB-INF/jsp/main/mainPage.jsp";
+public class GoToChillPage implements Command {
+    private final String pathToChillPage = "WEB-INF/jsp/tours/chill/chill.jsp";
     private final String locale = "locale";
     private final String lang = "lang";
 
-    public GoToMainPage(){
-
+    public GoToChillPage() {
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         processRequest(request, response);
     }
 
@@ -40,24 +35,24 @@ public class GoToMainPage implements Command {
         }
         request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
 
-        HttpSession session = request.getSession();
-
-        List<TourEntity> tours = (List<TourEntity>) session.getAttribute("tours");
-
-        if(tours == null){
-//            ServiceProvider provider = ServiceProvider.getInstance();
-//            CategoryService categoryService = provider.getCategoryService();
-            TourDAO tourDao = new TourDaoImpl();
-            try {
-                tours = tourDao.getTourByStatus(TourStatus.HOT);
-
-                session.setAttribute("tours", tours);
-
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
-        }
-        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToMainPage);
+//        HttpSession session = request.getSession();
+//
+//        List<TourEntity> tours = (List<TourEntity>) session.getAttribute("tours");
+//
+//        if(tours == null){
+////            ServiceProvider provider = ServiceProvider.getInstance();
+////            CategoryService categoryService = provider.getCategoryService();
+//            TourDAO tourDao = new TourDaoImpl();
+//            try {
+//                tours = tourDao.getTourByStatus(TourStatus.HOT);
+//
+//                session.setAttribute("tours", tours);
+//
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToChillPage);
         dispatcher.forward(request, response);
 
     }

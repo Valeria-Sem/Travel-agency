@@ -1,5 +1,7 @@
 package com.epam.travelAgency.entity;
 
 public enum TourStatus {
-    HOT
+    HOT,
+    STANDARD,
+    END
 }

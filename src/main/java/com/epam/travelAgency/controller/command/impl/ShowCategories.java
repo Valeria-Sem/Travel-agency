@@ -35,7 +35,7 @@ public class ShowCategories implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        Iterable<CategoryEntity> categories = (Iterable<CategoryEntity>) session.getAttribute("categories");
+        Iterable<CategoryEntity> categories = (Iterable<CategoryEntity>) session.getAttribute(categoriesS);
 
         if(categories == null){
             ServiceProvider provider = ServiceProvider.getInstance();
