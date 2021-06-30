@@ -38,3 +38,9 @@
 .form-control{
     height: 58px;
 }
+
+.btn:disabled{
+    /*border-color: purple;*/
+    /*color: purple;*/
+    background: gainsboro;
+}

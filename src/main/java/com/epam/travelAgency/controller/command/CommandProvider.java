@@ -19,6 +19,12 @@ public class CommandProvider {
         commands.put(CommandName.GOTOREGISTRATIONPAGE, new GoToRegistrationPage());
         commands.put(CommandName.LOGOUT, new Logout());
         commands.put(CommandName.GOTOCHILLPAGE, new GoToChillPage());
+        commands.put(CommandName.SHOWCHILLTOURSDATA, new ShowChillToursData());
+        commands.put(CommandName.GOTOEXCURSIONPAGE, new GoToExcursionPage());
+        commands.put(CommandName.SHOWEXCURSIONDATA, new ShowExcursionData());
+        commands.put(CommandName.GOTOSHOPPINGPAGE, new GoToShoppingPage());
+        commands.put(CommandName.SHOWSHOPPINGDATA, new ShowShoppingData());
+
 
     }
 

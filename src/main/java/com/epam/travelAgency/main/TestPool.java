@@ -11,9 +11,11 @@ import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class TestPool {
     public static void main(String[] args) throws ServiceException {
@@ -93,25 +95,27 @@ public class TestPool {
 //        UserService userService = provider.getUserService();
 //        CategoryService categoryService = provider.getCategoryService();
 //        UserEntity user = null;
-//        TourDAO tourDao = new TourDaoImpl();
-////        UserEntity user = userDao.getUserByEmailAndPassword("lerasemenenya@gmail.com", "111");
-////        System.out.println(user.toString());
-////
-//        try {
-//          //  List<TourEntity> tours = tourDao.getAllTours();
+        TourDAO tourDao = new TourDaoImpl();
+//        UserEntity user = userDao.getUserByEmailAndPassword("lerasemenenya@gmail.com", "111");
+//        System.out.println(user.toString());
 //
-//
-//
-//          //  for(TourEntity tour : tours) {
-//
-//
-//          //      System.out.println(tours);
-//
-//         //   }
-//
-//        } catch (DAOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Set<TourEntity> tours = tourDao.getTourByStartParams("Отпуск", "Турция",
+                    LocalDate.of(2021, 6, 1),
+                    LocalDate.of(2021, 6, 30), 2, 0);
+
+
+
+        //    for(TourEntity tour : tours) {
+
+
+                System.out.println(tours);
+
+         //   }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
 //
 //        UserEntity usert = new UserEntity("lera", "ttt", UserRole.AGENT);
 //
