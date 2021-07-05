@@ -21,6 +21,9 @@ public class GoToChillPage implements Command {
     private final String locale = "locale";
     private final String lang = "lang";
 
+    private final String page = "page";
+    private final String pageCommand = "gotochillpage";
+
     public GoToChillPage() {
     }
 
@@ -30,12 +33,12 @@ public class GoToChillPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getParameter(locale) != null){
-            ValidationImpl.userLocale = request.getParameter(locale);
-        }
-        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
+//        if(request.getParameter(locale) != null){
+//            ValidationImpl.userLocale = request.getParameter(locale);
+//        }
+//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
 
-//        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 //
 //        List<TourEntity> tours = (List<TourEntity>) session.getAttribute("tours");
 //
@@ -52,6 +55,8 @@ public class GoToChillPage implements Command {
 //                e.printStackTrace();
 //            }
 //        }
+        session.setAttribute(page, pageCommand);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(pathToChillPage);
         dispatcher.forward(request, response);
 

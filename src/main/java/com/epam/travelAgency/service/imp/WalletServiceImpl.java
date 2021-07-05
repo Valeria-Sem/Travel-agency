@@ -2,9 +2,7 @@ package com.epam.travelAgency.service.imp;
 
 import com.epam.travelAgency.dao.DAOException;
 import com.epam.travelAgency.dao.DAOProvider;
-import com.epam.travelAgency.dao.UserDao;
 import com.epam.travelAgency.dao.WalletDao;
-import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.entity.WalletEntity;
 import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.WalletService;
@@ -53,6 +51,38 @@ public class WalletServiceImpl implements WalletService {
 
         try{
             wallet = walletDao.getWalletById(id);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return wallet;
+    }
+
+    @Override
+    public WalletEntity saveNewWallet(int userId) throws ServiceException {
+        WalletEntity wallet;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        WalletDao walletDao = provider.getWalletDAO();
+
+        try{
+            wallet = walletDao.saveNewWallet(userId);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return wallet;
+    }
+
+    @Override
+    public WalletEntity getWalletByUserId(int userId) throws ServiceException {
+        WalletEntity wallet;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        WalletDao walletDao = provider.getWalletDAO();
+
+        try{
+            wallet = walletDao.getWalletByUserId(userId);
         } catch (DAOException e){
             throw new ServiceException(e);
         }

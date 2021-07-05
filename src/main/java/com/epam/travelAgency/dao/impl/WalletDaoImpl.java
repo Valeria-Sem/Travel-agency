@@ -17,11 +17,19 @@ public class WalletDaoImpl implements WalletDao {
     private final Logger LOGGER = Logger.getLogger(WalletDaoImpl.class);
 
     private final String queryForGetAllWallets = "select * from wallet";
-    private final String insertQuery = "insert into wallet (balance) values(?) ";
+    private final String insertQuery = "insert into wallet (user_id) values(?) ";
     private final String deleteQuery = "delete from wallet where id = ";
     private final String findWallet = "select * from wallet where id = '" ;
+    private final String findWalletByUserId = "select * from wallet, user where wallet.user_id = user.id and" +
+            " user_id = '" ;
+
     private final String updateQuery1 = "update wallet set balance ='" ;
     private final String updateQuery2 = "' where id = " ;
+
+    private final String quote ="'";
+    private final String idS ="id";
+    private final String balanceS ="balance";
+    private final String userIdS ="user_id";
 
 
     @Override
@@ -40,8 +48,8 @@ public class WalletDaoImpl implements WalletDao {
 
             while (res.next()){
                 WalletEntity wallet = new WalletEntity();
-                wallet.setId(Integer.parseInt(res.getString("id")));
-                wallet.setBalance(Double.parseDouble(res.getString("balance")));
+                wallet.setId(Integer.parseInt(res.getString(idS)));
+                wallet.setBalance(Double.parseDouble(res.getString(balanceS)));
 
                 wallets.add(wallet);
             }
@@ -58,7 +66,36 @@ public class WalletDaoImpl implements WalletDao {
 
     @Override
     public boolean addWallet(WalletEntity walletEntity) throws DAOException {
+        return false;
+//        Connection connection = null;
+//        ConnectionPool pool = null;
+//        PreparedStatement statement = null;
+//
+//        try{
+//            pool = ConnectionPool.getInstance();
+//            connection = pool.takeConnection();
+//
+//            statement = connection.prepareStatement(insertQuery);
+//
+//            statement.setDouble(1, walletEntity.getBalance());
+//
+//            statement.executeUpdate();
+//
+//            isAdded = true;
+//
+//        } catch (SQLException | ConnectionPoolException e){
+//            LOGGER.error("WalletDaoImpl (addWallet) -> some problems with adding wallet");
+//        } finally {
+//            if(connection != null){
+//                pool.closeConnection(connection, statement);
+//            }
+    }
+
+    @Override
+    public WalletEntity saveNewWallet(int userId) throws DAOException {
+        WalletEntity newWallet = null;
         boolean isAdded = false;
+
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement statement = null;
@@ -69,21 +106,22 @@ public class WalletDaoImpl implements WalletDao {
 
             statement = connection.prepareStatement(insertQuery);
 
-            statement.setDouble(1, walletEntity.getBalance());
+            statement.setInt(1, userId);
 
             statement.executeUpdate();
 
-            isAdded = true;
+            newWallet = getWalletByUserId(userId);
 
         } catch (SQLException | ConnectionPoolException e){
-            LOGGER.error("WalletDaoImpl (addWallet) -> some problems with adding wallet");
+            LOGGER.error("WalletDaoImpl (save new Wallet) -> some problems with saving wallet");
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);
             }
         }
 
-        return isAdded;
+        return newWallet;
     }
 
     @Override
@@ -101,9 +139,39 @@ public class WalletDaoImpl implements WalletDao {
             ResultSet res = ps.executeQuery();
 
             while (res.next()){
-                wallet.setId(Integer.parseInt(res.getString("id")));
-                wallet.setBalance(Double.parseDouble(res.getString("balance")));
+                wallet.setId(Integer.parseInt(res.getString(idS)));
+                wallet.setBalance(Double.parseDouble(res.getString(balanceS)));
 
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            LOGGER.error("WalletDaoImpl (getWalletById) -> some problems with extracting wallet");
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, ps);
+            }
+        }
+
+        return wallet;
+    }
+
+    @Override
+    public WalletEntity getWalletByUserId(int userId) throws DAOException {
+        WalletEntity wallet = new WalletEntity();
+
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement ps = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+            ps = connection.prepareStatement(findWalletByUserId + userId + quote);
+            ResultSet res = ps.executeQuery();
+
+            while (res.next()){
+                wallet.setId(Integer.parseInt(res.getString(idS)));
+                wallet.setBalance(Double.parseDouble(res.getString(balanceS)));
+                wallet.setUserId(Integer.parseInt(res.getString(userIdS)));
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("WalletDaoImpl (getWalletById) -> some problems with extracting wallet");

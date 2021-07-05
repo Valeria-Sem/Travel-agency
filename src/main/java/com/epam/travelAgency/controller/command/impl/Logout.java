@@ -13,6 +13,9 @@ public class Logout implements Command {
     private final String pathToMainPage = "/WEB-INF/jsp/main/mainPage.jsp";
     private final String auth = "auth";
     private final String currentUser = "current_user";
+    private final String currentWallet = "current_wallet";
+    private final String role = "role";
+
 
     public Logout() {
     }
@@ -29,6 +32,8 @@ public class Logout implements Command {
 
             session.removeAttribute(auth);
             session.removeAttribute(currentUser);
+            session.removeAttribute(currentWallet);
+            session.removeAttribute(role);
 
         }
 

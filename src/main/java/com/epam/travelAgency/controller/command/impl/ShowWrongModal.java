@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ShowWrongModal implements Command {
-    private final String pathToWrongModal = "WEB-INF/jsp/wrongModal.jsp";
+    private final String pathToWrongModal = "WEB-INF/jsp/wrongModal/wrongModal.jsp";
 
     public ShowWrongModal(){
 

@@ -7,7 +7,6 @@ import java.util.Objects;
 public class UserDetailsEntity implements Serializable {
     private int id;
     private int idUser;
-//    private UserEntity userByIdUser;
     private String name;
     private String surname;
     private LocalDate dateOfBirth;
@@ -15,8 +14,6 @@ public class UserDetailsEntity implements Serializable {
     private String passport;
     private LocalDate dateOfIssue;
     private LocalDate expirationDate;
-    private int idWallet;
-//    private WalletEntity walletByIdWallet;
 
     public UserDetailsEntity() {
     }
@@ -24,10 +21,9 @@ public class UserDetailsEntity implements Serializable {
     public UserDetailsEntity(int id, int idUser, String name,
                              String surname, LocalDate dateOfBirth,
                              String citizenship, String passport,
-                             LocalDate dateOfIssue, LocalDate expirationDate,
-                             int idWallet) {
+                             LocalDate dateOfIssue, LocalDate expirationDate) {
         this.id = id;
-//        this.idUser = idUser;
+        this.idUser = idUser;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
@@ -35,15 +31,13 @@ public class UserDetailsEntity implements Serializable {
         this.passport = passport;
         this.dateOfIssue = dateOfIssue;
         this.expirationDate = expirationDate;
-//        this.idWallet = idWallet;
     }
 
     public UserDetailsEntity(int idUser, String name,
                              String surname, LocalDate dateOfBirth,
                              String citizenship, String passport,
-                             LocalDate dateOfIssue, LocalDate expirationDate,
-                             int idWallet) {
-//        this.idUser = idUser;
+                             LocalDate dateOfIssue, LocalDate expirationDate) {
+        this.idUser = idUser;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
@@ -51,38 +45,7 @@ public class UserDetailsEntity implements Serializable {
         this.passport = passport;
         this.dateOfIssue = dateOfIssue;
         this.expirationDate = expirationDate;
-//        this.idWallet = idWallet;
     }
-
-
-//    public UserDetailsEntity(int id, UserEntity userByIdUser, String name, String surname, LocalDate dateOfBirth,
-//                             String citizenship, String passport, LocalDate dateOfIssue, LocalDate expirationDate,
-//                             WalletEntity walletByIdWallet) {
-//        this.id = id;
-//        this.userByIdUser = userByIdUser;
-//        this.name = name;
-//        this.surname = surname;
-//        this.dateOfBirth = dateOfBirth;
-//        this.citizenship = citizenship;
-//        this.passport = passport;
-//        this.dateOfIssue = dateOfIssue;
-//        this.expirationDate = expirationDate;
-//        this.walletByIdWallet = walletByIdWallet;
-//    }
-//
-//    public UserDetailsEntity(UserEntity userByIdUser, String name, String surname, LocalDate dateOfBirth,
-//                             String citizenship, String passport, LocalDate dateOfIssue,
-//                             LocalDate expirationDate, WalletEntity walletByIdWallet) {
-//        this.userByIdUser = userByIdUser;
-//        this.name = name;
-//        this.surname = surname;
-//        this.dateOfBirth = dateOfBirth;
-//        this.citizenship = citizenship;
-//        this.passport = passport;
-//        this.dateOfIssue = dateOfIssue;
-//        this.expirationDate = expirationDate;
-//        this.walletByIdWallet = walletByIdWallet;
-//    }
 
     public UserDetailsEntity(String name,
                              String surname, LocalDate dateOfBirth,
@@ -169,71 +132,20 @@ public class UserDetailsEntity implements Serializable {
         this.expirationDate = expirationDate;
     }
 
-//    public UserEntity getUserByIdUser() {
-//        return userByIdUser;
-//    }
-//
-//    public void setUserByIdUser(UserEntity userByIdUser) {
-//        this.userByIdUser = userByIdUser;
-//    }
-//
-//    public WalletEntity getWalletByIdWallet() {
-//        return walletByIdWallet;
-//    }
-//
-//    public void setWalletByIdWallet(WalletEntity walletByIdWallet) {
-//        this.walletByIdWallet = walletByIdWallet;
-//    }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        UserDetailsEntity that = (UserDetailsEntity) o;
-//        return id == that.id && userByIdUser.equals(that.userByIdUser) && name.equals(that.name) && surname.equals(that.surname) && dateOfBirth.equals(that.dateOfBirth) && citizenship.equals(that.citizenship) && passport.equals(that.passport) && dateOfIssue.equals(that.dateOfIssue) && expirationDate.equals(that.expirationDate) && walletByIdWallet.equals(that.walletByIdWallet);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, userByIdUser, name, surname, dateOfBirth, citizenship, passport, dateOfIssue, expirationDate, walletByIdWallet);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "UserDetailsEntity{" +
-//                "id=" + id +
-//                ", userByIdUser=" + userByIdUser +
-//                ", name='" + name + '\'' +
-//                ", surname='" + surname + '\'' +
-//                ", dateOfBirth=" + dateOfBirth +
-//                ", citizenship='" + citizenship + '\'' +
-//                ", passport='" + passport + '\'' +
-//                ", dateOfIssue=" + dateOfIssue +
-//                ", expirationDate=" + expirationDate +
-//                ", walletByIdWallet=" + walletByIdWallet +
-//                '}';
-//    }
-
-    //
-    public int getIdWallet() {
-        return idWallet;
-    }
-
-    public void setIdWallet(int idWallet) {
-        this.idWallet = idWallet;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDetailsEntity that = (UserDetailsEntity) o;
-        return id == that.id && idUser == that.idUser && idWallet == that.idWallet && name.equals(that.name) && surname.equals(that.surname) && dateOfBirth.equals(that.dateOfBirth) && citizenship.equals(that.citizenship) && passport.equals(that.passport) && dateOfIssue.equals(that.dateOfIssue) && expirationDate.equals(that.expirationDate);
+        return id == that.id && idUser == that.idUser && name.equals(that.name) && surname.equals(that.surname)
+                && dateOfBirth.equals(that.dateOfBirth) && citizenship.equals(that.citizenship)
+                && passport.equals(that.passport) && dateOfIssue.equals(that.dateOfIssue)
+                && expirationDate.equals(that.expirationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idUser, name, surname, dateOfBirth, citizenship, passport, dateOfIssue, expirationDate, idWallet);
+        return Objects.hash(id, idUser, name, surname, dateOfBirth, citizenship, passport, dateOfIssue, expirationDate);
     }
 
     @Override
@@ -247,8 +159,7 @@ public class UserDetailsEntity implements Serializable {
                 ", citizenship='" + citizenship + '\'' +
                 ", passport='" + passport + '\'' +
                 ", dateOfIssue='" + dateOfIssue + '\'' +
-                ", expirationDate='" + expirationDate + '\'' +
-                ", idWallet=" + idWallet +
+                ", expirationDate='" + expirationDate +
                 '}';
     }
 }

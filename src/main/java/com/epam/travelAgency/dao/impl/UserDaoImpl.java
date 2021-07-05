@@ -1,7 +1,7 @@
 package com.epam.travelAgency.dao.impl;
 
 import com.epam.travelAgency.dao.DAOException;
-import com.epam.travelAgency.dao.UserDao;
+import com.epam.travelAgency.dao.UserDAO;
 import com.epam.travelAgency.dao.pool.ConnectionPool;
 import com.epam.travelAgency.dao.pool.ConnectionPoolException;
 import com.epam.travelAgency.entity.UserEntity;
@@ -11,10 +11,8 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDAO {
     private final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private final String queryForGetAllUsers = "select * from user";
@@ -22,6 +20,7 @@ public class UserDaoImpl implements UserDao {
     private final String deleteQuery = "delete from user where id = ";
     private final String loginQueryByEmail = "select * from user where email = '" ;
     private final String loginQueryByPassword ="' and password = '";
+    private final String updateQuery ="UPDATE user SET email = ?, password = ? WHERE id = ?";
     private final String i ="'";
     private final String id ="id";
     private final String email ="email";
@@ -95,8 +94,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<UserEntity> getUserByEmailAndPassword(String userEmail, String userPassword) throws DAOException{
-        Optional<UserEntity> user = Optional.empty();
+    public UserEntity getUserByEmailAndPassword(String userEmail, String userPassword) throws DAOException{
+        UserEntity user = null;//= Optional.empty();
 
         Connection connection = null;
         ConnectionPool pool = null;
@@ -114,7 +113,7 @@ public class UserDaoImpl implements UserDao {
                 String userPass = res.getString(password);
                 UserRole userRole = UserRole.valueOf(res.getString(role));
 
-                user = Optional.of(new UserEntity(userId, userEm, userPass, userRole));
+                user = new UserEntity(userId, userEm, userPass, userRole) ; //Optional.of(new UserEntity(userId, userEm, userPass, userRole));
 
             }
         } catch (SQLException | ConnectionPoolException e) {
@@ -127,6 +126,40 @@ public class UserDaoImpl implements UserDao {
         }
 
         return user;
+    }
+
+    @Override
+    public boolean isUserUpdate(UserEntity userEntity, String newEmail, String newPassword) throws DAOException {
+        boolean isUserUpdate = false;
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+
+            statement = connection.prepareStatement(updateQuery);
+
+            statement.setString(1, newEmail);
+            statement.setString(2, newPassword);
+            statement.setInt(3, userEntity.getId());
+
+            statement.executeUpdate();
+            statement.close();
+
+            isUserUpdate = true;
+
+        } catch (SQLException | ConnectionPoolException e){
+            e.printStackTrace();
+            LOGGER.error("UserDaoImpl (isUserByEmail) -> some problems with extracting user");
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
+
+        return isUserUpdate;
     }
 
     @Override

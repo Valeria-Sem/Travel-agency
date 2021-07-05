@@ -10,9 +10,7 @@ import com.epam.travelAgency.entity.CategoryEntity;
 import com.epam.travelAgency.entity.CountriesEntity;
 import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.TourStatus;
-import com.epam.travelAgency.service.CategoryService;
-import com.epam.travelAgency.service.ServiceException;
-import com.epam.travelAgency.service.ServiceProvider;
+import com.epam.travelAgency.service.*;
 import com.epam.travelAgency.service.validation.impl.ValidationImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -29,8 +27,8 @@ public class GoToMainPage implements Command {
     private final String lang = "lang";
     private final String toursL = "tours";
     private final String countriesL = "countries";
-
-
+    private final String page = "page";
+    private final String pageCommand = "gotomainpage";
 
     public GoToMainPage(){
 
@@ -42,10 +40,10 @@ public class GoToMainPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getParameter(locale) != null){
-            ValidationImpl.userLocale = request.getParameter(locale);
-        }
-        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
+//        if(request.getParameter(locale) != null){
+//            ValidationImpl.userLocale = request.getParameter(locale);
+//        }
+//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
 
         HttpSession session = request.getSession();
 
@@ -53,23 +51,25 @@ public class GoToMainPage implements Command {
         List<CountriesEntity> countries = (List<CountriesEntity>) session.getAttribute(countriesL);
 
         if(hotTours == null && countries == null){
-//            ServiceProvider provider = ServiceProvider.getInstance();
-//            CategoryService categoryService = provider.getCategoryService();
-            TourDAO tourDao = new TourDaoImpl();
-            CountriesDAO countriesDAO = new CountriesDaoImp();
+
+            ServiceProvider provider = ServiceProvider.getInstance();
+            TourService tourService = provider.getTourService();
+            CountriesService countriesService = provider.getCountriesService();
 
             try {
-                hotTours = tourDao.getTourByStatus(TourStatus.HOT);
-                countries = countriesDAO.getAllCountries();
+                hotTours = tourService.getTourByStatus(TourStatus.HOT);
+                countries = countriesService.getAllCountries();
 
                 session.setAttribute(toursL, hotTours);
                 session.setAttribute(countriesL, countries);
 
-
-            } catch (DAOException e) {
+            } catch (ServiceException e) {
                 e.printStackTrace();
             }
         }
+
+        session.setAttribute(page, pageCommand);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(pathToMainPage);
         dispatcher.forward(request, response);
 

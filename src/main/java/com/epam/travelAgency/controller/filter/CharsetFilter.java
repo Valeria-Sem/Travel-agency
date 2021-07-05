@@ -1,6 +1,9 @@
 package com.epam.travelAgency.controller.filter;
 
+import com.epam.travelAgency.service.validation.impl.ValidationImpl;
+
 import javax.servlet.*;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CharsetFilter implements Filter {
@@ -21,6 +24,7 @@ public class CharsetFilter implements Filter {
         servletRequest.setCharacterEncoding(encoding);
         servletResponse.setCharacterEncoding(encoding);
         context.log(contextLog);
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

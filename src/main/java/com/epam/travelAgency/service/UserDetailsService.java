@@ -10,4 +10,5 @@ public interface UserDetailsService {
     boolean addUserDetails(UserDetailsEntity userEntity) throws ServiceException;
     UserDetailsEntity getUserDetailsByIdUser(int id) throws ServiceException;
     boolean deleteUserDetails(int id) throws ServiceException;
+    boolean isUserDetailsUpdate(UserDetailsEntity userDet) throws ServiceException;
 }

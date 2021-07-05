@@ -6,8 +6,7 @@
 
 <jsp:useBean id="chillTours" scope="session" type="java.util.Set"/>
 <jsp:useBean id="countries" scope="session" type="java.util.List"/>
-
-
+<%--<jsp:useBean id="searchData" scope="session" type="java.util.List"/>--%>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
@@ -122,7 +121,6 @@
 
             <div class="col col-lg secNav">
                 <form class="form-registration" action="controller?command=showchilltoursdata" method="post">
-
                 <div class="row g-2  text-center">
                     <div class="col-md">
                         <div class="form-floating has-validation">
@@ -143,7 +141,7 @@
                         <div class="form-floating has-validation">
                             <input type="date" class="form-control" name="arrivalDate" data-format="mm-dd-yyyy"
                                    aria-label="Дата прилёта"
-                                   id="datepicker1" required="">
+                                   id="datepicker1" required="" value="">
                             <label for="datepicker1" ><c:out value="${arrDate}"/>
                             </label>
                         </div>

@@ -1,12 +1,12 @@
 package com.epam.travelAgency.controller.command.impl;
 
 import com.epam.travelAgency.controller.command.Command;
+import com.epam.travelAgency.entity.SaleEntity;
 import com.epam.travelAgency.entity.UserDetailsEntity;
 import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.entity.WalletEntity;
-import com.epam.travelAgency.service.ServiceException;
-import com.epam.travelAgency.service.ServiceProvider;
-import com.epam.travelAgency.service.UserService;
+import com.epam.travelAgency.service.*;
+import com.epam.travelAgency.service.validation.ValidationService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -24,6 +24,9 @@ public class Authorisation implements Command {
     private final String userPassword = "password";
     private final String auth = "auth";
     private final String currentUser = "current_user";
+    private final String currentWallet = "current_wallet";
+    private final String current_SALE = "current_sale";
+    private final String role = "role";
     private final String errorMessage = "Error Auth";
     private final String pathToWrongModal = "controller?command=showwrongmodal";
     private final String pathToMainPage = "controller?command=gotomainpage";
@@ -43,24 +46,42 @@ public class Authorisation implements Command {
         String email;
         String password;
 
+        UserEntity user;
+        WalletEntity wallet;
+        SaleEntity sale;
+
         email = request.getParameter(userEmail).trim();
         password = request.getParameter(userPassword).trim();
 
         ServiceProvider provider = ServiceProvider.getInstance();
-        UserService userService = provider.getUserService();
 
-        Optional<UserEntity> user;
+        ValidationService validationService = provider.getValidationService();
+        UserService userService = provider.getUserService();
+        WalletService walletService = provider.getWalletService();
+        SaleService saleService = provider.getSaleService();
+
 
         try{
-            user = userService.getUserByEmailAndPassword(email, password);
+            if(validationService.isEmailValid(email) && validationService.isPasswordValid(password)){
+                user = userService.getUserByEmailAndPassword(email, password);
 
-            if(user.isPresent()){
-                session.setAttribute(auth, true);
-                session.setAttribute(currentUser, true);
+                if(user != null){
+                    wallet = walletService.getWalletByUserId(user.getId());
+                    sale = saleService.getSaleByIdUser(user.getId());
 
-                response.sendRedirect(pathToMainPage);
+                    session.setAttribute(auth, true);
+                    session.setAttribute(currentUser, user);
+                    session.setAttribute(currentWallet, wallet);
+                    session.setAttribute(current_SALE, sale);
+                    session.setAttribute(role, user.getRole());
 
-            } else{
+                    response.sendRedirect(pathToMainPage);
+
+                } else{
+                    response.sendRedirect(pathToWrongModal);
+                }
+            } else {
+                System.out.println("Проверь свои регулярки на jsp :)");
                 response.sendRedirect(pathToWrongModal);
             }
         } catch (ServiceException e){

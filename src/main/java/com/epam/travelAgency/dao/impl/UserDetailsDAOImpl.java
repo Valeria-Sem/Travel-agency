@@ -17,9 +17,13 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
     private final String queryForGetAllUsersDet = "select * from user_details";
     private final String insertQuery = "insert into user_details (id_user, name, surname, date_of_birth," +
-            " citizenship, passport, date_of_issue, expiration_date, id_wallet) values(?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            " citizenship, passport, date_of_issue, expiration_date) values(?, ?, ?, ?, ?, ?, ?, ?) ";
     private final String deleteQuery = "delete from user_details where id = ";
-    private final String searchUserDetails = "select * from user_details where id_user = '" ;
+    private final String searchUserDetails = "select * from user_details where id_user = " ;
+    private final String quote = "'" ;
+    private final String updateQuery ="UPDATE user_details SET name = ?, surname = ?, date_of_birth = ?, citizenship = ?, " +
+            "passport = ?, date_of_issue = ?, expiration_date = ? WHERE id = ?";
+
     private final String id = "id" ;
     private final String idUser = "id_user" ;
     private final String name = "name" ;
@@ -29,7 +33,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
     private final String passport = "passport" ;
     private final String dateOfIssue = "date_of_issue" ;
     private final String expirationDate = "expiration_date" ;
-    private final String idWallet = "id_wallet" ;
 
 
     @Override
@@ -57,7 +60,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
                 userDetails.setPassport(res.getString(passport));
                 userDetails.setDateOfIssue(LocalDate.parse(res.getString(dateOfIssue)));
                 userDetails.setExpirationDate(LocalDate.parse(res.getString(expirationDate)));
-                userDetails.setIdWallet(Integer.parseInt(res.getString(idWallet)));
 
                 details.add(userDetails);
             }
@@ -93,7 +95,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             statement.setString(6, userDetails.getPassport());
             statement.setDate(7, Date.valueOf(userDetails.getDateOfIssue()));
             statement.setDate(8, Date.valueOf(userDetails.getExpirationDate()));
-            statement.setInt(9, userDetails.getIdWallet());
 
             statement.executeUpdate();
 
@@ -111,7 +112,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
     }
 
     @Override
-    public UserDetailsEntity getUserDetailsByUserId(int id) throws DAOException{
+    public UserDetailsEntity getUserDetailsByUserId(int userId) throws DAOException{
         UserDetailsEntity userDetails = new UserDetailsEntity();
 
         Connection connection = null;
@@ -121,7 +122,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            ps = connection.prepareStatement(searchUserDetails + id);
+            ps = connection.prepareStatement(searchUserDetails + userId);
             ResultSet res = ps.executeQuery();
 
             while (res.next()){
@@ -134,7 +135,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
                 userDetails.setPassport(res.getString(passport));
                 userDetails.setDateOfIssue(LocalDate.parse(res.getString(dateOfIssue)));
                 userDetails.setExpirationDate(LocalDate.parse(res.getString(expirationDate)));
-                userDetails.setIdWallet(Integer.parseInt(res.getString(idWallet)));
 
             }
         } catch (SQLException | ConnectionPoolException e) {
@@ -173,5 +173,44 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         }
 
         return isDeleted;
+    }
+
+    @Override
+    public boolean isUserDetailsUpdate(UserDetailsEntity userDet) throws DAOException {
+        boolean isUserUpdate = false;
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+
+            statement = connection.prepareStatement(updateQuery);
+
+            statement.setString(1, userDet.getName());
+            statement.setString(2, userDet.getSurname());
+            statement.setString(3, String.valueOf(userDet.getDateOfBirth()));
+            statement.setString(4, userDet.getCitizenship());
+            statement.setString(5, userDet.getPassport());
+            statement.setString(6, String.valueOf(userDet.getDateOfIssue()));
+            statement.setString(7, String.valueOf(userDet.getExpirationDate()));
+            statement.setInt(8, userDet.getId());
+
+            statement.executeUpdate();
+            statement.close();
+
+            isUserUpdate = true;
+
+        } catch (SQLException | ConnectionPoolException e){
+            e.printStackTrace();
+            LOGGER.error("UserDaoImpl (isUserDetailsUpdate) -> some problems with updating user details");
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
+
+        return isUserUpdate;
     }
 }

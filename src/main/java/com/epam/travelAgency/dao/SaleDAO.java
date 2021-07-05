@@ -1,10 +1,13 @@
 package com.epam.travelAgency.dao;
 
 import com.epam.travelAgency.entity.MealsEntity;
+import com.epam.travelAgency.entity.SaleEntity;
 
 import java.util.List;
 
 public interface SaleDAO {
-//    List<MealsEntity> getAllMeals() throws DAOException;
-//    int getIdByName(String meals) throws DAOException;
+    SaleEntity getSaleByIdUser(int userId) throws DAOException;
+    SaleEntity saveNewSaleInfo(int userId) throws DAOException;
+    SaleEntity updateSaleInfo(int userId, int sale) throws DAOException;
+    SaleEntity updateToursCount(int userId, int countOfTour) throws DAOException;
 }

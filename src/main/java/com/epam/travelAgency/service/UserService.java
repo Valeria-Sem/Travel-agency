@@ -8,7 +8,9 @@ import java.util.Optional;
 public interface UserService {
     List<UserEntity> getAllUsers() throws ServiceException;
     boolean addUser(UserEntity userEntity) throws ServiceException;
-    Optional<UserEntity> getUserByEmailAndPassword(String email, String password) throws ServiceException;
+    UserEntity getUserByEmailAndPassword(String email, String password) throws ServiceException;
     boolean deleteUser(int id) throws ServiceException;
     boolean isUserByEmail (String email) throws ServiceException;
+    boolean isUserUpdate(UserEntity userEntity, String newEmail, String newPassword) throws ServiceException;
+
 }

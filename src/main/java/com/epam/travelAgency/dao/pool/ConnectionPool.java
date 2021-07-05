@@ -115,11 +115,11 @@ public final class ConnectionPool {
         try {
             conn.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
 
         try {
-            conn.close();
+            st.close();
         } catch (SQLException e) {
 
         }

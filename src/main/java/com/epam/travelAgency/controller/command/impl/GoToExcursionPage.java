@@ -7,12 +7,16 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class GoToExcursionPage implements Command {
     private final String pathToExcursionPage = "WEB-INF/jsp/tours/excursion/excursion.jsp";
     private final String locale = "locale";
     private final String lang = "lang";
+
+    private final String page = "page";
+    private final String pageCommand = "gotoexcursionpage";
 
     public GoToExcursionPage() {
     }
@@ -23,12 +27,12 @@ public class GoToExcursionPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getParameter(locale) != null){
-            ValidationImpl.userLocale = request.getParameter(locale);
-        }
-        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
+//        if(request.getParameter(locale) != null){
+//            ValidationImpl.userLocale = request.getParameter(locale);
+//        }
+//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
 
-//        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 //
 //        List<TourEntity> tours = (List<TourEntity>) session.getAttribute("tours");
 //
@@ -45,6 +49,8 @@ public class GoToExcursionPage implements Command {
 //                e.printStackTrace();
 //            }
 //        }
+        session.setAttribute(page, pageCommand);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(pathToExcursionPage);
         dispatcher.forward(request, response);
 

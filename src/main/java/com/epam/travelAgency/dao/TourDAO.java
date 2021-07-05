@@ -20,6 +20,4 @@ public interface TourDAO {
                                          int adults, int children) throws DAOException;
     Set<TourEntity> getTourByStartParams(String category, String country, LocalDate arrDate,LocalDate depDate) throws DAOException;
     Set<TourEntity> getTourByStartParams(String category, String country, LocalDate arrDate) throws DAOException;
-
-
 }

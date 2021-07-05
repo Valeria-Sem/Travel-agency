@@ -73,7 +73,9 @@
       </label>
     </div>
     <div class="form-floating">
-      <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="<c:out value="${passwordInput}"/>">
+      <input type="password" name="password" class="form-control" id="floatingPassword"
+             placeholder="<c:out value="${passwordInput}"/>"
+      minlength="8" maxlength="25">
       <label for="floatingPassword">
           <c:out value="${passwordInput}"/>
       </label>

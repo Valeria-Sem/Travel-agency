@@ -5,7 +5,7 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
 <fmt:message bundle="${loc}" key="nav.category" var="categ"/>
-<fmt:message bundle="${loc}" key="nav.hot" var="hot"/>
+<fmt:message bundle="${loc}" key="nav.home" var="home"/>
 <fmt:message bundle="${loc}" key="nav.tours" var="tours"/>
 <fmt:message bundle="${loc}" key="nav.about" var="about"/>
 <fmt:message bundle="${loc}" key="nav.help" var="help"/>
@@ -32,7 +32,7 @@
 
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
     <div class="container-fluid">
-        <a href="#" class="navbar-brand">
+        <a href="controller?command=gotomainpage" class="navbar-brand">
             <img src="https://www.nicepng.com/png/full/208-2082453_aphamok-travel-tours-and-travels-icon.png"
                  width="50" height="50" alt="logo">
         </a>
@@ -63,7 +63,7 @@
 <%--                    </li>--%>
             <%--                <div class="vl"></div>--%>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><c:out value="${hot}"/></a>
+                    <a class="nav-link" href="#"><c:out value="${home}"/></a>
                 </li>
 <%--                <div class="vl"></div>--%>
                 <li class="nav-item">
@@ -82,10 +82,10 @@
             </ul>
 
             <div class="lang-buttons">
-                <a class="btn btn-outline-warning translate" id="en" href="controller?command=gotomainpage&locale=en">
+                <a class="btn btn-outline-warning translate" id="en" href="controller?command=changelanguage&locale=en">
                     <img src="https://pngicon.ru/file/uploads/Flag-SShA.png" style="height: 20px; width: 30px">
                 </a>
-                <a class="btn btn-outline-warning" id="ru" href="controller?command=gotomainpage&locale=ru">
+                <a class="btn btn-outline-warning" id="ru" href="controller?command=changelanguage&locale=ru">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/250px-Flag_of_Russia.svg.png"
                          style="height: 20px; width: 30px">
                 </a>

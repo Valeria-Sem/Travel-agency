@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,10 @@ public class ShowChillToursData implements Command {
     private final String arrDateS = "arrivalDate";
     private final String depDateS = "departureDate";
     private final String chillToursS = "chillTours";
-    private final String errMess = "Registration error";
+    private final String searchArrDateS = "searchArrDate";
+    private final String searchDepDateS = "searchDepDate";
+
+    private final String errMess = "ShowChillToursData error";
 
     // private final String findUser = "User with the same email was registered yet";
 
@@ -60,6 +64,15 @@ public class ShowChillToursData implements Command {
         arrDate = LocalDate.parse(request.getParameter(arrDateS));
         depDate = LocalDate.parse(request.getParameter(depDateS));
 
+//        List<String> searchData = new ArrayList<>();
+//
+//        searchData.add(country);
+//        searchData.add(Integer.toString(adults));
+//        searchData.add(Integer.toString(children));
+//        searchData.add(arrDate.toString());
+//        searchData.add(depDate.toString());
+
+
 
 //        ServiceProvider serviceProvider = ServiceProvider.getInstance();
 //        UserService userService = serviceProvider.getUserService();
@@ -75,7 +88,7 @@ public class ShowChillToursData implements Command {
                 chillTours = tourDao.getTourByStartParams(category, country, arrDate, depDate, adults, children);
 
                 session.setAttribute(chillToursS, chillTours);
-
+          //      session.setAttribute(searchDataS, searchData);
 
             } catch (DAOException e) {
                 e.printStackTrace();

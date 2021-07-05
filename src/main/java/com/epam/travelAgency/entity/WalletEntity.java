@@ -6,24 +6,24 @@ import java.util.Objects;
 public class WalletEntity implements Serializable {
     private int id;
     private double balance;
-    private String bankAccountNumber;
+    private int userId;
 
     public WalletEntity() {
     }
 
-    public WalletEntity(int id, double balance, String bankAccountNumber) {
+    public WalletEntity(double balance, int userId) {
+        this.balance = balance;
+        this.userId = userId;
+    }
+
+    public WalletEntity(int id, double balance, int userId) {
         this.id = id;
         this.balance = balance;
-        this.bankAccountNumber = bankAccountNumber;
+        this.userId = userId;
     }
 
-    public WalletEntity(double balance, String bankAccountNumber) {
-        this.balance = balance;
-        this.bankAccountNumber = bankAccountNumber;
-    }
-
-    public WalletEntity(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public WalletEntity(int userId) {
+        this.userId = userId;
     }
 
     public WalletEntity(double balance) {
@@ -46,12 +46,12 @@ public class WalletEntity implements Serializable {
         this.balance = balance;
     }
 
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -59,12 +59,12 @@ public class WalletEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WalletEntity that = (WalletEntity) o;
-        return id == that.id && Double.compare(that.balance, balance) == 0 && Objects.equals(bankAccountNumber, that.bankAccountNumber);
+        return id == that.id && Double.compare(that.balance, balance) == 0 && userId == that.userId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, balance, bankAccountNumber);
+        return Objects.hash(id, balance, userId);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class WalletEntity implements Serializable {
         return "WalletEntity{" +
                 "id=" + id +
                 ", balance=" + balance +
-                ", bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }

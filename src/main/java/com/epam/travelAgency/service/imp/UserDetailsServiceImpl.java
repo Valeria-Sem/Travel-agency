@@ -2,14 +2,12 @@ package com.epam.travelAgency.service.imp;
 
 import com.epam.travelAgency.dao.DAOException;
 import com.epam.travelAgency.dao.DAOProvider;
-import com.epam.travelAgency.dao.UserDao;
 import com.epam.travelAgency.dao.UserDetailsDAO;
 import com.epam.travelAgency.entity.UserDetailsEntity;
-import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.UserDetailsService;
+import com.epam.travelAgency.service.validation.ValidationService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -76,5 +74,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         return isDeleted;
+    }
+
+    @Override
+    public boolean isUserDetailsUpdate(UserDetailsEntity userDet) throws ServiceException {
+        boolean isUpdated = false;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        UserDetailsDAO userDetailsDAO = provider.getUserDetailsDAO();
+
+        try{
+
+            isUpdated = userDetailsDAO.isUserDetailsUpdate(userDet);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return isUpdated;
     }
 }
