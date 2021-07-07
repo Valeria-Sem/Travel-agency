@@ -50,10 +50,10 @@ public class UpdateBalance implements Command {
         try {
             wallet = (WalletEntity) session.getAttribute(current_WALLET);
             newBalance = Double.parseDouble(request.getParameter(NEW_BALANCE));
+            newBalance += wallet.getBalance();
 
             if(walletService.updateBalance(wallet.getId(), newBalance)){
                 wallet.setBalance(newBalance);
-
                 request.setAttribute(current_WALLET, wallet);
             }
 

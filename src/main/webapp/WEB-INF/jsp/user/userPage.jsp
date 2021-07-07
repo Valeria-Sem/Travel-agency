@@ -8,7 +8,11 @@
 <jsp:useBean id="current_user" scope="session" type="com.epam.travelAgency.entity.UserEntity"/>
 <jsp:useBean id="current_wallet" scope="session" type="com.epam.travelAgency.entity.WalletEntity"/>
 <jsp:useBean id="current_sale" scope="session" type="com.epam.travelAgency.entity.SaleEntity"/>
+<jsp:useBean id="userTours" scope="session" type="java.util.List"/>
 
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="main.details-btn" var="detailsBtn"/>
 
 <html>
 <head>
@@ -29,7 +33,7 @@
         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
     </svg>
     <h4 class="alert-heading">Добро пожаловать!</h4>
-    <p>Вы на профильной странице. Если ваши паспортные данные ещё не внесены - заполните их пожалуйста. В дальнейшем это облегчит вам покупку туров.</p>
+    <p>Вы на профильной странице. Если ваши паспортные данные ещё не внесены - заполните их пожалуйста. В дальнейшем это облегчит составление договора турагентом.</p>
     <p class="mb-0">При регистрации вам был создан виртуальный кошелёк который вы можете пополнять и, в дальнейшем, за эти деньги покупать туры</p>
     <hr>
     <p class="mb-0" style="text-align: center">Приятного отыха :)</p>
@@ -200,7 +204,38 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade pad" id="nav-booking" role="tabpanel" aria-labelledby="nav-booking-tab">...</div>
+            <div class="tab-pane fade pad" id="nav-booking" role="tabpanel" aria-labelledby="nav-booking-tab">
+                <div class="container-fluid mt-5" style="background-color: #E6E6FA">
+                    <div class="container p-5">
+                        <div class="row justify-content-center">
+                            <c:forEach items="${userTours}" var="userTour" >
+
+                                <div class="col col-lg-4 description" >
+                                    <div class="card text-center mt-5 description-container param">
+                                        <img src="${userTour.imgPath}" alt="" class="card-img-top img">
+                                        <c:if test="${userTour.status eq 'HOT'}">
+                                            <span class="badge bg-danger"> ${userTour.status}</span>
+                                        </c:if>
+                                        <div class="card-body" >
+                                            <h2 class="card-title pricing-card-title" >
+                                                    ${userTour.name}
+                                            </h2>
+                                            <h4 class="card-title" style="margin-top: 10px">
+                                                <span class="badge rounded-pill bg-warning text-dark">${userTour.price} $</span>
+                                            </h4>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a class="btn btn-outline-primary" id="${userTour.id}">
+                                                <c:out value="${detailsBtn}"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
         </div>

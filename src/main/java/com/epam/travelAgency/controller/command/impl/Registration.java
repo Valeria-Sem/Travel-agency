@@ -18,6 +18,8 @@ public class Registration implements Command {
     private final Logger LOGGER = Logger.getLogger(Registration.class);
 
     private final String pathToUserPage = "controller?command=gotouserpage";
+    private final String pathToErrorPage = "WEB-INF/jsp/error/errorPage.jsp";
+
     private final String pathToRegistrationPage = "controller?command=gotoregistrationpage";
     private final String email = "email";
     private final String password = "password";
@@ -25,8 +27,8 @@ public class Registration implements Command {
     private final String currentUser = "current_user";
     private final String CURRENT_SALE = "current_sale";
     private final String currentWallet = "current_wallet";
-    private final String errorMessage = "Registration error";
-    private final String findUser = "User with the same email was registered yet";
+    private final String errorMessage = "errorMsg";
+    private final String findUser = "Registration error. User with the same email was registered yet";
 
     public Registration() {
 
@@ -59,29 +61,29 @@ public class Registration implements Command {
             userPassword = request.getParameter(password);
 
             if(userService.isUserByEmail(userEmail)){
-                request.setAttribute(errorMessage, findUser);
-                System.out.println("пользователь с почтой - " + userEmail + " уже существует");
+                session.setAttribute(errorMessage, findUser);
                 response.sendRedirect(pathToRegistrationPage);
-                return;
+
+            } else {
+                UserEntity user = new UserEntity(userEmail, userPassword, userRole);
+                userService.addUser(user);
+
+                user = userService.getUserByEmailAndPassword(userEmail, userPassword);
+                wallet = walletService.saveNewWallet(user.getId());
+                sale = saleService.saveNewSaleInfo(user.getId());
+
+                session.setAttribute(auth, true);
+                session.setAttribute(currentUser, user);
+                session.setAttribute(currentWallet, wallet);
+                session.setAttribute(CURRENT_SALE, sale);
+
+
+                response.sendRedirect(pathToUserPage);
             }
 
-            UserEntity user = new UserEntity(userEmail, userPassword, userRole);
-            userService.addUser(user);
-
-            user = userService.getUserByEmailAndPassword(userEmail, userPassword);
-            wallet = walletService.saveNewWallet(user.getId());
-            sale = saleService.saveNewSaleInfo(user.getId());
-
-            session.setAttribute(auth, true);
-            session.setAttribute(currentUser, user);
-            session.setAttribute(currentWallet, wallet);
-            session.setAttribute(CURRENT_SALE, sale);
-
-
-            response.sendRedirect(pathToUserPage);
-
         } catch (ServiceException e) {
-            request.setAttribute(errorMessage, "");
+            request.setAttribute(errorMessage, "Sorry. registration server error.");
+            response.sendRedirect(pathToErrorPage);
             LOGGER.error(errorMessage);
         }
 

@@ -7,6 +7,6 @@ import com.epam.travelAgency.service.ServiceException;
 import java.util.List;
 
 public interface TourCustomerDAO {
-    boolean buyTour(int idUser, int idTour) throws DAOException;
+    boolean buyTour(int idTour, int idUser) throws DAOException;
     List<TourEntity> getAllCustomerTours(int idUser) throws DAOException;
 }

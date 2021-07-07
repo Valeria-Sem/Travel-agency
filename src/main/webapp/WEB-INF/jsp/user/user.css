@@ -17,3 +17,19 @@
 .passp{
     margin-left: 200px;
 }
+
+.img {
+    width: 100%;
+    height: 200px;
+
+}
+
+.param{
+    width: 400px;
+    height: 450px;
+
+}
+
+.detButton{
+    vertical-align: bottom;
+}

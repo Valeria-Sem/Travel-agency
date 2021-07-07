@@ -22,7 +22,9 @@ public class DateDaoImpl implements DateDAO {
     private final String queryForGetId = "select id from date where date = '" ;
     private final String i ="'";
     private final String id ="id";
-    private final String date ="date";
+    private final String DATE ="date";
+    private final String GET_ARRIVAL_DATES = "select date.date from tour, date_tour, date where tour.id = date_tour.id_tour and " +
+            "date.id = date_tour.id_arrival_date and tour.id = ?";
 
     @Override
     public List<DateEntity> getAllDates() throws DAOException {
@@ -31,17 +33,18 @@ public class DateDaoImpl implements DateDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetAllDate);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 DateEntity dateEntity = new DateEntity();
                 dateEntity.setId(Integer.parseInt(res.getString(id)));
-                dateEntity.setDate(LocalDate.parse(res.getString(date)));
+                dateEntity.setDate(LocalDate.parse(res.getString(DATE)));
 
                 dates.add(dateEntity);
             }
@@ -49,7 +52,7 @@ public class DateDaoImpl implements DateDAO {
             LOGGER.error("DateDaoImpl (getAllDates) -> some problems with extracting dates");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -63,12 +66,13 @@ public class DateDaoImpl implements DateDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetId + date + i);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 dateId  = res.getInt(id);
@@ -78,10 +82,44 @@ public class DateDaoImpl implements DateDAO {
 
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
         return dateId;
     }
+
+//    @Override
+//    public List<LocalDate> getArrivalDatesByIdTour(int tourId) throws DAOException {
+//        List<LocalDate> dates = new ArrayList<>();
+//
+//        Connection connection = null;
+//        ConnectionPool pool = null;
+//        PreparedStatement ps = null;
+//
+//        try{
+//            pool = ConnectionPool.getInstance();
+//            connection = pool.takeConnection();
+//            ps = connection.prepareStatement(GET_ARRIVAL_DATES);
+//
+//            ps.setInt(1, tourId);
+//
+//            ResultSet res = ps.executeQuery();
+//
+//            while (res.next()){
+//                LocalDate date = LocalDate.parse(res.getString(DATE));
+//
+//                dates.add(date);
+//            }
+//        } catch (ConnectionPoolException | SQLException e){
+//            LOGGER.error("DateTourDaoImpl (getArrivalDatesByIdTour) -> some problems with extracting dates");
+//        } finally {
+//            if(connection != null){
+//                pool.closeConnection(connection, ps);
+//            }
+//        }
+//
+//        return dates;
+//    }
+
 }

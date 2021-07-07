@@ -42,4 +42,20 @@ public class TransportServiceImpl implements TransportService {
 
         return id;
     }
+
+    @Override
+    public TransportEntity getTransportById(int transportId) throws ServiceException {
+        TransportEntity transport;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        TransportDAO transportDAO = provider.getTransportDAO();
+
+        try{
+            transport = transportDAO.getTransportById(transportId);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return transport;
+    }
 }

@@ -11,14 +11,14 @@ import java.util.List;
 
 public class TourCustomerServiceImpl implements TourCustomerService {
     @Override
-    public boolean buyTour(int idUser, int idTour) throws ServiceException {
+    public boolean buyTour(int idTour, int idUser) throws ServiceException {
         boolean isOk;
 
         DAOProvider provider = DAOProvider.getInstance();
         TourCustomerDAO tourCustomerDAO = provider.getTourCustomerDAO();
 
         try{
-            isOk = tourCustomerDAO.buyTour(idUser,idTour);
+            isOk = tourCustomerDAO.buyTour(idTour, idUser);
         } catch (DAOException e){
             throw new ServiceException(e);
         }

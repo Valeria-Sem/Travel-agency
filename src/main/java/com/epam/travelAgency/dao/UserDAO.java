@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface UserDAO {
     List<UserEntity> getAllUsers() throws DAOException;
+    List<UserEntity> getAllCustomers() throws DAOException;
     boolean addUser(UserEntity userEntity) throws DAOException;
     UserEntity getUserByEmailAndPassword(String email, String password) throws DAOException;
     boolean isUserUpdate(UserEntity userEntity, String newEmail, String newPassword) throws DAOException;

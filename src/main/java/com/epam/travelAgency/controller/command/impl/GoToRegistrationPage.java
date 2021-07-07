@@ -16,6 +16,8 @@ public class GoToRegistrationPage implements Command {
     private final String lang = "lang";
 
     private final String page = "page";
+    private final String error = "errorMsg";
+
     private final String pageCommand = "gotoregistrationpage";
 
 
@@ -35,6 +37,10 @@ public class GoToRegistrationPage implements Command {
 //        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
         HttpSession session = request.getSession();
         session.setAttribute(page, pageCommand);
+
+//        if(session.getAttribute(error) != null){
+//            request.setAttribute(error, session.getAttribute(error));
+//        }
 
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pathToRegistrationPage);

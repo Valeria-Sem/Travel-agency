@@ -35,6 +35,7 @@ public class SaleDaoImpl implements SaleDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
@@ -42,7 +43,7 @@ public class SaleDaoImpl implements SaleDAO {
             ps = connection.prepareStatement(getSaleByIdUserQuery);
             ps.setInt(1, userId);
 
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 int gettingId  = res.getInt(id);
@@ -58,7 +59,7 @@ public class SaleDaoImpl implements SaleDAO {
 
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -150,8 +151,8 @@ public class SaleDaoImpl implements SaleDAO {
             saleEntity = getSaleByIdUser(userId);
 
         } catch (SQLException | ConnectionPoolException e){
-            e.printStackTrace();
             LOGGER.error("SaleEntity (updateSaleInfo) -> some problems with extracting user");
+            e.printStackTrace();
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);

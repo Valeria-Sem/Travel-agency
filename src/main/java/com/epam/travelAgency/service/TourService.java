@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface TourService {
-    Iterable<TourEntity> getAllTours() throws ServiceException;
+    List<TourEntity> getAllTours() throws ServiceException;
     TourEntity getTourById(int id) throws ServiceException;
+    boolean isTourStatusUpdate(int tourId, TourStatus tourStatus) throws ServiceException;
     //    List<TourEntity> getTourByCategory() throws DAOException;
 //    List<TourEntity> getTourByCountry() throws DAOException;
     List<TourEntity> getTourByStatus(TourStatus tourStatus) throws ServiceException;

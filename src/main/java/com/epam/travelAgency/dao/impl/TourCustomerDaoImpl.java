@@ -17,9 +17,8 @@ import java.util.List;
 public class TourCustomerDaoImpl implements TourCustomerDAO {
     private final Logger LOGGER = Logger.getLogger(TourCustomerDaoImpl.class);
 
-    private final String insertQuery = "insert into tour_customer (tour_id, user_id) values(?, ?) ";
-    private final String deleteQuery = "delete from wallet where id = ";
-    private final String selectQuery = "select * from tour, tour_customer where tour.id = tour_customer.id and" +
+    private final String insertQuery = "insert into tour_customer (tour_id, user_id) values(?, ?);";
+    private final String selectQuery = "select tour.* from tour, tour_customer where tour.id = tour_customer.tour_id and" +
             " tour_customer.user_id = ?";
 
 
@@ -41,7 +40,7 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
     private final String countryIdS ="country_id";
 
     @Override
-    public boolean buyTour( int idTour, int idUser) throws DAOException {
+    public boolean buyTour(int idTour, int idUser) throws DAOException {
         boolean isAdded = false;
 
         Connection connection = null;
@@ -57,13 +56,13 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
             statement.setInt(1, idTour);
             statement.setInt(2, idUser);
 
-
             statement.executeUpdate();
 
             isAdded = true;
 
         } catch (SQLException | ConnectionPoolException e){
-            LOGGER.error("UserDaoImpl (addUser) -> some problems with extracting user");
+            LOGGER.error(" -> some problems with buy tour");
+            e.printStackTrace();
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);
@@ -80,15 +79,16 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            ps = connection.prepareStatement(selectQuery + idUser);
+            ps = connection.prepareStatement(selectQuery);
 
             ps.setInt(1, idUser);
 
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 TourEntity tour = new TourEntity();
@@ -110,10 +110,11 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
                 tours.add(tour);
             }
         } catch (ConnectionPoolException | SQLException e){
-            LOGGER.error("UserDaoImpl (getAllUsers) -> some problems with extracting users");
+            LOGGER.error("-> some problems with extracting tours");
+            e.printStackTrace();
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 

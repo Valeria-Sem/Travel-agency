@@ -32,6 +32,9 @@ public class TourDaoImpl implements TourDAO {
     private final String q5 = "') and adults = " ;
     private final String q6 = " and children = " ;
     private final String q7 = " order by tour.price asc;";
+    private final String GET_TOUR_BY_ID_QUERY = "select * from tour where id = ?";
+    private final String UPDATE_TOUR_STATUS_QUERY = "update tour set status = ? where id = ?";
+
 
     private final String quote ="'";
     private final String bracket = ")";
@@ -50,18 +53,19 @@ public class TourDaoImpl implements TourDAO {
     private final String countryId ="country_id";
 
     @Override
-    public Iterable<TourEntity> getAllTours() throws DAOException {
+    public List<TourEntity> getAllTours() throws DAOException {
         List<TourEntity> tours = new ArrayList<>();
 
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetAllTours);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 TourEntity tour = new TourEntity();
@@ -83,10 +87,10 @@ public class TourDaoImpl implements TourDAO {
                 tours.add(tour);
             }
         } catch (ConnectionPoolException | SQLException e){
-            LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
+            LOGGER.error(" TourDaoImpl (getAllUserDetails) -> some problems with extracting userDet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -94,8 +98,48 @@ public class TourDaoImpl implements TourDAO {
     }
 
     @Override
-    public TourEntity getTourById(int id) throws DAOException {
-        return null;
+    public TourEntity getTourById(int tourId) throws DAOException {
+        TourEntity tour = new TourEntity();
+
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement ps = null;
+        ResultSet res = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+            ps = connection.prepareStatement(GET_TOUR_BY_ID_QUERY);
+            ps.setInt(1, tourId);
+
+            res = ps.executeQuery();
+
+            while (res.next()){
+                tour.setId(Integer.parseInt(res.getString(id)));
+                tour.setName(res.getString(name));
+                tour.setDescription(res.getString(description));
+                tour.setPrice(Integer.parseInt(res.getString(price)));
+                tour.setImgPath(res.getString(imgPath));
+                tour.setStatus(TourStatus.valueOf(res.getString(status)));
+                tour.setAdults(Integer.parseInt(res.getString(adults)));
+                tour.setChildren(Integer.parseInt(res.getString(children)));
+                tour.setIdCategory(Integer.parseInt(res.getString(idCategory)));
+                tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
+                tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
+                tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
+                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            LOGGER.error("MealsDaoImpl (getTourById) -> some problems with extracting tour");
+
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, ps, res);
+            }
+        }
+
+        return tour;
     }
 
 //    @Override
@@ -115,13 +159,13 @@ public class TourDaoImpl implements TourDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetToursByStatus + tourStatus + quote);
-            ResultSet res = ps.executeQuery();
-
+            res = ps.executeQuery();
             while (res.next()){
                 TourEntity tour = new TourEntity();
 
@@ -143,13 +187,48 @@ public class TourDaoImpl implements TourDAO {
             }
         } catch (ConnectionPoolException | SQLException e){
             LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
+            e.printStackTrace();
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
         return tours;
+    }
+
+    @Override
+    public boolean isTourStatusUpdate(int tourId, TourStatus tourStatus) throws DAOException {
+        boolean isTourStatusUpdate = false;
+
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+
+            statement = connection.prepareStatement(UPDATE_TOUR_STATUS_QUERY);
+
+            statement.setString(1, String.valueOf(tourStatus));
+            statement.setInt(2, tourId);
+
+            statement.executeUpdate();
+            statement.close();
+
+            isTourStatusUpdate = true;
+
+        } catch (SQLException | ConnectionPoolException e){
+            e.printStackTrace();
+            LOGGER.error("-> some problems with update tour status");
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
+
+        return isTourStatusUpdate;
     }
 
 //    @Override
@@ -170,13 +249,14 @@ public class TourDaoImpl implements TourDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(q1 + arrDate + q2 + depDate + q3 + country + q4 + category +
                     q5 + adults1 + q6 + children1 + q7);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 TourEntity tour = new TourEntity();
@@ -201,7 +281,7 @@ public class TourDaoImpl implements TourDAO {
             LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -215,12 +295,13 @@ public class TourDaoImpl implements TourDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(q1 + arrDate + q2 + depDate + q3 + country + q4 + category + quote + bracket);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 TourEntity tour = new TourEntity();
@@ -245,7 +326,7 @@ public class TourDaoImpl implements TourDAO {
             LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -259,12 +340,13 @@ public class TourDaoImpl implements TourDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(q1 + arrDate + q3 + country + q4 + category + quote + bracket);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 TourEntity tour = new TourEntity();
@@ -289,7 +371,7 @@ public class TourDaoImpl implements TourDAO {
             LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 

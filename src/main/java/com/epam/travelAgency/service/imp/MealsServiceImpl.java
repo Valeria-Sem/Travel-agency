@@ -41,4 +41,20 @@ public class MealsServiceImpl implements MealsService {
 
         return id;
     }
+
+    @Override
+    public MealsEntity getMealsById(int mealsId) throws ServiceException {
+        MealsEntity meals;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        MealsDAO mealsDAO = provider.getMealsDAO();
+
+        try{
+            meals = mealsDAO.getMealsById(mealsId);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return meals;
+    }
 }

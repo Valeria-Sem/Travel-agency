@@ -4,7 +4,7 @@
 
 <jsp:include page="../header/header.jsp"/>
 
-<jsp:useBean id="tours" scope="session" type="java.util.List"/>
+<jsp:useBean id="hotTours" scope="session" type="java.util.List"/>
 <jsp:useBean id="countries" scope="session" type="java.util.List"/>
 
 
@@ -294,7 +294,7 @@
     <div class="container-fluid mt-5" style="background-color: #eeeeee">
         <div class="container p-5">
             <div class="row justify-content-center">
-                <c:forEach items="${tours}" var="tour" >
+                <c:forEach items="${hotTours}" var="tour" >
 
                     <div class="col col-lg-4 description" >
                         <div class="card text-center mt-5 description-container param">
@@ -312,7 +312,8 @@
                             </div>
                             <div class="card-footer">
                                 <a class="btn btn-outline-primary" id="${tour.id}"
-                                   (click)="payAndSub(choice.monthPrise, template, choice.idProduct, choice.idOrganisation)">
+                                  href="controller?command=gotodetailspage&id=${tour.id}">
+<%--                                href="controller?command=sendemail">--%>
                                     <c:out value="${detailsBtn}"/>
                                 </a>
                             </div>

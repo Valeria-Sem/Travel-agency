@@ -1,20 +1,34 @@
 package com.epam.travelAgency.main;
 
-import com.epam.travelAgency.service.ServiceException;
+import com.epam.travelAgency.controller.command.impl.SendEmail;
+import com.epam.travelAgency.dao.DAOException;
+import com.epam.travelAgency.dao.DAOProvider;
+import com.epam.travelAgency.dao.DateDAO;
+import com.epam.travelAgency.service.*;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class TestPool {
-    public static void main(String[] args) throws ServiceException {
+    public static void main(String[] args) throws ServiceException, IOException {
 
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("lang");
-        ResourceBundle resource_en= ResourceBundle.getBundle("lang", new Locale("en", "USA"));
-        ResourceBundle resource_ru= ResourceBundle.getBundle("lang", new Locale("ru", "Ru"));
-
-        System.out.println(resourceBundle.getString("user.login.authorisation"));
-        System.out.println(resource_en.getString("user.login.authorisation"));
-        System.out.println(resource_ru.getString("user.login.authorisation"));
+//        ResourceBundle resourceBundle = ResourceBundle.getBundle("lang");
+//        ResourceBundle resource_en= ResourceBundle.getBundle("lang", new Locale("en", "USA"));
+//        ResourceBundle resource_ru= ResourceBundle.getBundle("lang", new Locale("ru", "Ru"));
+//
+//        System.out.println(resourceBundle.getString("user.login.authorisation"));
+//        System.out.println(resource_en.getString("user.login.authorisation"));
+//        System.out.println(resource_ru.getString("user.login.authorisation"));
 
 //        ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 //        String dbUrl = resourceBundle.getString("dbUrl");
@@ -120,12 +134,25 @@ public class TestPool {
 //
 //      //  userDao.addUser(usert);
 //
-       // UserEntity user = null;
-//        try {
-//            user = userService.getUserByEmailAndPassword("lera", "ttt");
-//        } catch ( ServiceException e) {
-//            e.printStackTrace();
-//        }
+        ServiceProvider serviceProvider = ServiceProvider.getInstance();
+        TourService tourService = serviceProvider.getTourService();
+        MealsService mealsService = serviceProvider.getMealsService();
+        HotelService hotelService = serviceProvider.getHotelService();
+        TransportService transportService = serviceProvider.getTransportService();
+        DateTourService dateTourService = serviceProvider.getDateTourService();
+        TourCustomerService tourCustomerService = serviceProvider.getTourCustomerService();
+
+        try {
+//           List<LocalDate> arrivalDates = dateTourService.getArrivalDatesByIdTour(1);
+//           List<LocalDate> departureDates = dateTourService.getDepartureDatesByIdTour(1);
+//
+//            System.out.println(arrivalDates);
+//            System.out.println(departureDates);
+            tourCustomerService.buyTour(1, 23);
+
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
 //        System.out.println(user.toString());
 //        Iterable<CategoryEntity> categories = categoryService.getAllCategories();
 //
@@ -137,5 +164,25 @@ public class TestPool {
 //        userDao.deleteUser(14);
 //        userDao.deleteUser(15);
 //        userDao.deleteUser(16);
+
+//        final Properties properties = new Properties();
+//        properties.load(SendEmail.class.getClassLoader().getResourceAsStream("mail.properties"));
+//
+//        Session mailSession = Session.getDefaultInstance(properties);
+//        MimeMessage message = new MimeMessage(mailSession);
+//        try {
+//            message.setFrom(new InternetAddress("happy.tour.minsk"));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("lerasemenenya@gmail.com"));
+//            message.setSubject("Hello");
+//            message. setText("Welcome to Happy Tour :)");
+//
+//            Transport tr = mailSession.getTransport();
+//            tr.connect(null, "happyTourMinsk");
+//            tr.sendMessage(message, message.getAllRecipients());
+//            tr.close();
+//
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
     }
 }

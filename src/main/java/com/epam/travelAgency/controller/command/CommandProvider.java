@@ -31,6 +31,12 @@ public class CommandProvider {
         commands.put(CommandName.UPDATEUSERSALE, new UpdateUserSale());
         commands.put(CommandName.GOTOADMINPAGE, new GoToAdminPage());
         commands.put(CommandName.SAVEUSERDETAILS, new SaveUserDetails());
+        commands.put(CommandName.GETCUSTOMERTOURS, new GetCustomerTours());
+        commands.put(CommandName.GOTODETAILSPAGE, new GoToTourDetails());
+        commands.put(CommandName.SENDEMAIL, new SendEmail());
+        commands.put(CommandName.BUYTOUR, new BuyTour());
+        commands.put(CommandName.SHOWUSERINFO, new ShowUserInfo());
+        commands.put(CommandName.UPDATETOURSTATUS, new UpdateTourStatus());
 
     }
 

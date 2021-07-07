@@ -107,5 +107,21 @@ public class UserServiceImpl implements UserService {
         return isUserUpdate;
     }
 
+    @Override
+    public List<UserEntity> getAllCustomers() throws ServiceException {
+        List<UserEntity> users;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        UserDAO userDao = provider.getUserDAO();
+
+        try{
+            users = userDao.getAllCustomers();
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return users;
+    }
+
 
 }

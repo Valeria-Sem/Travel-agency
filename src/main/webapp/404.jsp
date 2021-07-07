@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: leras
-  Date: 05.07.2021
-  Time: 11:20
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -24,13 +17,18 @@
     <div class="row">
         <div class="col-md-12">
             <div class="error-template">
-                <h1>
-                    Oops!</h1>
-                <h2>
-                    404 Not Found</h2>
-                <div class="error-details">
-                    Sorry, an error has occured, Requested page not found!
-                </div>
+<%--                <h1>--%>
+<%--                    Oops!</h1>--%>
+<%--                <h2>--%>
+<%--                    404 Not Found</h2>--%>
+<%--                <div class="error-details">--%>
+<%--                    Sorry, an error has occured, Requested page not found!--%>
+<%--                </div>--%>
+    <h1>
+        Oops!</h1>
+    <h2>
+        <c:out value="${requestScope.errorMsg}" />
+    </h2>
                 <div class="error-actions">
                     <a href="controller?command=gotomainpage" class="btn btn-primary btn-lg">
                         Take Me Home </a>

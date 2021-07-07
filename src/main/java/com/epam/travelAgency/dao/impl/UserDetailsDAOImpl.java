@@ -42,12 +42,13 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetAllUsersDet);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 UserDetailsEntity userDetails = new UserDetailsEntity();
@@ -64,10 +65,10 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
                 details.add(userDetails);
             }
         } catch (ConnectionPoolException | SQLException e){
-            LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
+            LOGGER.error("-> some problems with extracting userDet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -118,12 +119,13 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(searchUserDetails + userId);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 userDetails.setId(Integer.parseInt(res.getString(id)));
@@ -141,7 +143,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             LOGGER.error("UserDetailsDAOImpl (getUserDetailsByUserId) -> some problems with getting userDet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -154,13 +156,13 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
         Connection connection = null;
         ConnectionPool pool = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(deleteQuery + id);
+            statement = connection.prepareStatement(deleteQuery + id);
+            statement.executeUpdate();
 
             isDeleted = true;
 

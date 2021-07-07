@@ -8,4 +8,5 @@ import java.util.List;
 public interface TransportService {
     List<TransportEntity> getAllTransport() throws ServiceException;
     int getIdByName(String transport) throws ServiceException;
+    TransportEntity getTransportById(int transportId) throws ServiceException;
 }

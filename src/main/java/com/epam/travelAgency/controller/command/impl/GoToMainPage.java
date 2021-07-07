@@ -25,7 +25,7 @@ public class GoToMainPage implements Command {
     private final String pathToMainPage = "WEB-INF/jsp/main/mainPage.jsp";
     private final String locale = "locale";
     private final String lang = "lang";
-    private final String toursL = "tours";
+    private final String toursL = "hotTours";
     private final String countriesL = "countries";
     private final String page = "page";
     private final String pageCommand = "gotomainpage";

@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--<jsp:useBean id="errorMsg" scope="request" type="java.lang.String"/>--%>
+
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
 <fmt:message bundle="${loc}" key="user.registration.title" var="regTitle"/>
@@ -31,6 +33,13 @@
 
 </head>
 <body>
+<c:if test="${errorMsg != null}">
+
+        <div class="alert alert-danger" role="alert">
+                ${errorMsg}
+        </div>
+</c:if>
+
 <div class="lang-buttons">
     <p><c:out value="${changeLang}" /></p>
     <a class="btn btn-outline-warning translate" id="en" href="controller?command=gotoregistrationpage&locale=en">

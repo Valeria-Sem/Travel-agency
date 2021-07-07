@@ -22,6 +22,8 @@ public class UserDaoImpl implements UserDAO {
     private final String loginQueryByPassword ="' and password = '";
     private final String updateQuery ="UPDATE user SET email = ?, password = ? WHERE id = ?";
     private final String i ="'";
+    private final String GET_ALL_CUSTOMERS_QUERY = "select * from user where role = ?";
+
     private final String id ="id";
     private final String email ="email";
     private final String password ="password";
@@ -34,12 +36,13 @@ public class UserDaoImpl implements UserDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetAllUsers);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 UserEntity user = new UserEntity();
@@ -54,7 +57,43 @@ public class UserDaoImpl implements UserDAO {
            LOGGER.error("UserDaoImpl (getAllUsers) -> some problems with extracting users");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
+            }
+        }
+
+        return users;
+    }
+
+    @Override
+    public List<UserEntity> getAllCustomers() throws DAOException {
+        List<UserEntity> users = new ArrayList<>();
+
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement ps = null;
+        ResultSet res = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+            ps = connection.prepareStatement(GET_ALL_CUSTOMERS_QUERY);
+            ps.setString(1, String.valueOf(UserRole.CUSTOMER));
+            res = ps.executeQuery();
+
+            while (res.next()){
+                UserEntity user = new UserEntity();
+                user.setId(Integer.parseInt(res.getString(id)));
+                user.setEmail(res.getString(email));
+                user.setPassword(res.getString(password));
+                user.setRole(UserRole.valueOf(res.getString(role)));
+
+                users.add(user);
+            }
+        } catch (ConnectionPoolException | SQLException e){
+            LOGGER.error("UserDaoImpl (getAllUsers) -> some problems with extracting users");
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -100,12 +139,13 @@ public class UserDaoImpl implements UserDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(loginQueryByEmail + userEmail + loginQueryByPassword + userPassword + "'");
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 int userId  = res.getInt(id);
@@ -121,7 +161,7 @@ public class UserDaoImpl implements UserDAO {
 
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -168,13 +208,14 @@ public class UserDaoImpl implements UserDAO {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement statement = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
 
             statement = connection.prepareStatement(loginQueryByEmail + email + i);
-            ResultSet res = statement.executeQuery();
+            res = statement.executeQuery();
 
             if (res.next()){
                 isFind = true;
@@ -184,7 +225,7 @@ public class UserDaoImpl implements UserDAO {
             LOGGER.error("UserDaoImpl (isUserByEmail) -> some problems with extracting user");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, statement);
+                pool.closeConnection(connection, statement, res);
             }
         }
 
@@ -197,13 +238,13 @@ public class UserDaoImpl implements UserDAO {
 
         Connection connection = null;
         ConnectionPool pool = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(deleteQuery + id);
+            statement = connection.prepareStatement(deleteQuery + id);
+            statement.executeUpdate();
 
             isDeleted = true;
 

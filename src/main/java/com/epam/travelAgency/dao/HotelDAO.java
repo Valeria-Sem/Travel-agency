@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface HotelDAO {
     List<HotelEntity> getAllHotels() throws DAOException;
+    HotelEntity getHotelById(int id) throws DAOException;
     int getIdByName(String name) throws DAOException;
 }

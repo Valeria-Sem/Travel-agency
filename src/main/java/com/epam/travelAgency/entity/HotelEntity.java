@@ -89,4 +89,15 @@ public class HotelEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(id, name, stars, coastline, beach);
     }
+
+    @Override
+    public String toString() {
+        return "HotelEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", stars=" + stars +
+                ", coastline=" + coastline +
+                ", beach='" + beach + '\'' +
+                '}';
+    }
 }

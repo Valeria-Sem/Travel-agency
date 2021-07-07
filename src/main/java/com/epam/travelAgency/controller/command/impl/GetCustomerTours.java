@@ -1,11 +1,11 @@
 package com.epam.travelAgency.controller.command.impl;
 
 import com.epam.travelAgency.controller.command.Command;
+import com.epam.travelAgency.entity.TourCustomerEntity;
+import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.UserDetailsEntity;
 import com.epam.travelAgency.entity.UserEntity;
-import com.epam.travelAgency.service.ServiceException;
-import com.epam.travelAgency.service.ServiceProvider;
-import com.epam.travelAgency.service.UserDetailsService;
+import com.epam.travelAgency.service.*;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class GetCustomerTours implements Command {
     private final Logger LOGGER = Logger.getLogger(SaveUserDetails.class);
 
     private final String currentUser = "current_user";
     private final String currentUserDet = "current_userDet";
-    private final String name = "name";
+    private final String USER_TOURS = "userTours";
     private final String surname = "surname";
     private final String dateOfBirth = "date_of_birth";
     private final String citizenship = "citizenship";
@@ -42,47 +43,24 @@ public class GetCustomerTours implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
 
-        String userName;
-        String userSurname;
-        LocalDate userDateOfB;
-        String userCitizenship;
-        String userPassport;
-        LocalDate userDateOfI;
-        LocalDate userEDate;
+        List<TourEntity> userTours;
+        UserEntity user;
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
-        UserDetailsService userDetailsService = serviceProvider.getUserDetailsService();
+        TourCustomerService tourCustomerService = serviceProvider.getTourCustomerService();
 
         try {
-            UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
-            if(userDet.getId() == 0){
-                userName = request.getParameter(name).trim();
-                userSurname = request.getParameter(surname).trim();
-                userDateOfB = LocalDate.parse(request.getParameter(dateOfBirth).trim());
-                userCitizenship = request.getParameter(citizenship).trim();
-                userPassport = request.getParameter(passport).trim();
-                userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue).trim());
-                userEDate = LocalDate.parse(request.getParameter(expirationDate).trim());
+            user = (UserEntity) session.getAttribute(currentUser);
 
-                UserEntity user = (UserEntity) session.getAttribute(currentUser);
-                UserDetailsEntity newUserDet = new UserDetailsEntity(user.getId(),
-                        userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
+            userTours = tourCustomerService.getAllCustomerTours(user.getId());
 
-                if(userDetailsService.addUserDetails(newUserDet)){
-                    newUserDet = userDetailsService.getUserDetailsByIdUser(user.getId());
+            session.setAttribute(USER_TOURS, userTours);
 
-                    session.setAttribute(currentUserDet, newUserDet);
-                }
-
-                response.sendRedirect(pathToUserPage);
-
-            } else {
-                response.sendRedirect(updateUserDet);
-            }
+            response.sendRedirect(pathToUserPage);
 
         } catch (ServiceException e) {
             request.setAttribute(errorMessageS, errorMessage);
-            LOGGER.error(errorMessage);
+            LOGGER.error("error in GetCustomerTours");
         }
 
     }

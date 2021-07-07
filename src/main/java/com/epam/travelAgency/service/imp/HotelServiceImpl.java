@@ -41,4 +41,20 @@ public class HotelServiceImpl implements HotelService {
 
         return id;
     }
+
+    @Override
+    public HotelEntity getHotelById(int hotelId) throws ServiceException {
+        HotelEntity hotel;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        HotelDAO hotelDAO = provider.getHotelDAO();
+
+        try{
+            hotel = hotelDAO.getHotelById(hotelId);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return hotel;
+    }
 }

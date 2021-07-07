@@ -1,0 +1,43 @@
+.img {
+    width: 100%;
+    height: 200px;
+}
+
+.top-container {
+    margin: 0 auto;
+}
+
+.side-menu {
+    max-width: 200px;
+    padding-left: 0;
+}
+
+.param{
+    height: 450px;
+}
+
+.detButton{
+    vertical-align: bottom;
+}
+
+.secNav{
+    padding-top: 80px;
+}
+
+.form-control{
+    height: 58px;
+}
+
+.form-check{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.radiobutton-dates{
+
+}
+
+
+

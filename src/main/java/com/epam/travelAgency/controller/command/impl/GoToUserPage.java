@@ -1,6 +1,7 @@
 package com.epam.travelAgency.controller.command.impl;
 
 import com.epam.travelAgency.controller.command.Command;
+import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.UserDetailsEntity;
 import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.entity.WalletEntity;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 public class GoToUserPage implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToUserPage.class);
@@ -24,9 +26,10 @@ public class GoToUserPage implements Command {
     private final String lang = "lang";
     private final String page = "page";
     private final String pageCommand = "gotouserpage";
-    private final String auth = "auth";
+    private final String GETCUSTOMERTOURS_COMMAND = "getcustomertours";
+
     private final String currentUser = "current_user";
-    private final String USER_TOURS = "user_tors";
+    private final String USER_TOURS = "userTours";
 
     //   private final String currentUser = "current_";
 
@@ -47,16 +50,26 @@ public class GoToUserPage implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
+        List<TourEntity> userTours;
+        UserEntity user;
+
         ServiceProvider provider = ServiceProvider.getInstance();
 
         ValidationService validationService = provider.getValidationService();
         UserDetailsService userDetailsService = provider.getUserDetailsService();
-
+        TourCustomerService tourCustomerService = provider.getTourCustomerService();
 
         try{
-            UserEntity user = (UserEntity) session.getAttribute(currentUser);
+//            if(session.getAttribute(USER_TOURS) == null) {
+//                response.sendRedirect(GETCUSTOMERTOURS_COMMAND);
+//            } else {
+
+            user = (UserEntity) session.getAttribute(currentUser);
 
             UserDetailsEntity userDet = userDetailsService.getUserDetailsByIdUser(user.getId());
+            userTours = tourCustomerService.getAllCustomerTours(user.getId());
+
+            session.setAttribute(USER_TOURS, userTours);
 
             session.setAttribute(currentUserDet, userDet);
 
@@ -64,6 +77,7 @@ public class GoToUserPage implements Command {
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(userPagePath);
             dispatcher.forward(request, response);
+    //        }
 
         } catch (ServiceException e){
             LOGGER.error("error in GoToUserPage");

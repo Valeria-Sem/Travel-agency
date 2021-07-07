@@ -15,8 +15,8 @@ import java.util.Set;
 public class TourServiceImpl implements TourService {
 
     @Override
-    public Iterable<TourEntity> getAllTours() throws ServiceException {
-        Iterable<TourEntity> tours;
+    public List<TourEntity> getAllTours() throws ServiceException {
+        List<TourEntity> tours;
 
         DAOProvider provider = DAOProvider.getInstance();
         TourDAO tourDAO = provider.getTourDAO();
@@ -44,6 +44,22 @@ public class TourServiceImpl implements TourService {
         }
 
         return tour;
+    }
+
+    @Override
+    public boolean isTourStatusUpdate(int tourId, TourStatus tourStatus) throws ServiceException {
+        boolean isTourStatusUpdate;
+
+        DAOProvider provider = DAOProvider.getInstance();
+        TourDAO tourDAO = provider.getTourDAO();
+
+        try{
+            isTourStatusUpdate = tourDAO.isTourStatusUpdate(tourId, tourStatus);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
+
+        return isTourStatusUpdate;
     }
 
     @Override

@@ -9,5 +9,5 @@
               url="jdbc:mysql://localhost:3306/travel_agency?autoReconnect=true"
               validationQuery="select 1"
               maxActive="10"
-              maxIdle="4"/>
+              maxIdle="1"/>
 </Context>

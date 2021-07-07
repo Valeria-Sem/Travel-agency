@@ -6,6 +6,6 @@ import com.epam.travelAgency.entity.TourEntity;
 import java.util.List;
 
 public interface TourCustomerService {
-    boolean buyTour(int idUser, int idTour) throws ServiceException;
+    boolean buyTour(int idTour, int idUser) throws ServiceException;
     List<TourEntity> getAllCustomerTours(int idUser) throws ServiceException;
 }

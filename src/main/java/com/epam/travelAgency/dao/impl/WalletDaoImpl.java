@@ -23,8 +23,7 @@ public class WalletDaoImpl implements WalletDao {
     private final String findWalletByUserId = "select * from wallet, user where wallet.user_id = user.id and" +
             " user_id = '" ;
 
-    private final String updateQuery1 = "update wallet set balance ='" ;
-    private final String updateQuery2 = "' where id = " ;
+    private final String updateQuery = "update wallet set balance = ? where id = ?";
 
     private final String quote ="'";
     private final String idS ="id";
@@ -39,12 +38,13 @@ public class WalletDaoImpl implements WalletDao {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(queryForGetAllWallets);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 WalletEntity wallet = new WalletEntity();
@@ -57,7 +57,7 @@ public class WalletDaoImpl implements WalletDao {
            LOGGER.error("WalletDaoImpl (getAllWallets) -> some problems with extracting wallets");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -94,7 +94,6 @@ public class WalletDaoImpl implements WalletDao {
     @Override
     public WalletEntity saveNewWallet(int userId) throws DAOException {
         WalletEntity newWallet = null;
-        boolean isAdded = false;
 
         Connection connection = null;
         ConnectionPool pool = null;
@@ -131,12 +130,13 @@ public class WalletDaoImpl implements WalletDao {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(findWallet + id);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 wallet.setId(Integer.parseInt(res.getString(idS)));
@@ -147,7 +147,7 @@ public class WalletDaoImpl implements WalletDao {
             LOGGER.error("WalletDaoImpl (getWalletById) -> some problems with extracting wallet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -161,12 +161,13 @@ public class WalletDaoImpl implements WalletDao {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
             ps = connection.prepareStatement(findWalletByUserId + userId + quote);
-            ResultSet res = ps.executeQuery();
+            res = ps.executeQuery();
 
             while (res.next()){
                 wallet.setId(Integer.parseInt(res.getString(idS)));
@@ -177,7 +178,7 @@ public class WalletDaoImpl implements WalletDao {
             LOGGER.error("WalletDaoImpl (getWalletById) -> some problems with extracting wallet");
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, ps);
+                pool.closeConnection(connection, ps, res);
             }
         }
 
@@ -190,21 +191,27 @@ public class WalletDaoImpl implements WalletDao {
 
         Connection connection = null;
         ConnectionPool pool = null;
-        Statement statement = null;
+        PreparedStatement ps = null;
+        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(updateQuery1 + newBalance + updateQuery2 + id);
+            ps = connection.prepareStatement(updateQuery);
+
+            ps.setDouble(1, newBalance);
+            ps.setInt(2, id);
+
+            ps.executeUpdate();
 
             isUpdated = true;
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("WalletDaoImpl (updateBalance) -> some problems with updating wallet");
+            e.printStackTrace();
         } finally {
             if(connection != null){
-                pool.closeConnection(connection, statement);
+                pool.closeConnection(connection, ps);
             }
         }
 
@@ -217,13 +224,13 @@ public class WalletDaoImpl implements WalletDao {
 
         Connection connection = null;
         ConnectionPool pool = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
 
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(deleteQuery + id);
+            statement = connection.prepareStatement(deleteQuery + id);
+            statement.executeUpdate();
 
             isDeleted = true;
 
