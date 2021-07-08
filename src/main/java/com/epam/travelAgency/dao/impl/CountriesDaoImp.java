@@ -20,7 +20,6 @@ public class CountriesDaoImp implements CountriesDAO {
     private final Logger LOGGER = Logger.getLogger(CountriesDaoImp.class);
 
     private final String queryForGetAllCountries = "select * from countries";
-    private final String quote ="'";
     private final String id ="id";
     private final String name ="name";
 

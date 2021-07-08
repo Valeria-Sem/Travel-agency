@@ -1,10 +1,7 @@
 package com.epam.travelAgency.controller.command.impl;
 
 import com.epam.travelAgency.controller.command.Command;
-import com.epam.travelAgency.entity.TourEntity;
-import com.epam.travelAgency.entity.UserDetailsEntity;
-import com.epam.travelAgency.entity.UserEntity;
-import com.epam.travelAgency.entity.WalletEntity;
+import com.epam.travelAgency.entity.*;
 import com.epam.travelAgency.service.*;
 import com.epam.travelAgency.service.validation.ValidationService;
 import com.epam.travelAgency.service.validation.impl.ValidationImpl;
@@ -22,20 +19,17 @@ public class GoToUserPage implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToUserPage.class);
 
     private static final String userPagePath = "WEB-INF/jsp/user/userPage.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
+
     private final String page = "page";
     private final String pageCommand = "gotouserpage";
-    private final String GETCUSTOMERTOURS_COMMAND = "getcustomertours";
 
-    private final String currentUser = "current_user";
     private final String USER_TOURS = "userTours";
-
-    //   private final String currentUser = "current_";
-
+    private final String currentUser = "current_user";
     private final String currentUserDet = "current_userDet";
-    private final String currentWallet = "current_wallet";
-    private final String role = "role";
+
+    private final String ERROR_MSG = "errorMsg";
+    private final String SERVER_ERROR_MSG = "Server error. Please come back later";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
 
     public GoToUserPage(){
@@ -60,10 +54,6 @@ public class GoToUserPage implements Command {
         TourCustomerService tourCustomerService = provider.getTourCustomerService();
 
         try{
-//            if(session.getAttribute(USER_TOURS) == null) {
-//                response.sendRedirect(GETCUSTOMERTOURS_COMMAND);
-//            } else {
-
             user = (UserEntity) session.getAttribute(currentUser);
 
             UserDetailsEntity userDet = userDetailsService.getUserDetailsByIdUser(user.getId());
@@ -77,10 +67,12 @@ public class GoToUserPage implements Command {
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(userPagePath);
             dispatcher.forward(request, response);
-    //        }
 
         } catch (ServiceException e){
-            LOGGER.error("error in GoToUserPage");
+            LOGGER.error(SERVER_ERROR_MSG, e);
+
+            request.setAttribute(ERROR_MSG, SERVER_ERROR_MSG);
+            request.getRequestDispatcher(userPagePath).forward(request, response);
         }
     }
 }

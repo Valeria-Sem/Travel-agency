@@ -12,11 +12,10 @@ import java.io.IOException;
 
 public class GoToShoppingPage implements Command {
     private final String pathToShoppingPage = "WEB-INF/jsp/tours/shopping/shopping.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
+
     private final String page = "page";
     private final String pageCommand = "gotoshoppingpage";
-
+    private final String ERROR_MSG = "errorMsg";
 
     public GoToShoppingPage() {
     }
@@ -27,32 +26,11 @@ public class GoToShoppingPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        if(request.getParameter(locale) != null){
-//            ValidationImpl.userLocale = request.getParameter(locale);
-//        }
-//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
-
         HttpSession session = request.getSession();
-//
-//        List<TourEntity> tours = (List<TourEntity>) session.getAttribute("tours");
-//
-//        if(tours == null){
-////            ServiceProvider provider = ServiceProvider.getInstance();
-////            CategoryService categoryService = provider.getCategoryService();
-//            TourDAO tourDao = new TourDaoImpl();
-//            try {
-//                tours = tourDao.getTourByStatus(TourStatus.HOT);
-//
-//                session.setAttribute("tours", tours);
-//
-//            } catch (DAOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
         session.setAttribute(page, pageCommand);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pathToShoppingPage);
         dispatcher.forward(request, response);
-
     }
 }

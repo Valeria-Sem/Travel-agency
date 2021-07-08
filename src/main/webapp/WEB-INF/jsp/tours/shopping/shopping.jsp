@@ -39,7 +39,12 @@
     <title>Title</title>
 </head>
 <body>
+<c:if test="${errorMsg != null}">
 
+    <div class="alert alert-danger" role="alert">
+            ${errorMsg}
+    </div>
+</c:if>
 
 <div class="container-fluid mt-3">
     <div class="container top-container">
@@ -179,8 +184,8 @@
                                         </div>
                                         <div class="card-footer">
                                             <a class="btn btn-outline-primary" id="${shoppingTour.id}"
-                                               (click)="payAndSub(choice.monthPrise, template, choice.idProduct, choice.idOrganisation)">
-                                                <c:out value="${detailsBtn}"/>
+                                               href="controller?command=gotodetailspage&id=${shoppingTour.id}" >
+                                            <c:out value="${detailsBtn}"/>
                                             </a>
                                         </div>
                                     </div>

@@ -37,7 +37,12 @@
     <title>Title</title>
 </head>
 <body>
+<c:if test="${requestScope.errorMsg != null}">
 
+    <div class="alert alert-danger" role="alert">
+            ${requestScope.errorMsg}
+    </div>
+</c:if>
 
 <div class="container-fluid mt-3">
     <div class="container top-container">
@@ -216,7 +221,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <a class="btn btn-outline-primary" id="${chillTour.id}"
-                                               (click)="payAndSub(choice.monthPrise, template, choice.idProduct, choice.idOrganisation)">
+                                               href="controller?command=gotodetailspage&id=${chillTour.id}">
                                                 <c:out value="${detailsBtn}"/>
                                             </a>
                                         </div>

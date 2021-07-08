@@ -2,6 +2,7 @@ package com.epam.travelAgency.controller.command.impl;
 
 import com.epam.travelAgency.controller.command.Command;
 import com.epam.travelAgency.service.validation.impl.ValidationImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,15 +12,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class GoToRegistrationPage implements Command {
-    private final String pathToRegistrationPage = "WEB-INF/jsp/registration/registrationPage.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
+    private final Logger LOGGER = Logger.getLogger(GoToRegistrationPage.class);
 
-    private final String page = "page";
-    private final String error = "errorMsg";
+    private final String PATH_TO_REGISTRATION_PAGE = "WEB-INF/jsp/registration/registrationPage.jsp";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    private final String pageCommand = "gotoregistrationpage";
+    private final String ERROR_MSG = "errorMsg";
+    private final String SERVER_ERROR_MSG = "Server error. Please come back later";
 
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotoregistrationpage";
 
     public GoToRegistrationPage(){
 
@@ -31,19 +33,18 @@ public class GoToRegistrationPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        if(request.getParameter(locale) != null){
-//            ValidationImpl.userLocale = request.getParameter(locale);
-//        }
-//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
         HttpSession session = request.getSession();
-        session.setAttribute(page, pageCommand);
+        try {
+            session.setAttribute(PAGE, PAGE_COMMAND);
 
-//        if(session.getAttribute(error) != null){
-//            request.setAttribute(error, session.getAttribute(error));
-//        }
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_REGISTRATION_PAGE);
+            dispatcher.forward(request, response);
 
+        } catch (Exception e){
+            LOGGER.error(SERVER_ERROR_MSG, e);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToRegistrationPage);
-        dispatcher.forward(request, response);
+            request.setAttribute(ERROR_MSG, SERVER_ERROR_MSG);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
+        }
     }
 }

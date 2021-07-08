@@ -37,6 +37,12 @@
 </head>
 
 <body>
+<c:if test="${requestScope.errorMsg != null}">
+
+    <div class="alert alert-danger" role="alert">
+            ${requestScope.errorMsg}
+    </div>
+</c:if>
     <nav class="secNav">
         <div class="nav nav-tabs justify-content-md-center" id="nav-tab" role="tablist">
             <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"

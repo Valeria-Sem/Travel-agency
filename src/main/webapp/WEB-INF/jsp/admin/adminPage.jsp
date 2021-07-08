@@ -11,6 +11,7 @@
 <jsp:useBean id="tours" scope="session" type="java.util.List"/>
 <jsp:useBean id="statuses" scope="session" type="java.util.EnumSet"/>
 
+
 <html>
 <head>
 <%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">--%>
@@ -25,11 +26,19 @@
 
 </head>
 <body class="bg-light text-center">
+<c:if test="${requestScope.errorMsg != null}">
+
+    <div class="alert alert-danger" role="alert">
+            ${requestScope.errorMsg}
+    </div>
+</c:if>
 <div class="alert alert-info" role="alert">
 
     <h4 class="alert-heading"> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
     </svg> Панель администратора</h4>
+    <a href="controller?command=logout">logout</a>
+
 
 </div>
 
@@ -278,7 +287,29 @@
     </footer>
 </div>
 
-<a href="controller?command=logout">logout</a>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Пополнение баланса</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="controller?command=updatebalance" method="post">
+                <div class="modal-body">
+                    <label for="bal" class="form-label"> Введите сумму $ </label>
+                    <input type="text" class="form-control caps" id="bal" name="newBalance"
+                           pattern="[0-9]{1,3}" title="Only digits" minlength="1" maxlength="3">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 

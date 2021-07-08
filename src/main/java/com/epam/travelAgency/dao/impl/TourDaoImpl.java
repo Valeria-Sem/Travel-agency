@@ -82,7 +82,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }
@@ -127,7 +127,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryId)));
 
             }
         } catch (SQLException | ConnectionPoolException e) {
@@ -141,16 +141,6 @@ public class TourDaoImpl implements TourDAO {
 
         return tour;
     }
-
-//    @Override
-//    public List<TourEntity> getTourByCategory() throws DAOException {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<TourEntity> getTourByCountry() throws DAOException {
-//        return null;
-//    }
 
     @Override
     public List<TourEntity> getTourByStatus(TourStatus tourStatus) throws DAOException {
@@ -181,7 +171,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }
@@ -231,15 +221,6 @@ public class TourDaoImpl implements TourDAO {
         return isTourStatusUpdate;
     }
 
-//    @Override
-//    public List<TourEntity> filterTours() throws DAOException {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<TourEntity> getTourByHotel() throws DAOException {
-//        return null;
-//    }
 
     @Override
     public Set<TourEntity> getTourByStartParams(String category, String country, LocalDate arrDate, LocalDate depDate,
@@ -273,7 +254,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }
@@ -318,7 +299,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }
@@ -363,7 +344,7 @@ public class TourDaoImpl implements TourDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotel)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMeals)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransport)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryId)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryId)));
 
                 tours.add(tour);
             }

@@ -69,4 +69,14 @@ public class SaleEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(id, idUserDet, sale, toursCount);
     }
+
+    @Override
+    public String toString() {
+        return "SaleEntity{" +
+                "id=" + id +
+                ", idUserDet=" + idUserDet +
+                ", sale=" + sale +
+                ", toursCount=" + toursCount +
+                '}';
+    }
 }

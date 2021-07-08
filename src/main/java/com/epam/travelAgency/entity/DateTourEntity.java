@@ -69,4 +69,14 @@ public class DateTourEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(id, idArrivalDate, idDepartureDate, idTour);
     }
+
+    @Override
+    public String toString() {
+        return "DateTourEntity{" +
+                "id=" + id +
+                ", idArrivalDate=" + idArrivalDate +
+                ", idDepartureDate=" + idDepartureDate +
+                ", idTour=" + idTour +
+                '}';
+    }
 }

@@ -21,6 +21,8 @@ public class GoToTourDetails implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToTourDetails.class);
 
     private final String pathToDetailsPage = "WEB-INF/jsp/tours/details/detailsPage.jsp";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+
     private final String ID_PARAM = "id";
     private final String TOUR_ATTRIBUTE = "tour";
     private final String HOTEL_ATTRIBUTE = "hotel";
@@ -28,10 +30,12 @@ public class GoToTourDetails implements Command {
     private final String MEALS_ATTRIBUTE = "meals";
     private final String ARR_DATES_ATTRIBUTE = "arrDates";
     private final String DEP_DATES_ATTRIBUTE = "depDates";
-    private final String lang = "lang";
 
     private final String page = "page";
     private final String pageCommand = "gotodetailspage";
+
+    private final String ERROR_MSG = "errorMsg";
+    private final String SERVER_ERROR_MSG = "Server error. Please come back later";
 
     public GoToTourDetails() {
     }
@@ -85,7 +89,10 @@ public class GoToTourDetails implements Command {
             dispatcher.forward(request, response);
 
         } catch (ServiceException e){
-            LOGGER.error("error in GoToUserPage");
+            LOGGER.error(SERVER_ERROR_MSG, e);
+
+            request.setAttribute(ERROR_MSG, SERVER_ERROR_MSG);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }
 }

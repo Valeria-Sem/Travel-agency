@@ -22,10 +22,7 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
             " tour_customer.user_id = ?";
 
 
-    private final String quote ="'";
     private final String idS ="id";
-    private final String tourIdS ="tour_id";
-    private final String userIdS ="user_id";
     private final String nameS ="name";
     private final String descriptionS ="description";
     private final String priceS ="price";
@@ -105,7 +102,7 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
                 tour.setIdHotel(Integer.parseInt(res.getString(idHotelS)));
                 tour.setIdMeals(Integer.parseInt(res.getString(idMealsS)));
                 tour.setIdTransport(Integer.parseInt(res.getString(idTransportS)));
-                tour.setСountryId(Integer.parseInt(res.getString(countryIdS)));
+                tour.setCountryId(Integer.parseInt(res.getString(countryIdS)));
 
                 tours.add(tour);
             }

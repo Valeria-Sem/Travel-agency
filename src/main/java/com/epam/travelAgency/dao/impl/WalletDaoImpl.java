@@ -65,33 +65,6 @@ public class WalletDaoImpl implements WalletDao {
     }
 
     @Override
-    public boolean addWallet(WalletEntity walletEntity) throws DAOException {
-        return false;
-//        Connection connection = null;
-//        ConnectionPool pool = null;
-//        PreparedStatement statement = null;
-//
-//        try{
-//            pool = ConnectionPool.getInstance();
-//            connection = pool.takeConnection();
-//
-//            statement = connection.prepareStatement(insertQuery);
-//
-//            statement.setDouble(1, walletEntity.getBalance());
-//
-//            statement.executeUpdate();
-//
-//            isAdded = true;
-//
-//        } catch (SQLException | ConnectionPoolException e){
-//            LOGGER.error("WalletDaoImpl (addWallet) -> some problems with adding wallet");
-//        } finally {
-//            if(connection != null){
-//                pool.closeConnection(connection, statement);
-//            }
-    }
-
-    @Override
     public WalletEntity saveNewWallet(int userId) throws DAOException {
         WalletEntity newWallet = null;
 

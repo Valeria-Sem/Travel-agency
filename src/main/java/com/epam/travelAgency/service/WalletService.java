@@ -8,7 +8,6 @@ import java.util.List;
 public interface WalletService {
 
     List<WalletEntity> getAllWallets() throws ServiceException;
-    boolean addWallet(WalletEntity walletEntity) throws ServiceException;
     WalletEntity getWalletById(int id) throws ServiceException;
     WalletEntity saveNewWallet(int userId) throws ServiceException;
     WalletEntity getWalletByUserId(int userId) throws ServiceException;

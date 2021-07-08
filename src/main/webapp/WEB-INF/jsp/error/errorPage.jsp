@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:useBean id="errorMsg" scope="request" type="java.lang.String"/>
 
 <html>
 <head>
@@ -25,13 +24,18 @@
           Oops!</h1>
 
         <div class="error-details">
-               ${errorMsg}"
+          <c:if test="${requestScope.errorMsg != null}">
 
+            <div class="alert alert-danger" role="alert">
+                ${requestScope.errorMsg}
+            </div>
+          </c:if>
+            SERWER ERROR :(
         </div>
-        <div class="error-actions">
-          <a href="controller?command=gotomainpage" class="btn btn-primary btn-lg">
-            Take Me Home </a>
-        </div>
+<%--        <div class="error-actions">--%>
+<%--          <a href="controller?command=gotomainpage" class="btn btn-primary btn-lg">--%>
+<%--            Take Me Home </a>--%>
+<%--        </div>--%>
       </div>
     </div>
   </div>

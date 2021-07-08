@@ -12,11 +12,7 @@ public interface TourService {
     List<TourEntity> getAllTours() throws ServiceException;
     TourEntity getTourById(int id) throws ServiceException;
     boolean isTourStatusUpdate(int tourId, TourStatus tourStatus) throws ServiceException;
-    //    List<TourEntity> getTourByCategory() throws DAOException;
-//    List<TourEntity> getTourByCountry() throws DAOException;
     List<TourEntity> getTourByStatus(TourStatus tourStatus) throws ServiceException;
-    //    List<TourEntity> filterTours() throws DAOException;
-//    List<TourEntity> getTourByHotel() throws DAOException;
     Set<TourEntity> getTourByStartParams(String category, String country, LocalDate arrDate, LocalDate depDate,
                                          int adults, int children) throws ServiceException;
     Set<TourEntity> getTourByStartParams(String category, String country,

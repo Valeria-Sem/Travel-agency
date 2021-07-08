@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--<jsp:useBean id="errorMsg" scope="request" type="java.lang.String"/>--%>
-
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
 <fmt:message bundle="${loc}" key="user.registration.title" var="regTitle"/>
@@ -33,19 +31,19 @@
 
 </head>
 <body>
-<c:if test="${errorMsg != null}">
+<c:if test="${requestScope.errorMsg != null}">
 
         <div class="alert alert-danger" role="alert">
-                ${errorMsg}
+                ${requestScope.errorMsg}
         </div>
 </c:if>
 
 <div class="lang-buttons">
     <p><c:out value="${changeLang}" /></p>
-    <a class="btn btn-outline-warning translate" id="en" href="controller?command=gotoregistrationpage&locale=en">
+    <a class="btn btn-outline-warning translate" id="en" href="controller?command=changelanguage&locale=en">
         <img src="https://pngicon.ru/file/uploads/Flag-SShA.png" style="height: 30px; width: 40px">
     </a>
-    <a class="btn btn-outline-warning" id="ru" href="controller?command=gotoregistrationpage&locale=ru">
+    <a class="btn btn-outline-warning" id="ru" href="controller?command=changelanguage&locale=ru">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/250px-Flag_of_Russia.svg.png"
              style="height: 30px; width: 40px">
     </a>
@@ -53,7 +51,6 @@
 
 <h1><c:out value="${regTitle}"/></h1>
     <form class="form-registration" action="controller?command=registration" method="post">
-<%--        <form >--%>
 
         <div class="needs-validation" novalidate>
             <div class="my">
@@ -76,76 +73,9 @@
                         <c:out value="${passwordInput}"/>
                     </label>
                     <input type="password" name="password" class="form-control" id="password" required=""
-                    style="text-transform: none;" minlength="6">
+                    style="text-transform: none;" minlength="8" maxlength="25">
                 </div>
             </div>
-        </div>
-
-<%--        <div class="vl"></div>--%>
-
-<%--        <div class="my">--%>
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="name" class="form-label">--%>
-<%--                    <c:out value="${nameInput}"/>--%>
-<%--                </label>--%>
-<%--                <input type="text" class="form-control" name="name" id="name" placeholder="IVAN" required--%>
-<%--                       pattern="[a-zA-Z]{2,}" minlength="2" maxlength="30">--%>
-<%--            </div>--%>
-
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="surname" class="form-label">--%>
-<%--                    <c:out value="${surnameInput}"/>--%>
-<%--                </label>--%>
-<%--                <input type="text" class="form-control" name="surname" id="surname" placeholder="PETROV" required--%>
-<%--                       pattern="[a-zA-Z]{2,}" minlength="2" maxlength="30">--%>
-<%--            </div>--%>
-
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="datepicker" class="form-label">--%>
-<%--                    <c:out value="${dateBInput}"/>--%>
-<%--                </label>--%>
-<%--                    <div class="input-group date">--%>
-<%--                        <input type="date" class="form-control" name="dateOfBirth" data-format="mm-dd-yyyy" id="datepicker" required>--%>
-<%--                    </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="vl"></div>--%>
-
-<%--        <div class="my">--%>
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="passport"  class="form-label">--%>
-<%--                    <c:out value="${passportInput}"/>--%>
-<%--                </label>--%>
-<%--                <input type="text" class="form-control" name="passport" id="passport" placeholder="MP5678789" required--%>
-<%--                       pattern="[a-zA-Z]+[0-9]{2,7}">--%>
-<%--            </div>--%>
-
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="nationality" class="form-label">--%>
-<%--                    <c:out value="${nationalityInput}"/>--%>
-<%--                </label>--%>
-<%--                <input type="text" class="form-control" name="citizenship" id="nationality" placeholder="REPUBLIC OF BELARUS" required>--%>
-<%--            </div>--%>
-
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="datepicker2"  class="form-label">--%>
-<%--                    <c:out value="${dateIInput}"/>--%>
-<%--                </label>--%>
-<%--                <div class="input-group date">--%>
-<%--                    <input type="date" class="form-control" name="dateOfIssue" data-format="mm-dd-yyyy" placeholder="" id="datepicker2" required>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-
-<%--            <div class="col-md-13">--%>
-<%--                <label class ="myLabel" for="datepicker3" class="form-label">--%>
-<%--                    <c:out value="${dateEInput}"/>--%>
-<%--                </label>--%>
-<%--                <div class="input-group date">--%>
-<%--                    <input type="date" class="form-control" name="expirationDate" data-format="mm-dd-yyyy"  placeholder="" id="datepicker3" required>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
 
             <div class="col-12 ">
                 <div class="form-check">
@@ -162,8 +92,8 @@
                     </button>
 
             </div>
+        </div>
     </form>
-<%--</form>--%>
 <script src=" ${pageContext.request.contextPath}/registration.js"  type="text/javascript"></script>
 
 
@@ -171,6 +101,5 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
-<%--<script src="jquery.datetimepicker.full.min.js"></script>--%>
 </body>
 </html>

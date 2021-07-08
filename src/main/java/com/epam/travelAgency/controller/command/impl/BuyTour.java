@@ -11,31 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
 
 public class BuyTour implements Command {
-    private final Logger LOGGER = Logger.getLogger(GoToTourDetails.class);
+    private final Logger LOGGER = Logger.getLogger(BuyTour.class);
 
-    private final String pathToDetailsPage = "WEB-INF/jsp/tours/details/detailsPage.jsp";
-    private final String pathToErrorPage = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
     private final String TOUR_ATTRIBUTE = "tour";
     private final String CURRENT_USER_ATTRIBUTE = "current_user";
     private final String CURRENT_WALLET_ATTRIBUTE = "current_wallet";
     private final String CURRENT_SALE_ATTRIBUTE = "current_sale";
     private final String DATES_PARAM = "dates";
-    private final String auth = "auth";
-    private final String SEND_EMAIL_COMMAND = "controller?command=sendemail";
-    private final String GO_TO_LOGIN_PAGE_COMMAND = "controller?command=gotologinpage";
-    private final String ERROR_MSG_ATTRIBUTE = "errorMsg";
+    private final String AUTH_ATTRIBUTE = "auth";
     private final String DISCOUNT_PRICE = "discountPrice";
 
+    private final String SEND_EMAIL_COMMAND = "controller?command=sendemail";
+    private final String GO_TO_LOGIN_PAGE_COMMAND = "controller?command=gotologinpage";
 
-    private final String lang = "lang";
-
-    private final String page = "page";
-    private final String path = "controller?command=";
+    private final String ERROR_MSG_ATTRIBUTE = "errorMsg";
+    private final String PAYMENT_ERROR_MSG = "Оплата не прошла. Не хватает денег на счёте";
+    private final String SQL_SERVER_ERROR_MSG = "Серверная ошибка покупки тура. Попробуйте снова через час";
+    private final String SERVER_ERROR_MSG = "Серверная ошибка. Попробуйте снова через час";
 
     public BuyTour() {
     }
@@ -52,10 +48,8 @@ public class BuyTour implements Command {
         TourEntity tour;
         WalletEntity wallet;
         SaleEntity sale;
-        String dates;
-        double discountPrice = 0;
+        double discountPrice;
         double discount;
-        double price = 0;
         double newBalance;
         int newTourCount = 1;
 
@@ -65,7 +59,7 @@ public class BuyTour implements Command {
         SaleService saleService = serviceProvider.getSaleService();
 
         try{
-            if(session.getAttribute(auth) != null && (Boolean) session.getAttribute(auth)) {
+            if(session.getAttribute(AUTH_ATTRIBUTE) != null && (Boolean) session.getAttribute(AUTH_ATTRIBUTE)) {
                 tour = (TourEntity) session.getAttribute(TOUR_ATTRIBUTE);
                 user = (UserEntity) session.getAttribute(CURRENT_USER_ATTRIBUTE);
                 sale = (SaleEntity) session.getAttribute(CURRENT_SALE_ATTRIBUTE);
@@ -87,21 +81,18 @@ public class BuyTour implements Command {
 
                         session.setAttribute(CURRENT_SALE_ATTRIBUTE, sale);
                         session.setAttribute(DATES_PARAM, request.getParameter(DATES_PARAM));
-                        request.setAttribute(DISCOUNT_PRICE, discountPrice);
+                        session.setAttribute(DISCOUNT_PRICE, discountPrice);
                         response.sendRedirect(SEND_EMAIL_COMMAND);
 
                     } else {
-                        request.setAttribute(ERROR_MSG_ATTRIBUTE, "Оплата не прошла. Не хватает денег на счёте");
-                        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToErrorPage);
-                        dispatcher.forward(request, response);
+                        request.setAttribute(ERROR_MSG_ATTRIBUTE,PAYMENT_ERROR_MSG );
+                        request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
                     }
 
                 } else {
-                    request.setAttribute(ERROR_MSG_ATTRIBUTE, "Серверная ошибка покупки тура. " +
-                            "Попробуйте снова через час");
+                    request.setAttribute(ERROR_MSG_ATTRIBUTE, SQL_SERVER_ERROR_MSG);
 
-                    RequestDispatcher dispatcher = request.getRequestDispatcher(pathToErrorPage);
-                    dispatcher.forward(request, response);
+                    request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
                 }
 
             } else {
@@ -109,9 +100,10 @@ public class BuyTour implements Command {
             }
 
         } catch (ServiceException e){
-            LOGGER.error("error in BuyTour");
-            request.setAttribute(ERROR_MSG_ATTRIBUTE, "Серверная ошибка. Попробуйте снова через час");
-            response.sendRedirect(pathToErrorPage);
+            LOGGER.error(SERVER_ERROR_MSG, e);
+
+            request.setAttribute(ERROR_MSG_ATTRIBUTE, SERVER_ERROR_MSG);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }
 }

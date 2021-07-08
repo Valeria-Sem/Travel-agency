@@ -28,6 +28,12 @@
 
 </head>
 <body class="bg-light text-center">
+<c:if test="${errorMsg != null}">
+
+    <div class="alert alert-danger" role="alert">
+            ${errorMsg}
+    </div>
+</c:if>
 <div class="alert alert-info" role="alert">
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
@@ -37,6 +43,7 @@
     <p class="mb-0">При регистрации вам был создан виртуальный кошелёк который вы можете пополнять и, в дальнейшем, за эти деньги покупать туры</p>
     <hr>
     <p class="mb-0" style="text-align: center">Приятного отыха :)</p>
+    <a href="controller?command=logout">logout</a>
 
 </div>
 
@@ -84,13 +91,14 @@
                                 <div class="input-group has-validation">
                                     <span class="input-group-text">@</span>
                                     <input type="email" class="form-control " id="email" name="email" placeholder="Почта"
-                                           value="${current_user.email}" required="">
+                                           value="${current_user.email}" required="" disabled>
                                 </div>
                             </div>
 
                             <div class="col-12">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" value="${current_user.password}">
+                                <input type="password" class="form-control" id="password" name="password"
+                                       value="${current_user.password}" minlength="8" maxlength="25">
                                 <div class="invalid-feedback">
                                     Please enter a valid password for shipping updates.
                                 </div>
@@ -106,12 +114,97 @@
             <div class="tab-pane fade pad" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="col-md-7 col-lg-8 passp">
                     <h4 class="mb-3">Паспортные данные</h4>
-                    <form class="needs-validation" novalidate="" method="post" action="controller?command=saveuserdetails">
+                    <c:choose>
+                        <c:when test="${current_userDet.id == 0}">
+                            <form class="needs-validation" novalidate="" method="post" action="controller?command=saveuserdetails">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label for="newName" class="form-label">First name</label>
+                                        <input type="text" class="form-control caps" id="newName" name="name" placeholder=""
+                                               value="${current_userDet.name}"
+                                               pattern="[A-Za-z]" minlength="3" maxlength="25" required="">
+                                        <div class="invalid-feedback">
+                                            Valid first name is required.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="newSurname" class="form-label">Last name</label>
+                                        <input type="text" class="form-control caps" id="newSurname" name="surname" placeholder=""
+                                               value="${current_userDet.surname}" required="" pattern="[A-Za-z]"
+                                               minlength="3" maxlength="50">
+                                        <div class="invalid-feedback">
+                                            Valid last name is required.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="datepicker121" class="form-label">Дата рождения</label>
+                                        <input type="date" class="form-control" name="date_of_birth" data-format="mm-dd-yyyy"
+                                               aria-label="Дата прилёта"
+                                               id="datepicker121" required=""
+                                               value="${current_userDet.dateOfBirth}"
+                                               pattern="[0-9].[0-9].[0-9]{2,2,4}">
+                                        <div class="invalid-feedback">
+                                            Please enter your shipping address.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="newcitizenship" class="form-label">Гражданство</label>
+                                        <input type="text" class="form-control caps" id="newcitizenship" name="citizenship"
+                                               value="${current_userDet.citizenship}" pattern="[A-Za-z ]" minlength="5"
+                                               maxlength="50"
+                                               placeholder="Republic of Belarus" required="">
+                                        <div class="invalid-feedback">
+                                            Please enter your shipping address.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="address2w" class="form-label"> Паспорт </label>
+                                        <input type="text" class="form-control caps" id="address2w" name="passport"
+                                               value="${current_userDet.passport}" pattern="[a-zA-Z]+[0-9]{2,7}" placeholder="MP1234567">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="datepicker2" class="form-label">Дата выдачи</label>
+                                        <input type="date" class="form-control" name="date_of_issue" data-format="mm-dd-yyyy"
+                                               aria-label="Дата прилёта"
+                                               id="datepicker332" required=""
+                                               value="${current_userDet.dateOfIssue}"
+                                               pattern="[0-9].[0-9].[0-9]{2,2,4}">
+                                        <div class="invalid-feedback">
+                                            Please enter your shipping address.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="datepicker3r" class="form-label">Дата окончания</label>
+                                        <input type="date" class="form-control" name="expiration_date" data-format="mm-dd-yyyy"
+                                               aria-label="Дата прилёта"
+                                               id="datepicker3r" required="" pattern="[0-9].[0-9].[0-9]{2,2,4}"
+                                               value="${current_userDet.expirationDate}">
+                                        <div class="invalid-feedback">
+                                            Please enter your shipping address.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="w-100 btn btn-primary btn-lg" style="margin-top: 30px; width: 200px !important;"
+                                        type="submit">Save data</button>
+                            </form>
+                        </c:when>
+
+
+                    <c:when test="${current_userDet.id != 0}">
+                    <form class="needs-validation" novalidate="" method="post" action="controller?command=updateuserdetails">
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <label for="name" class="form-label">First name</label>
                                 <input type="text" class="form-control caps" id="name" name="name" placeholder=""
-                                       value="${current_userDet.name}" required="">
+                                       value="${current_userDet.name}"
+                                       pattern="[A-Za-z]" minlength="3" maxlength="25" required="">
                                 <div class="invalid-feedback">
                                     Valid first name is required.
                                 </div>
@@ -120,7 +213,8 @@
                             <div class="col-sm-6">
                                 <label for="surname" class="form-label">Last name</label>
                                 <input type="text" class="form-control caps" id="surname" name="surname" placeholder=""
-                                       value="${current_userDet.surname}" required="">
+                                       value="${current_userDet.surname}" required="" pattern="[A-Za-z]"
+                                       minlength="3" maxlength="50">
                                 <div class="invalid-feedback">
                                     Valid last name is required.
                                 </div>
@@ -141,7 +235,8 @@
                             <div class="col-12">
                                 <label for="citizenship" class="form-label">Гражданство</label>
                                 <input type="text" class="form-control caps" id="citizenship" name="citizenship"
-                                       value="${current_userDet.citizenship}"
+                                       value="${current_userDet.citizenship}" pattern="[A-Za-z ]" minlength="5"
+                                       maxlength="50"
                                        placeholder="Republic of Belarus" required="">
                                 <div class="invalid-feedback">
                                     Please enter your shipping address.
@@ -151,7 +246,7 @@
                             <div class="col-12">
                                 <label for="address2" class="form-label"> Паспорт </label>
                                 <input type="text" class="form-control caps" id="address2" name="passport"
-                                       value="${current_userDet.passport}" placeholder="MP1234567">
+                                       value="${current_userDet.passport}" pattern="[a-zA-Z]+[0-9]{2,7}" placeholder="MP1234567">
                             </div>
 
                             <div class="col-12">
@@ -181,6 +276,8 @@
                         <button class="w-100 btn btn-primary btn-lg" style="margin-top: 30px; width: 200px !important;"
                                 type="submit">Update data</button>
                     </form>
+                    </c:when>
+                    </c:choose>
                 </div>
             </div>
             <div class="tab-pane fade pad" id="nav-balance" role="tabpanel" aria-labelledby="nav-balance-tab">
@@ -248,7 +345,7 @@
     </footer>
 </div>
 
-<a href="controller?command=logout">logout</a>
+
 
 
 

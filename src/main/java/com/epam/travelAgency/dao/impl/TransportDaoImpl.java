@@ -17,9 +17,6 @@ import java.util.List;
 public class TransportDaoImpl implements TransportDAO {
     private final Logger LOGGER = Logger.getLogger(TransportDaoImpl.class);
 
-    private final String updateCountQuery ="UPDATE sale SET tours_count = ? WHERE id_user = ?";
-    private final String updateSaleQuery ="UPDATE sale SET sale = ? WHERE id_user = ?";
-    private final String insertQuery = "insert into sale (id_user) values(?) ";
     private final String GET_TRANSPORT_BY_ID_QUERY = "select * from transport where id = ?";
 
     private final String ID ="id";

@@ -10,6 +10,7 @@ import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.TourService;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,20 +21,12 @@ public class UpdateTourStatus implements Command {
     private final Logger LOGGER = Logger.getLogger(UpdateUserInfo.class);
 
     private final String TOUR_STATUS = "status";
-    private final String currentUser = "current_user";
-    private final String SALE_ATTRIBUTE = "sale";
-    private final String surname = "surname";
-    private final String dateOfBirth = "date_of_birth";
-    private final String citizenship = "citizenship";
-    private final String passport = "passport";
-    private final String dateOfIssue = "date_of_issue";
-    private final String expirationDate = "expiration_date";
-    private final String errorMessage = "Update error";
     private final String errorMessageS = "errorMsg";
-    private final String findUser = "User with the same email was registered yet";
     private final String pathToAdminPage = "controller?command=gotoadminpage";
-    private final String pathToUserInfo = "controller?command=showuserinfo";
     private final String ID_TOUR = "id_tour";
+
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String SERVER_ERROR= "Sorry server error.";
 
 
     @Override
@@ -42,8 +35,6 @@ public class UpdateTourStatus implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-
         TourStatus status;
         int tourId;
 
@@ -54,14 +45,15 @@ public class UpdateTourStatus implements Command {
             tourId = Integer.parseInt(request.getParameter(ID_TOUR));
             status = TourStatus.valueOf(request.getParameter(TOUR_STATUS));
 
-           // sale = saleService.updateSaleInfo(userId ,newSale);
-
-           // request.setAttribute(errorMessageS, errorMessage);
             tourService.isTourStatusUpdate(tourId, status);
             response.sendRedirect(pathToAdminPage);
 
         } catch (ServiceException e) {
-            LOGGER.error(errorMessage);
+            request.setAttribute(errorMessageS, SERVER_ERROR);
+            LOGGER.error(SERVER_ERROR, e);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
+            dispatcher.forward(request, response);
         }
     }
 }

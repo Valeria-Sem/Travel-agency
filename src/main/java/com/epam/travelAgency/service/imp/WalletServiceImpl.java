@@ -27,22 +27,6 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public boolean addWallet(WalletEntity walletEntity) throws ServiceException {
-        boolean isAdded = false;
-
-        DAOProvider provider = DAOProvider.getInstance();
-        WalletDao walletDao = provider.getWalletDAO();
-
-        try{
-            isAdded = walletDao.addWallet(walletEntity);
-        } catch (DAOException e){
-            throw new ServiceException(e);
-        }
-
-        return isAdded;
-    }
-
-    @Override
     public WalletEntity getWalletById(int id) throws ServiceException {
         WalletEntity wallet;
 

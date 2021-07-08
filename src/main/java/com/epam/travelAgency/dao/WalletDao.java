@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface WalletDao {
     List<WalletEntity> getAllWallets() throws DAOException;
-    boolean addWallet(WalletEntity wallet) throws DAOException;
     WalletEntity saveNewWallet(int userId) throws DAOException;
     WalletEntity getWalletById(int id) throws DAOException;
     WalletEntity getWalletByUserId(int userId) throws DAOException;

@@ -21,23 +21,16 @@ public class ShowUserInfo implements Command {
     private final Logger LOGGER = Logger.getLogger(ShowUserInfo.class);
 
     private static final String userPagePath = "WEB-INF/jsp/user/userInfo.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
     private final String page = "page";
     private final String pageCommand = "gotouserpage";
-    private final String GETCUSTOMERTOURS_COMMAND = "getcustomertours";
     private final String ID_USER = "id_user";
     private final String USER_DETAILS = "userDet";
     private final String USER_SALE = "userSale";
 
-    private final String currentUser = "current_user";
-    private final String USER_TOURS = "userTours";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    //   private final String currentUser = "current_";
-
-    private final String currentUserDet = "current_userDet";
-    private final String currentWallet = "current_wallet";
-    private final String role = "role";
+    private final String errorMessage = "errorMsg";
+    private final String SERVER_ERROR= "Sorry server error.";
 
 
     public ShowUserInfo(){
@@ -52,14 +45,12 @@ public class ShowUserInfo implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        List<TourEntity> userTours;
         int userId;
         UserDetailsEntity userDet;
         SaleEntity sale;
 
         ServiceProvider provider = ServiceProvider.getInstance();
 
-        ValidationService validationService = provider.getValidationService();
         UserDetailsService userDetailsService = provider.getUserDetailsService();
         SaleService saleService = provider.getSaleService();
 
@@ -69,24 +60,26 @@ public class ShowUserInfo implements Command {
             } else {
                 userId = (int) session.getAttribute(ID_USER);
             }
-                userDet = userDetailsService.getUserDetailsByIdUser(userId);
-                sale = saleService.getSaleByIdUser(userId);
 
-                session.setAttribute(USER_DETAILS, userDet);
+            userDet = userDetailsService.getUserDetailsByIdUser(userId);
+            sale = saleService.getSaleByIdUser(userId);
 
-                session.setAttribute(USER_SALE, sale);
-                session.setAttribute(ID_USER, userId);
+            session.setAttribute(USER_DETAILS, userDet);
 
-                session.setAttribute(page, pageCommand);
+            session.setAttribute(USER_SALE, sale);
+            session.setAttribute(ID_USER, userId);
 
-
+            session.setAttribute(page, pageCommand);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(userPagePath);
             dispatcher.forward(request, response);
 
         } catch (ServiceException e){
-            LOGGER.error("error in GoToUserPage");
-            e.printStackTrace();
+            LOGGER.error(SERVER_ERROR, e);
+
+            request.setAttribute(errorMessage, SERVER_ERROR);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
+            dispatcher.forward(request, response);
         }
     }
 }

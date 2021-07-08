@@ -14,6 +14,8 @@ public class Logout implements Command {
     private final String auth = "auth";
     private final String currentUser = "current_user";
     private final String currentWallet = "current_wallet";
+    private final String currentUserDet = "current_userDet";
+
     private final String role = "role";
 
 
@@ -34,7 +36,8 @@ public class Logout implements Command {
             session.removeAttribute(currentUser);
             session.removeAttribute(currentWallet);
             session.removeAttribute(role);
-
+            session.removeAttribute(auth);
+            session.removeAttribute(currentUserDet);
         }
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(pathToMainPage);

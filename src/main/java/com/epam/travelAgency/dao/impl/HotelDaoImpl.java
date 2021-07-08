@@ -5,7 +5,6 @@ import com.epam.travelAgency.dao.HotelDAO;
 import com.epam.travelAgency.dao.pool.ConnectionPool;
 import com.epam.travelAgency.dao.pool.ConnectionPoolException;
 import com.epam.travelAgency.entity.HotelEntity;
-import com.epam.travelAgency.entity.MealsEntity;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -15,11 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class HotelDaoImpl implements HotelDAO {
-    private final Logger LOGGER = Logger.getLogger(MealsDaoImpl.class);
+    private final Logger LOGGER = Logger.getLogger(HotelDaoImpl.class);
 
-    private final String updateCountQuery ="UPDATE sale SET tours_count = ? WHERE id_user = ?";
-    private final String updateSaleQuery ="UPDATE sale SET sale = ? WHERE id_user = ?";
-    private final String insertQuery = "insert into sale (id_user) values(?) ";
     private final String GET_HOTEL_BY_ID_QUERY = "select * from hotel where id = ?";
 
     private final String ID ="id";

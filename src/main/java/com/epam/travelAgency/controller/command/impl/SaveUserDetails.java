@@ -6,8 +6,10 @@ import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.UserDetailsService;
+import com.epam.travelAgency.service.validation.ValidationService;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,10 +30,16 @@ public class SaveUserDetails implements Command {
     private final String dateOfIssue = "date_of_issue";
     private final String expirationDate = "expiration_date";
     private final String errorMessage = "Update error";
-    private final String errorMessageS = "errorMsg";
     private final String findUser = "User with the same email was registered yet";
-    private final String pathToUserPage = "controller?command=gotouserpage";
+    private final String pathToUserPage = "WEB-INF/jsp/user/userPage.jsp";
     private final String updateUserDet = "controller?command=updateuserdetinfo";
+    private final String commandToUserPage = "controller?command=gotouserpage";
+
+    private final String ERROR_MSG = "errorMsg";
+    private final String SERVER_ERROR_MSG = "Server error. Please come back later";
+    private final String VALIDATION_ERROR_MSG = "Validation error. Please check your data";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+
 
 
     @Override
@@ -52,10 +60,12 @@ public class SaveUserDetails implements Command {
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         UserDetailsService userDetailsService = serviceProvider.getUserDetailsService();
+        ValidationService validationService = serviceProvider.getValidationService();
 
         try {
+
             UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
-            if(userDet.getId() == 0){
+
                 userName = request.getParameter(name).trim();
                 userSurname = request.getParameter(surname).trim();
                 userDateOfB = LocalDate.parse(request.getParameter(dateOfBirth).trim());
@@ -64,25 +74,29 @@ public class SaveUserDetails implements Command {
                 userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue).trim());
                 userEDate = LocalDate.parse(request.getParameter(expirationDate).trim());
 
-                UserEntity user = (UserEntity) session.getAttribute(currentUser);
-                UserDetailsEntity newUserDet = new UserDetailsEntity(user.getId(),
-                        userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
+                if(!validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
+                        userPassport, userDateOfI.toString(), userEDate.toString())){
+                    UserEntity user = (UserEntity) session.getAttribute(currentUser);
+                    UserDetailsEntity newUserDet = new UserDetailsEntity(user.getId(),
+                            userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
 
-                if(userDetailsService.addUserDetails(newUserDet)){
-                    newUserDet = userDetailsService.getUserDetailsByIdUser(user.getId());
+                    if(userDetailsService.addUserDetails(newUserDet)){
+                        newUserDet = userDetailsService.getUserDetailsByIdUser(user.getId());
 
-                    session.setAttribute(currentUserDet, newUserDet);
+                        session.setAttribute(currentUserDet, newUserDet);
+                    }
+                } else {
+                    request.setAttribute(ERROR_MSG, VALIDATION_ERROR_MSG);
+                    request.getRequestDispatcher(pathToUserPage).forward(request, response);
                 }
 
-                response.sendRedirect(pathToUserPage);
-
-            } else {
-                response.sendRedirect(updateUserDet);
-            }
+                response.sendRedirect(commandToUserPage);
 
         } catch (ServiceException e) {
-            request.setAttribute(errorMessageS, errorMessage);
-            LOGGER.error(errorMessage);
+            LOGGER.error(SERVER_ERROR_MSG, e);
+
+            request.setAttribute(ERROR_MSG, SERVER_ERROR_MSG);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
 
     }

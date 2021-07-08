@@ -58,4 +58,13 @@ public class TourCustomerEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(id, tourId, customerId);
     }
+
+    @Override
+    public String toString() {
+        return "TourCustomerEntity{" +
+                "id=" + id +
+                ", tourId=" + tourId +
+                ", customerId=" + customerId +
+                '}';
+    }
 }

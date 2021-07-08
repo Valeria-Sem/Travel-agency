@@ -17,9 +17,6 @@ import java.util.List;
 public class MealsDaoImpl implements MealsDAO {
     private final Logger LOGGER = Logger.getLogger(MealsDaoImpl.class);
 
-    private final String updateCountQuery ="UPDATE sale SET tours_count = ? WHERE id_user = ?";
-    private final String updateSaleQuery ="UPDATE sale SET sale = ? WHERE id_user = ?";
-    private final String insertQuery = "insert into sale (id_user) values(?) ";
     private final String GET_MEALS_BY_ID_QUERY = "select * from meals where id = ?";
 
     private final String ID ="id";

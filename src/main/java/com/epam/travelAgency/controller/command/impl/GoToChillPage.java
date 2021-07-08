@@ -7,6 +7,7 @@ import com.epam.travelAgency.dao.impl.TourDaoImpl;
 import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.TourStatus;
 import com.epam.travelAgency.service.validation.impl.ValidationImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,11 +19,11 @@ import java.util.List;
 
 public class GoToChillPage implements Command {
     private final String pathToChillPage = "WEB-INF/jsp/tours/chill/chill.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
 
     private final String page = "page";
     private final String pageCommand = "gotochillpage";
+
+    private final String ERROR_MSG = "errorMsg";
 
     public GoToChillPage() {
     }
@@ -33,28 +34,9 @@ public class GoToChillPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        if(request.getParameter(locale) != null){
-//            ValidationImpl.userLocale = request.getParameter(locale);
-//        }
-//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
 
         HttpSession session = request.getSession();
-//
-//        List<TourEntity> tours = (List<TourEntity>) session.getAttribute("tours");
-//
-//        if(tours == null){
-////            ServiceProvider provider = ServiceProvider.getInstance();
-////            CategoryService categoryService = provider.getCategoryService();
-//            TourDAO tourDao = new TourDaoImpl();
-//            try {
-//                tours = tourDao.getTourByStatus(TourStatus.HOT);
-//
-//                session.setAttribute("tours", tours);
-//
-//            } catch (DAOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
         session.setAttribute(page, pageCommand);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(pathToChillPage);

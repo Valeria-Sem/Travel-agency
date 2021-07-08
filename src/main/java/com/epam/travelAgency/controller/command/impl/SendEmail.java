@@ -24,7 +24,7 @@ public class SendEmail implements Command {
     private final String EMAIL_NAME = "happy.tour.minsk";
     private final String CURRENT_USER = "current_user";
     private final String TEXT = "Вы успешно приобрели тур - ";
-    private final String END_TEXT = "Просьба явиться в офис по адресу - пр.Машерова 11 для заключения договора." +
+    private final String END_TEXT = "$ \nПросьба явиться в офис по адресу - пр.Машерова 11 для заключения договора." +
             "\n С уважением Ваш Happy Tour :)";
     private final String DATES = "\nДаты тура : ";
     private final String PRICE = "\nСумма с учётом скидки : ";
@@ -63,7 +63,7 @@ public class SendEmail implements Command {
         try {
             user = (UserEntity) session.getAttribute(CURRENT_USER);
             tour = (TourEntity) session.getAttribute(TOUR_ATTRIBUTE);
-            double price = (double) request.getAttribute(DISCOUNT_PRICE);
+            double price = (double) session.getAttribute(DISCOUNT_PRICE);
 
             dates = (String) session.getAttribute(DATES_PARAM);
             String[] fromToDates = dates.split(";");
@@ -83,14 +83,10 @@ public class SendEmail implements Command {
             response.sendRedirect(path + command);
 
         } catch (MessagingException e) {
+            e.printStackTrace();
             request.setAttribute(ERROR_MSG ,"Some troubles with sending bill to your email.");
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
-            dispatcher.forward(request, response);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
-
-//
-//        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToSendEmail);
-//        dispatcher.forward(request, response);
     }
 }

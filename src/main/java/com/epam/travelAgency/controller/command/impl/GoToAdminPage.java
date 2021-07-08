@@ -22,18 +22,19 @@ import java.util.Set;
 public class GoToAdminPage implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToUserPage.class);
 
-    private final String pathToAdminPage = "WEB-INF/jsp/admin/adminPage.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
-    private final String CURRENT_USER_ATTRIBUTE = "current_user";
-    private final String CURRENT_WALLET_ATTRIBUTE = "current_wallet";
+    private final String PATH_TO_ADMIN_PAGE = "WEB-INF/jsp/admin/adminPage.jsp";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/admin/adminPage.jsp";
+
     private final String USERS_ATTRIBUTE = "users";
     private final String TOURS_ATTRIBUTE = "tours";
     private final String TOURS_STATUSES = "statuses";
 
+    private final String ERROR_MSG_ATTRIBUTE = "errorMsg";
+    private final String SERVER_ERROR_MSG = "Server error. Please come back later";
+    private final String LOGGER_ERROR_MSG = "Server error in GoToAdminPage";
 
-    private final String page = "page";
-    private final String pageCommand = "gotoadminpage";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotoadminpage";
 
 
     public GoToAdminPage() {
@@ -58,14 +59,6 @@ public class GoToAdminPage implements Command {
         TourService tourService = provider.getTourService();
         UserService userService = provider.getUserService();
         try{
-//            if(session.getAttribute(USER_TOURS) == null) {
-//                response.sendRedirect(GETCUSTOMERTOURS_COMMAND);
-//            } else {
-
-//            user = (UserEntity) session.getAttribute(CURRENT_USER_ATTRIBUTE);
-//
-//            UserDetailsEntity userDet = userDetailsService.getUserDetailsByIdUser(user.getId());
-//            userTours = tourCustomerService.getAllCustomerTours(user.getId());
             tours = tourService.getAllTours();
             users = userService.getAllCustomers();
 
@@ -75,14 +68,16 @@ public class GoToAdminPage implements Command {
             session.setAttribute(TOURS_ATTRIBUTE, tours);
             session.setAttribute(TOURS_STATUSES, statuses);
 
-            session.setAttribute(page, pageCommand);
+            session.setAttribute(PAGE, PAGE_COMMAND);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(pathToAdminPage);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ADMIN_PAGE);
             dispatcher.forward(request, response);
-            //        }
 
         } catch (ServiceException e){
-            LOGGER.error("error in GoToUserPage");
+            LOGGER.error(LOGGER_ERROR_MSG, e);
+
+            request.setAttribute(ERROR_MSG_ATTRIBUTE, SERVER_ERROR_MSG);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }
 }

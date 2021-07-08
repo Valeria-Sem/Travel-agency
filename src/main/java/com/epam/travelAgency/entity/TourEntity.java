@@ -16,7 +16,7 @@ public class TourEntity implements Serializable {
     private int idHotel;
     private int idMeals;
     private int idTransport;
-    private int сountryId;
+    private int countryId;
 
     public TourEntity() {
     }
@@ -37,7 +37,7 @@ public class TourEntity implements Serializable {
         this.idHotel = idHotel;
         this.idMeals = idMeals;
         this.idTransport = idTransport;
-        this.сountryId = idCountry;
+        this.countryId = idCountry;
     }
 
     public TourEntity(int id, String name, String description, int price,
@@ -55,7 +55,7 @@ public class TourEntity implements Serializable {
         this.idHotel = idHotel;
         this.idMeals = idMeals;
         this.idTransport = idTransport;
-        this.сountryId = idCountry;
+        this.countryId = idCountry;
     }
 
     public TourEntity(int id, String name, String description,
@@ -165,12 +165,12 @@ public class TourEntity implements Serializable {
         this.idTransport = idTransport;
     }
 
-    public int getСountryId() {
-        return сountryId;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public void setСountryId(int сountryId) {
-        this.сountryId = сountryId;
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     @Override
@@ -185,7 +185,7 @@ public class TourEntity implements Serializable {
                 idHotel == that.idHotel &&
                 idMeals == that.idMeals &&
                 idTransport == that.idTransport &&
-                сountryId == that.сountryId &&
+                countryId == that.countryId &&
                 name.equals(that.name) &&
                 description.equals(that.description) &&
                 imgPath.equals(that.imgPath) &&
@@ -197,7 +197,7 @@ public class TourEntity implements Serializable {
         return Objects.hash(id, name, description,
                 price, imgPath, status, adults,
                 children, idCategory, idHotel,
-                idMeals, idTransport, сountryId);
+                idMeals, idTransport, countryId);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class TourEntity implements Serializable {
                 ", idHotel=" + idHotel +
                 ", idMeals=" + idMeals +
                 ", idTransport=" + idTransport +
-                ", сountryId=" + сountryId +
+                ", сountryId=" + countryId +
                 '}';
     }
 }

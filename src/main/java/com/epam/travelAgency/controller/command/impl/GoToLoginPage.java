@@ -36,15 +36,11 @@ public class GoToLoginPage implements Command {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         HttpSession session = request.getSession();
+
         UserEntity currentUser = (UserEntity) session.getAttribute(currUser);
         UserRole role = (UserRole) session.getAttribute(ROLE_ATTRIBUTE);
+
         session.setAttribute(page, pageCommand);
-
-
-//        if(request.getParameter(locale) != null){
-//            ValidationImpl.userLocale = request.getParameter(locale);
-//        }
-//        request.getSession(true).setAttribute(lang, ValidationImpl.userLocale);
 
         if(currentUser != null){
             switch (role){

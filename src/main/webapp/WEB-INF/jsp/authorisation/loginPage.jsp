@@ -44,14 +44,20 @@
 
 </head>
 <body class="text-center">
+<c:if test="${requestScope.errorMsg != null}">
+
+    <div class="alert alert-danger" role="alert">
+            ${requestScope.errorMsg}
+    </div>
+</c:if>
 <main class="form-signin">
 
     <div class="lang-buttons">
         <p><c:out value="${changeLang}" /></p>
-    <a class="btn btn-outline-warning translate" id="en" href="controller?command=gotologinpage&locale=en">
+    <a class="btn btn-outline-warning translate" id="en" href="controller?command=changelanguage&locale=en">
         <img src="https://pngicon.ru/file/uploads/Flag-SShA.png" style="height: 30px; width: 40px">
     </a>
-    <a class="btn btn-outline-warning" id="ru" href="controller?command=gotologinpage&locale=ru">
+    <a class="btn btn-outline-warning" id="ru" href="controller?command=changelanguage&locale=ru">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/250px-Flag_of_Russia.svg.png"
              style="height: 30px; width: 40px">
     </a>

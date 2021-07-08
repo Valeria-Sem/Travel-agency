@@ -8,8 +8,10 @@ import com.epam.travelAgency.service.SaleService;
 import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.ServiceProvider;
 import com.epam.travelAgency.service.UserDetailsService;
+import com.epam.travelAgency.service.validation.ValidationService;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,23 +20,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class UpdateUserSale implements Command {
-    private final Logger LOGGER = Logger.getLogger(UpdateUserInfo.class);
+    private final Logger LOGGER = Logger.getLogger(UpdateUserSale.class);
 
     private final String USER_SALE = "userSale";
-    private final String currentUser = "current_user";
     private final String SALE_ATTRIBUTE = "sale";
-    private final String surname = "surname";
-    private final String dateOfBirth = "date_of_birth";
-    private final String citizenship = "citizenship";
-    private final String passport = "passport";
-    private final String dateOfIssue = "date_of_issue";
-    private final String expirationDate = "expiration_date";
-    private final String errorMessage = "Update error";
     private final String errorMessageS = "errorMsg";
-    private final String findUser = "User with the same email was registered yet";
-    private final String pathToUserPage = "controller?command=gotouserpage";
-    private final String pathToUserInfo = "controller?command=showuserinfo";
+    private final String commandToUserInfo = "controller?command=showuserinfo";
     private final String ID_USER = "id_user";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String SERVER_ERROR= "Sorry server error.";
+    private final String VALIDATION_ERROR= "Validation error.";
+    private final String PATH_TO_USER_INFO_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+
 
 
     @Override
@@ -46,30 +43,34 @@ public class UpdateUserSale implements Command {
         HttpSession session = request.getSession(true);
 
         int newSale;
-        int newTourCount;
         int userId;
         SaleEntity sale;
 
-      //  newSale = Integer.parseInt(request.getParameter(SALE_ATTRIBUTE));
-//        user = (UserEntity) session.getAttribute(currentUser);
-
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         SaleService saleService = serviceProvider.getSaleService();
+        ValidationService validationService = serviceProvider.getValidationService();
 
         try {
             userId = (int) session.getAttribute(ID_USER);
             newSale = Integer.parseInt(request.getParameter(SALE_ATTRIBUTE));
 
-            sale = saleService.updateSaleInfo(userId ,newSale);
+            if(validationService.isSaleValid(String.valueOf(newSale))){
+                sale = saleService.updateSaleInfo(userId ,newSale);
+                session.setAttribute(USER_SALE, sale);
+                response.sendRedirect(commandToUserInfo);
 
-            session.setAttribute(USER_SALE, sale);
-
-            request.setAttribute(errorMessageS, errorMessage);
-
-            response.sendRedirect(pathToUserInfo);
+            } else {
+                request.setAttribute(errorMessageS, VALIDATION_ERROR);
+                RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_USER_INFO_PAGE);
+                dispatcher.forward(request, response);
+            }
 
         } catch (ServiceException e) {
-            LOGGER.error(errorMessage);
+            LOGGER.error(SERVER_ERROR, e);
+
+            request.setAttribute(errorMessageS, SERVER_ERROR);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
+            dispatcher.forward(request, response);
         }
     }
 }

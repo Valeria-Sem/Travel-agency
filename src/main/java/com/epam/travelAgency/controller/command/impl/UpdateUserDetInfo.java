@@ -10,6 +10,7 @@ import com.epam.travelAgency.service.UserService;
 import com.epam.travelAgency.service.validation.ValidationService;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,8 +32,11 @@ public class UpdateUserDetInfo implements Command {
     private final String expirationDate = "expiration_date";
     private final String errorMessage = "Update error";
     private final String errorMessageS = "errorMsg";
-    private final String findUser = "User with the same email was registered yet";
     private final String pathToUserPage = "controller?command=gotouserpage";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String PATH_TO_USER_PAGE = "WEB-INF/jsp/user/userPage.jsp";
+    private final String SERVER_ERROR= "Sorry server error.";
+    private final String VALIDATION_ERROR= "Sorry server error.";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -50,33 +54,46 @@ public class UpdateUserDetInfo implements Command {
         LocalDate userDateOfI;
         LocalDate userEDate;
 
-        userName = request.getParameter(name).trim();
-        userSurname = request.getParameter(surname).trim();
-        userDateOfB = LocalDate.parse(request.getParameter(dateOfBirth).trim());
-        userCitizenship = request.getParameter(citizenship).trim();
-        userPassport = request.getParameter(passport).trim();
-        userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue).trim());
-        userEDate = LocalDate.parse(request.getParameter(expirationDate).trim());
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         UserDetailsService userDetailsService = serviceProvider.getUserDetailsService();
+        ValidationService validationService = serviceProvider.getValidationService();
 
         try {
-            UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
-            UserDetailsEntity newUserDet = new UserDetailsEntity(userDet.getId(), userDet.getIdUser(),
-                    userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
+            userName = request.getParameter(name);
+            userSurname = request.getParameter(surname);
+            userDateOfB = LocalDate.parse(request.getParameter(dateOfBirth));
+            userCitizenship = request.getParameter(citizenship);
+            userPassport = request.getParameter(passport);
+            userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue));
+            userEDate = LocalDate.parse(request.getParameter(expirationDate));
 
-            if(userDetailsService.isUserDetailsUpdate(newUserDet)){
-                session.setAttribute(currentUserDet, newUserDet);
+            if(!validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
+                    userPassport, userDateOfI.toString(), userEDate.toString())) {
+
+                UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
+                UserDetailsEntity newUserDet = new UserDetailsEntity(userDet.getId(), userDet.getIdUser(),
+                        userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
+
+                if (userDetailsService.isUserDetailsUpdate(newUserDet)) {
+                    session.setAttribute(currentUserDet, newUserDet);
+
+                } else {
+                    request.setAttribute(errorMessageS, errorMessage);
+                    request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
+                }
+            } else {
+                request.setAttribute(errorMessageS, VALIDATION_ERROR);
+                request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
             }
-
-
-            request.setAttribute(errorMessageS, errorMessage);
 
             response.sendRedirect(pathToUserPage);
 
-        } catch (ServiceException e) {
+        } catch (ServiceException | NullPointerException e) {
             LOGGER.error(errorMessage);
+
+            request.setAttribute(errorMessageS, SERVER_ERROR);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
 
     }

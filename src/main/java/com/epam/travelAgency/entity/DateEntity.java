@@ -49,4 +49,12 @@ public class DateEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(id, date);
     }
+
+    @Override
+    public String toString() {
+        return "DateEntity{" +
+                "id=" + id +
+                ", date=" + date +
+                '}';
+    }
 }

@@ -9,9 +9,11 @@ import com.epam.travelAgency.dao.impl.TourDaoImpl;
 import com.epam.travelAgency.entity.*;
 import com.epam.travelAgency.service.ServiceException;
 import com.epam.travelAgency.service.ServiceProvider;
+import com.epam.travelAgency.service.TourService;
 import com.epam.travelAgency.service.UserService;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,12 +35,11 @@ public class ShowChillToursData implements Command {
     private final String arrDateS = "arrivalDate";
     private final String depDateS = "departureDate";
     private final String chillToursS = "chillTours";
-    private final String searchArrDateS = "searchArrDate";
-    private final String searchDepDateS = "searchDepDate";
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    private final String errMess = "ShowChillToursData error";
+    private final String errorMessage = "errorMsg";
+    private final String SERVER_ERROR= "Sorry server error.";
 
-    // private final String findUser = "User with the same email was registered yet";
 
     public ShowChillToursData() {
     }
@@ -56,60 +57,29 @@ public class ShowChillToursData implements Command {
         int children;
         LocalDate arrDate;
         LocalDate depDate;
+        Set<TourEntity> chillTours;
 
-        country = request.getParameter(countryS);
-        adults = Integer.parseInt(request.getParameter(adultsS));
-        children = Integer.parseInt(request.getParameter(childrenS));
-//        System.out.println(children = Integer.parseInt(request.getParameter(childrenS)));
-        arrDate = LocalDate.parse(request.getParameter(arrDateS));
-        depDate = LocalDate.parse(request.getParameter(depDateS));
+        try {
+            country = request.getParameter(countryS);
+            adults = Integer.parseInt(request.getParameter(adultsS));
+            children = Integer.parseInt(request.getParameter(childrenS));
+            arrDate = LocalDate.parse(request.getParameter(arrDateS));
+            depDate = LocalDate.parse(request.getParameter(depDateS));
 
-//        List<String> searchData = new ArrayList<>();
-//
-//        searchData.add(country);
-//        searchData.add(Integer.toString(adults));
-//        searchData.add(Integer.toString(children));
-//        searchData.add(arrDate.toString());
-//        searchData.add(depDate.toString());
+            ServiceProvider serviceProvider = ServiceProvider.getInstance();
+            TourService tourService = serviceProvider.getTourService();
 
+            chillTours = tourService.getTourByStartParams(category, country, arrDate, depDate, adults, children);
 
-
-//        ServiceProvider serviceProvider = ServiceProvider.getInstance();
-//        UserService userService = serviceProvider.getUserService();
-        Set<TourEntity> chillTours ;//= (Set<TourEntity>) session.getAttribute(chillToursS);
-
-       // chillTours.clear();
-//        if(chillTours == null) {
-//            ServiceProvider provider = ServiceProvider.getInstance();
-//            CategoryService categoryService = provider.getCategoryService();
-            TourDAO tourDao = new TourDaoImpl();
-
-            try {
-                chillTours = tourDao.getTourByStartParams(category, country, arrDate, depDate, adults, children);
-
-                session.setAttribute(chillToursS, chillTours);
-          //      session.setAttribute(searchDataS, searchData);
-
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
+            session.setAttribute(chillToursS, chillTours);
 
             response.sendRedirect(pathToChillPage);
-//        } else{
-//            session.removeAttribute(chillToursS);
-//
-//            TourDAO tourDao = new TourDaoImpl();
-//
-//            try {
-//                chillTours = tourDao.getTourByStartParams(category, country, arrDate, depDate, adults, children);
-//
-//                session.setAttribute(chillToursS, chillTours);
-//
-//
-//            } catch (DAOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+
+        } catch (ServiceException e) {
+            LOGGER.error(SERVER_ERROR, e);
+
+            request.setAttribute(errorMessage, SERVER_ERROR);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
+        }
     }
 }
