@@ -37,6 +37,7 @@ public class CommandProvider {
         commands.put(CommandName.BUYTOUR, new BuyTour());
         commands.put(CommandName.SHOWUSERINFO, new ShowUserInfo());
         commands.put(CommandName.UPDATETOURSTATUS, new UpdateTourStatus());
+        commands.put(CommandName.SHOWBILL, new ShowBill());
 
     }
 

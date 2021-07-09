@@ -74,7 +74,7 @@ public class SaveUserDetails implements Command {
                 userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue).trim());
                 userEDate = LocalDate.parse(request.getParameter(expirationDate).trim());
 
-                if(!validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
+                if(validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
                         userPassport, userDateOfI.toString(), userEDate.toString())){
                     UserEntity user = (UserEntity) session.getAttribute(currentUser);
                     UserDetailsEntity newUserDet = new UserDetailsEntity(user.getId(),

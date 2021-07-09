@@ -140,64 +140,63 @@
                         </div>
                     </div>
                     </form>
-
                 </div>
 
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <form class="form-registration" id="2" action="controller?command=showexcursiondata" method="post">
-                    <div class="container-fluid mt-3">
-                        <div class="container">
-                            <div class="row text-center">
-                                <div class="row g-2">
-                                    <div class="col-md">
-                                        <div class="form-floating has-validation">
-                                            <select class="form-select" id="floatingSelectGrid4"
-                                                    required="" name="countries"
-                                                    aria-label="Страна">
-                                                <c:forEach items="${countries}" var="country">
-                                                    <option value="${country.name}">
-                                                            ${country.name}
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                            <label for="floatingSelectGrid1"><c:out value="${countr}"/></label>
+                        <div class="container-fluid mt-3">
+                            <div class="container">
+                                <div class="row text-center">
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                            <div class="form-floating has-validation">
+                                                <select class="form-select" id="floatingSelectGrid4"
+                                                        required="" name="countries"
+                                                        aria-label="Страна">
+                                                    <c:forEach items="${countries}" var="country">
+                                                        <option value="${country.name}">
+                                                                ${country.name}
+                                                        </option>
+                                                    </c:forEach>
+                                                </select>
+                                                <label for="floatingSelectGrid1"><c:out value="${countr}"/></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md">
+                                            <div class="form-floating has-validation">
+                                                <input type="date" class="form-control" name="arrivalDate" data-format="mm-dd-yyyy"
+                                                       aria-label="Дата прилёта"
+                                                       id="datepicker3" required=""
+                                                       pattern="[0-9].[0-9].[0-9]{2,2,4}">
+                                                <label for="datepicker3" ><c:out value="${arrDate}"/>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md">
+                                            <div class="form-floating has-validation">
+                                                <input type="date" class="form-control" name="departureDate" data-format="mm-dd-yyyy"
+                                                       aria-label="Дата отлёта"
+                                                       id="datepicker4" required=""
+                                                       pattern="[0-9].[0-9].[0-9]{2,2,4}">
+                                                <label for="datepicker4" >
+                                                    <c:out value="${depDate}"/>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
 
 
 
-                                    <div class="col-md">
-                                        <div class="form-floating has-validation">
-                                            <input type="date" class="form-control" name="arrivalDate" data-format="mm-dd-yyyy"
-                                                   aria-label="Дата прилёта"
-                                                   id="datepicker3" required=""
-                                                   pattern="[0-9].[0-9].[0-9]{2,2,4}">
-                                            <label for="datepicker3" ><c:out value="${arrDate}"/>
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-warning" style="margin-top: 20px; margin-left: 48%; width: 80px" type="submit" >
+                                        <c:out value="${searchBtn}"/>
+                                    </button>
+
+                                    <hr style="margin-top: 40px"/>
                                 </div>
-
-                                    <div class="col-md">
-                                        <div class="form-floating has-validation">
-                                            <input type="date" class="form-control" name="departureDate" data-format="mm-dd-yyyy"
-                                                   aria-label="Дата отлёта"
-                                                   id="datepicker4" required=""
-                                                   pattern="[0-9].[0-9].[0-9]{2,2,4}">
-                                            <label for="datepicker4" >
-                                                <c:out value="${depDate}"/>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                <button class="btn btn-warning" style="margin-top: 20px; margin-left: 48%; width: 80px" type="submit" >
-                                    <c:out value="${searchBtn}"/>
-                                </button>
-
-                                <hr style="margin-top: 40px"/>
                             </div>
                         </div>
-                    </div>
                     </form>
                 </div>
 
@@ -234,45 +233,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--    --%>
-                                <%--                                    <div class="col-md">--%>
-                                <%--                                        <div class="form-floating has-validation">--%>
-                                <%--                                            <input type="date" class="form-control" name="departureDate" data-format="mm-dd-yyyy"--%>
-                                <%--                                                   aria-label="Дата отлёта"--%>
-                                <%--                                                   id="datepicker4" required=""--%>
-                                <%--                                                   pattern="[0-9].[0-9].[0-9]{2,2,4}">--%>
-                                <%--                                            <label for="datepicker4" >--%>
-                                <%--                                                <c:out value="${depDate}"/>--%>
-                                <%--                                            </label>--%>
-                                <%--                                        </div>--%>
-                                <%--                                    </div>--%>
-                                <%--    --%>
-                                <%--                                    <div class="col-md">--%>
-                                <%--                                        <div class="form-floating has-validation">--%>
-                                <%--                                            <select class="form-select" id="ad" aria-label="Количество взрослых"--%>
-                                <%--                                                    required="" name="adults">--%>
-                                <%--                                                <option value="1">1</option>--%>
-                                <%--                                                <option selected>2</option>--%>
-                                <%--                                                <option value="3">3</option>--%>
-                                <%--                                                <option value="3">4</option>--%>
-                                <%--                                            </select>--%>
-                                <%--                                            <label for="floatingSelectGrid"><c:out value="${adults}"/></label>--%>
-                                <%--                                        </div>--%>
-                                <%--                                    </div>--%>
-                                <%--    --%>
-                                <%--                                    <div class="col-md">--%>
-                                <%--                                        <div class="form-floating has-validation">--%>
-                                <%--                                            <select class="form-select" id="chl" aria-label="Количество детей"--%>
-                                <%--                                                    required="" name="children">--%>
-                                <%--                                                <option selected>0</option>--%>
-                                <%--                                                <option value="1">1</option>--%>
-                                <%--                                                <option value="2">2</option>--%>
-                                <%--                                                <option value="3">3</option>--%>
-                                <%--                                            </select>--%>
-                                <%--                                            <label for="floatingSelectGrid"><c:out value="${children}"/></label>--%>
-                                <%--                                        </div>--%>
-                                <%--                                    </div>--%>
-                                <%--                                </div>--%>
 
                                 <button class="btn btn-warning" style="margin-top: 20px; margin-left: 48%; width: 80px" type="submit" >
                                     <c:out value="${searchBtn}"/>
@@ -318,8 +278,7 @@
                             </div>
                             <div class="card-footer">
                                 <a class="btn btn-outline-primary" id="${tour.id}"
-                                  href="controller?command=gotodetailspage&id=${tour.id}">
-<%--                                href="controller?command=sendemail">--%>
+                                   href="controller?command=gotodetailspage&id=${tour.id}">
                                     <c:out value="${detailsBtn}"/>
                                 </a>
                             </div>

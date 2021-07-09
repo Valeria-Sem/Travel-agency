@@ -20,6 +20,8 @@ import java.util.Properties;
 
 public class SendEmail implements Command {
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String PATH_TO_BILL = "controller?command=showbill";
+
     private final String PROPERTIES = "mail.properties";
     private final String EMAIL_NAME = "happy.tour.minsk";
     private final String CURRENT_USER = "current_user";
@@ -80,9 +82,9 @@ public class SendEmail implements Command {
             tr.close();
 
             String command = (String) request.getSession().getAttribute(page);
-            response.sendRedirect(path + command);
+            response.sendRedirect(PATH_TO_BILL);
 
-        } catch (MessagingException e) {
+        } catch (MessagingException | NullPointerException e) {
             e.printStackTrace();
             request.setAttribute(ERROR_MSG ,"Some troubles with sending bill to your email.");
 

@@ -27,7 +27,7 @@
     <title>Title</title>
 
 </head>
-<body class="bg-light text-center">
+<body class="bg-light text-center pad">
 <c:if test="${errorMsg != null}">
 
     <div class="alert alert-danger" role="alert">
@@ -58,26 +58,6 @@
                     <a class="nav-link" id="nav-booking-tab" data-toggle="tab" href="#nav-booking" role="tab" aria-controls="nav-booking" aria-selected="false">Мои путёвки</a>
                 </div>
             </nav>
-<%--            <div class="tab-content" id="nav-tabContent1">--%>
-<%--                <div class="tab-pane fade show active" id="nav-home1" role="tabpanel" aria-labelledby="nav-home-tab">...</div>--%>
-<%--                <div class="tab-pane fade" id="nav-profile1" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>--%>
-<%--                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>--%>
-<%--            </div>--%>
-
-
-<%--            <nav class="secNav">--%>
-<%--                <div class="nav nav-tabs justify-content-md-center" id="nav-tab" role="tablist">--%>
-<%--                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"--%>
-<%--                            type="button" role="tab" aria-controls="nav-home" aria-selected="true"><c:out value="${chill}"/>Авторизационные данные</button>--%>
-<%--                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"--%>
-<%--                            type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><c:out value="${excursions}"/>Основная информация</button>--%>
-<%--                    <button class="nav-link" id="nav-balance-tab" data-bs-toggle="tab" data-bs-target="#nav-balance"--%>
-<%--                            type="button" role="tab" aria-controls="nav-balance" aria-selected="false"><c:out value="${shopping}"/>Баланс и Скидки</button>--%>
-<%--                    <button class="nav-link" id="nav-booking-tab" data-bs-toggle="tab" data-bs-target="#nav-booking"--%>
-<%--                            type="button" role="tab" aria-controls="nav-booking" aria-selected="false"><c:out value="${shopping}"/>Мои путёвки</button>--%>
-<%--                </div>--%>
-<%--            </nav>--%>
-
 
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active pad" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -196,9 +176,8 @@
                             </form>
                         </c:when>
 
-
                     <c:when test="${current_userDet.id != 0}">
-                    <form class="needs-validation" novalidate="" method="post" action="controller?command=updateuserdetails">
+                    <form class="needs-validation" novalidate="" method="post" action="controller?command=updateuserdetinfo">
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <label for="name" class="form-label">First name</label>
@@ -322,7 +301,8 @@
                                             </h4>
                                         </div>
                                         <div class="card-footer">
-                                            <a class="btn btn-outline-primary" id="${userTour.id}">
+                                            <a class="btn btn-outline-primary" id="${userTour.id}"
+                                               href="controller?command=gotodetailspage&id=${userTour.id}">
                                                 <c:out value="${detailsBtn}"/>
                                             </a>
                                         </div>

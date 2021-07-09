@@ -68,7 +68,7 @@ public class Registration implements Command {
 
                 if(userService.isUserByEmail(userEmail)){
                         request.setAttribute(errorMessage, findUser);
-                        request.getRequestDispatcher(pathToRegistrationPage).forward(request, response);;
+                        request.getRequestDispatcher(pathToRegistrationPage).forward(request, response);
 
                 } else {
                         UserEntity user = new UserEntity(userEmail, userPassword, userRole);

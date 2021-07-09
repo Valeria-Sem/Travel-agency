@@ -12,7 +12,7 @@ public class ValidationImpl implements ValidationService {
     private final static String PASSPORT_PATTERN = "[a-zA-Z]+[0-9]{2,7}";
     private final static String SALE_PATTERN = "\\d";
     private final static String BALANCE_PATTERN = "\\d+(\\.\\d+)?";
-    private final static String CITIZENSHIP_PATTERN = "[A-Za-z ]";
+    private final static String CITIZENSHIP_PATTERN = "[a-zA-Z ]*";
     private final static String DATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
     private final static int MAX_SALE = 20;
 

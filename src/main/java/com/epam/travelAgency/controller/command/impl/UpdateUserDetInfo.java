@@ -35,8 +35,8 @@ public class UpdateUserDetInfo implements Command {
     private final String pathToUserPage = "controller?command=gotouserpage";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
     private final String PATH_TO_USER_PAGE = "WEB-INF/jsp/user/userPage.jsp";
-    private final String SERVER_ERROR= "Sorry server error.";
-    private final String VALIDATION_ERROR= "Sorry server error.";
+    private final String SERVER_ERROR= "Sorry, server error.";
+    private final String VALIDATION_ERROR= "Validation error. Check your passport data!";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -68,7 +68,7 @@ public class UpdateUserDetInfo implements Command {
             userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue));
             userEDate = LocalDate.parse(request.getParameter(expirationDate));
 
-            if(!validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
+            if(validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
                     userPassport, userDateOfI.toString(), userEDate.toString())) {
 
                 UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
@@ -77,6 +77,7 @@ public class UpdateUserDetInfo implements Command {
 
                 if (userDetailsService.isUserDetailsUpdate(newUserDet)) {
                     session.setAttribute(currentUserDet, newUserDet);
+                    response.sendRedirect(pathToUserPage);
 
                 } else {
                     request.setAttribute(errorMessageS, errorMessage);
@@ -86,8 +87,6 @@ public class UpdateUserDetInfo implements Command {
                 request.setAttribute(errorMessageS, VALIDATION_ERROR);
                 request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
             }
-
-            response.sendRedirect(pathToUserPage);
 
         } catch (ServiceException | NullPointerException e) {
             LOGGER.error(errorMessage);

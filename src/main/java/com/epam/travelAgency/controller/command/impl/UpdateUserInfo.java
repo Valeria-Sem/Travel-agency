@@ -46,41 +46,34 @@ public class UpdateUserInfo implements Command {
         ValidationService validationService = serviceProvider.getValidationService();
 
         try {
-            userEmail = request.getParameter(email).trim();
-            userPassword = request.getParameter(password);
+            UserEntity user = (UserEntity) session.getAttribute(currentUser);
 
-//            if(userService.isUserByEmail(userEmail)){
-//                request.setAttribute(errorMessage, findUser);
-//                RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
-//                dispatcher.forward(request, response);
-//
-//            } else {
-                UserEntity user = (UserEntity) session.getAttribute(currentUser);
+            userEmail = user.getEmail();
+            userPassword = request.getParameter(password).trim();
 
-                if (validationService.isAuthorisationDataValid(userEmail, userPassword)){
-                    if (userService.isUserUpdate(user, userEmail, userPassword)) {
-                        user.setEmail(userEmail);
-                        user.setPassword(userPassword);
+            if (validationService.isAuthorisationDataValid(userEmail, userPassword)){
+                if (userService.isUserUpdate(user, userEmail, userPassword)) {
+                    user.setEmail(userEmail);
+                    user.setPassword(userPassword);
 
-                    } else {
-                        request.setAttribute(errorMessageS, errorMessage);
+                    session.setAttribute(currentUser, user);
 
-                        RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
-                        dispatcher.forward(request, response);
-                    }
+                    response.sendRedirect(pathToUserPage);
 
                 } else {
-                    request.setAttribute(errorMessageS, VALIDATION_ERROR);
+                    request.setAttribute(errorMessageS, errorMessage);
+
                     RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
                     dispatcher.forward(request, response);
                 }
 
-                session.setAttribute(currentUser, user);
+            } else {
+                request.setAttribute(errorMessageS, VALIDATION_ERROR);
+                RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
+                dispatcher.forward(request, response);
+            }
 
-                response.sendRedirect(pathToUserPage);
-           // }
-
-        } catch (ServiceException e) {
+        } catch (ServiceException | NullPointerException e) {
             LOGGER.error(SERVER_ERROR, e);
 
             request.setAttribute(errorMessageS, SERVER_ERROR);

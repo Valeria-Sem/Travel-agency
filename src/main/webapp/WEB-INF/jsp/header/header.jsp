@@ -63,7 +63,7 @@
 <%--                    </li>--%>
             <%--                <div class="vl"></div>--%>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><c:out value="${home}"/></a>
+                    <a class="nav-link" href="controller?command=gotomainpage"><c:out value="${home}"/></a>
                 </li>
 <%--                <div class="vl"></div>--%>
                 <li class="nav-item">
