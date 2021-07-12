@@ -56,6 +56,7 @@ public class SaleDaoImpl implements SaleDAO {
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("UserDaoImpl (getSaleByIdUser) -> some problems with extracting user");
+            throw new DAOException(e);
 
         } finally {
             if(connection != null){

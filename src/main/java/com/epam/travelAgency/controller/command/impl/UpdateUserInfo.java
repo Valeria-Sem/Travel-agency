@@ -17,17 +17,18 @@ import java.util.List;
 public class UpdateUserInfo implements Command {
     private final Logger LOGGER = Logger.getLogger(UpdateUserInfo.class);
 
-    private final String currentUser = "current_user";
-    private final String email = "email";
-    private final String password = "password";
-    private final String errorMessage = "Update error";
-    private final String errorMessageS = "errorMsg";
-    private final String findUser = "User with the same email was registered yet";
-    private final String pathToUserPage = "controller?command=gotouserpage";
-    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
-    private final String PATH_TO_User_PAGE = "WEB-INF/jsp/user/userPage.jsp";
+    private final String CURRENT_USER = "current_user";
+    private final String PASSWORD = "password";
+    private final String UPDATE_ERROR = "Update error";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
 
-    private final String SERVER_ERROR= "Sorry server error.";
+    private final String USER_PAGE_COMMAND = "controller?command=gotouserpage";
+    private final String ADMIN_PAGE_COMMAND = "controller?command=gotoadminpage";
+
+    private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String PATH_TO_USER_PAGE = "WEB-INF/jsp/user/userPage.jsp";
+
+    private final String SERVER_ERROR= "Sorry UPDATE server error.";
     private final String VALIDATION_ERROR= "Validation error.";
 
     @Override
@@ -46,37 +47,43 @@ public class UpdateUserInfo implements Command {
         ValidationService validationService = serviceProvider.getValidationService();
 
         try {
-            UserEntity user = (UserEntity) session.getAttribute(currentUser);
+            UserEntity user = (UserEntity) session.getAttribute(CURRENT_USER);
 
             userEmail = user.getEmail();
-            userPassword = request.getParameter(password).trim();
+            userPassword = request.getParameter(PASSWORD).trim();
 
             if (validationService.isAuthorisationDataValid(userEmail, userPassword)){
                 if (userService.isUserUpdate(user, userEmail, userPassword)) {
                     user.setEmail(userEmail);
                     user.setPassword(userPassword);
 
-                    session.setAttribute(currentUser, user);
+                    session.setAttribute(CURRENT_USER, user);
+                    if (user.getRole() == UserRole.AGENT) {
+                        response.sendRedirect(ADMIN_PAGE_COMMAND);
 
-                    response.sendRedirect(pathToUserPage);
+                    } else{
+                        response.sendRedirect(USER_PAGE_COMMAND);
+                    }
 
                 } else {
-                    request.setAttribute(errorMessageS, errorMessage);
-
-                    RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
-                    dispatcher.forward(request, response);
+                    request.setAttribute(ERROR_ATTRIBUTE, UPDATE_ERROR);
+                    request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
+//
+//                    RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
+//                    dispatcher.forward(request, response);
                 }
 
             } else {
-                request.setAttribute(errorMessageS, VALIDATION_ERROR);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
-                dispatcher.forward(request, response);
+                request.setAttribute(ERROR_ATTRIBUTE, VALIDATION_ERROR);
+                request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
+//                RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_User_PAGE);
+//                dispatcher.forward(request, response);
             }
 
         } catch (ServiceException | NullPointerException e) {
             LOGGER.error(SERVER_ERROR, e);
 
-            request.setAttribute(errorMessageS, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
             dispatcher.forward(request, response);
         }

@@ -212,6 +212,8 @@ public class TourDaoImpl implements TourDAO {
         } catch (SQLException | ConnectionPoolException e){
             e.printStackTrace();
             LOGGER.error("-> some problems with update tour status");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);

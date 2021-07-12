@@ -59,7 +59,8 @@ public class TourCustomerDaoImpl implements TourCustomerDAO {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error(" -> some problems with buy tour");
-            e.printStackTrace();
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);

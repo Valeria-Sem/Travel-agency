@@ -20,7 +20,7 @@ import java.util.List;
 public class GoToTourDetails implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToTourDetails.class);
 
-    private final String pathToDetailsPage = "WEB-INF/jsp/tours/details/detailsPage.jsp";
+    private final String PATH_TO_DETAILS_PAGE = "WEB-INF/jsp/tours/details/detailsPage.jsp";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
     private final String ID_PARAM = "id";
@@ -31,8 +31,8 @@ public class GoToTourDetails implements Command {
     private final String ARR_DATES_ATTRIBUTE = "arrDates";
     private final String DEP_DATES_ATTRIBUTE = "depDates";
 
-    private final String page = "page";
-    private final String pageCommand = "gotodetailspage";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotodetailspage";
 
     private final String ERROR_MSG = "errorMsg";
     private final String SERVER_ERROR_MSG = "Server error. Please come back later";
@@ -75,7 +75,7 @@ public class GoToTourDetails implements Command {
             arrivalDates = dateTourService.getArrivalDatesByIdTour(tour.getId());
             departureDates = dateTourService.getDepartureDatesByIdTour(tour.getId());
 
-            session.setAttribute(page, pageCommand);
+            session.setAttribute(PAGE, PAGE_COMMAND);
 
             session.setAttribute(TOUR_ATTRIBUTE, tour);
             session.setAttribute(HOTEL_ATTRIBUTE, hotel);
@@ -85,7 +85,7 @@ public class GoToTourDetails implements Command {
             session.setAttribute(DEP_DATES_ATTRIBUTE, departureDates);
         }
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(pathToDetailsPage);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_DETAILS_PAGE);
             dispatcher.forward(request, response);
 
         } catch (ServiceException e){

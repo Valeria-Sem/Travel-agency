@@ -18,19 +18,19 @@ import java.util.Optional;
 public class Registration implements Command {
     private final Logger LOGGER = Logger.getLogger(Registration.class);
 
-    private final String pathToUserPage = "controller?command=gotouserpage";
-    private final String pathToErrorPage = "WEB-INF/jsp/error/errorPage.jsp";
-    private final String pathToRegistrationPage = "WEB-INF/jsp/registration/registrationPage.jsp";
+    private final String GO_TO_USER_PAGE_COMMAND = "controller?command=gotouserpage";
+    private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String REG_PAGE_PATH = "WEB-INF/jsp/registration/registrationPage.jsp";
 
-    private final String ToRegistrationPageCommand = "controller?command=gotoregistrationpage";
-    private final String email = "email";
-    private final String password = "password";
-    private final String auth = "auth";
-    private final String currentUser = "current_user";
+    private final String GO_REG_PAGE_COMMAND = "controller?command=gotoregistrationpage";
+    private final String EMAIL = "email";
+    private final String PASSWORD = "password";
+    private final String AUTH = "auth";
+    private final String CURRENT_USER = "current_user";
     private final String CURRENT_SALE = "current_sale";
-    private final String currentWallet = "current_wallet";
-    private final String errorMessage = "errorMsg";
-    private final String findUser = "Registration error. User with the same email was registered yet";
+    private final String CURRENT_WALLET = "current_wallet";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+    private final String FIND_USER_ERROR = "Registration error. User with the same email was registered yet";
     private final String VALIDATION_ERROR = "Registration error. You have entered invalid data";
     private final String SERVER_ERROR= "Sorry. registration server error.";
 
@@ -61,14 +61,14 @@ public class Registration implements Command {
         SaleService saleService = serviceProvider.getSaleService();
 
         try {
-            userEmail = request.getParameter(email).trim();
-            userPassword = request.getParameter(password);
+            userEmail = request.getParameter(EMAIL).trim();
+            userPassword = request.getParameter(PASSWORD);
 
             if(validationService.isAuthorisationDataValid(userEmail, userPassword)){
 
                 if(userService.isUserByEmail(userEmail)){
-                        request.setAttribute(errorMessage, findUser);
-                        request.getRequestDispatcher(pathToRegistrationPage).forward(request, response);
+                        request.setAttribute(ERROR_ATTRIBUTE, FIND_USER_ERROR);
+                        request.getRequestDispatcher(REG_PAGE_PATH).forward(request, response);
 
                 } else {
                         UserEntity user = new UserEntity(userEmail, userPassword, userRole);
@@ -78,22 +78,22 @@ public class Registration implements Command {
                         wallet = walletService.saveNewWallet(user.getId());
                         sale = saleService.saveNewSaleInfo(user.getId());
 
-                        session.setAttribute(auth, true);
-                        session.setAttribute(currentUser, user);
-                        session.setAttribute(currentWallet, wallet);
+                        session.setAttribute(AUTH, true);
+                        session.setAttribute(CURRENT_USER, user);
+                        session.setAttribute(CURRENT_WALLET, wallet);
                         session.setAttribute(CURRENT_SALE, sale);
 
 
-                        response.sendRedirect(pathToUserPage);
+                        response.sendRedirect(GO_TO_USER_PAGE_COMMAND);
                 }
             } else {
-                request.setAttribute(errorMessage, VALIDATION_ERROR);
-                request.getRequestDispatcher(pathToRegistrationPage).forward(request, response);
+                request.setAttribute(ERROR_ATTRIBUTE, VALIDATION_ERROR);
+                request.getRequestDispatcher(REG_PAGE_PATH).forward(request, response);
             }
 
         } catch (ServiceException e) {
-            request.setAttribute(errorMessage, SERVER_ERROR);
-            request.getRequestDispatcher(pathToErrorPage).forward(request, response);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
 
             LOGGER.error(SERVER_ERROR, e);
         }

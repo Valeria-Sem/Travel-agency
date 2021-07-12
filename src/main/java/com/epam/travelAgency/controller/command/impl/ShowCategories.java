@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class ShowCategories implements Command {
-    private final String pathToMainPage = "controller?command=gotomainpage";
-    private final String categoriesS = "categories";
+    private final String PATH_TO_MAIN_PAGE = "controller?command=gotomainpage";
+    private final String CATEGORIES = "categories";
 
 
     public ShowCategories(){
@@ -35,7 +35,7 @@ public class ShowCategories implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        Iterable<CategoryEntity> categories = (Iterable<CategoryEntity>) session.getAttribute(categoriesS);
+        Iterable<CategoryEntity> categories = (Iterable<CategoryEntity>) session.getAttribute(CATEGORIES);
 
         if(categories == null){
             ServiceProvider provider = ServiceProvider.getInstance();
@@ -44,9 +44,9 @@ public class ShowCategories implements Command {
             try {
                 categories = categoryService.getAllCategories();
 
-                session.setAttribute(categoriesS, categories);
+                session.setAttribute(PATH_TO_MAIN_PAGE, categories);
 
-                response.sendRedirect(pathToMainPage);
+                response.sendRedirect(PATH_TO_MAIN_PAGE);
             } catch (ServiceException e) {
                 e.printStackTrace();
             }

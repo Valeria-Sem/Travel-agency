@@ -11,12 +11,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class GoToExcursionPage implements Command {
-    private final String pathToExcursionPage = "WEB-INF/jsp/tours/excursion/excursion.jsp";
-    private final String locale = "locale";
-    private final String lang = "lang";
+    private final String PATH_TO_EX_PAGE = "WEB-INF/jsp/tours/excursion/excursion.jsp";
 
-    private final String page = "page";
-    private final String pageCommand = "gotoexcursionpage";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotoexcursionpage";
 
     private final String ERROR_MSG = "errorMsg";
 
@@ -31,9 +29,9 @@ public class GoToExcursionPage implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        session.setAttribute(page, pageCommand);
+        session.setAttribute(PAGE, PAGE_COMMAND);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToExcursionPage);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_EX_PAGE);
         dispatcher.forward(request, response);
     }
 }

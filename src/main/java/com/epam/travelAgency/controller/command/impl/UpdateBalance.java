@@ -22,12 +22,13 @@ public class UpdateBalance implements Command {
     private final Logger LOGGER = Logger.getLogger(UpdateBalance.class);
 
     private final String NEW_BALANCE = "newBalance";
-    private final String current_WALLET = "current_wallet";
-    private final String errorMessageS = "errorMsg";
-    private final String pathToUserPage = "controller?command=gotouserpage";
-    private final String errorMessage = "Update error";
+    private final String CURRENT_WALLET = "current_wallet";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+    private final String UPDATE_ERROR = "Update error";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
     private final String SERVER_ERROR= "Sorry update server error.";
+    private final String PAGE = "page";
+    private final String PATH = "controller?command=";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -45,22 +46,23 @@ public class UpdateBalance implements Command {
         ValidationService validationService = serviceProvider.getValidationService();
 
         try {
-            wallet = (WalletEntity) session.getAttribute(current_WALLET);
+            wallet = (WalletEntity) session.getAttribute(CURRENT_WALLET);
             newBalance = Double.parseDouble(request.getParameter(NEW_BALANCE));
             newBalance += wallet.getBalance();
 
             if(walletService.updateBalance(wallet.getId(), newBalance)){
                 wallet.setBalance(newBalance);
-                request.setAttribute(current_WALLET, wallet);
+                request.setAttribute(CURRENT_WALLET, wallet);
             } else {
-                request.setAttribute(errorMessageS, errorMessage);
+                request.setAttribute(ERROR_ATTRIBUTE, UPDATE_ERROR);
                 request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
             }
 
-            response.sendRedirect(pathToUserPage);
+            String command = (String) request.getSession().getAttribute(PAGE);
+            response.sendRedirect(PATH + command);
 
         } catch (ServiceException e) {
-            request.setAttribute(errorMessageS, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             LOGGER.error(SERVER_ERROR, e);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);

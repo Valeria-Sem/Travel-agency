@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ShowWrongModal implements Command {
-    private final String pathToWrongModal = "WEB-INF/jsp/wrongModal/wrongModal.jsp";
+    private final String WRONG_MODAL_PATH = "WEB-INF/jsp/wrongModal/wrongModal.jsp";
 
     public ShowWrongModal(){
 
@@ -17,11 +17,8 @@ public class ShowWrongModal implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(WRONG_MODAL_PATH);
+        dispatcher.forward(request, response);
     }
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(pathToWrongModal);
-        dispatcher.forward(req, resp);
-    }
 }

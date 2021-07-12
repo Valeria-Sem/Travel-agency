@@ -21,8 +21,8 @@ public class UpdateTourStatus implements Command {
     private final Logger LOGGER = Logger.getLogger(UpdateUserInfo.class);
 
     private final String TOUR_STATUS = "status";
-    private final String errorMessageS = "errorMsg";
-    private final String pathToAdminPage = "controller?command=gotoadminpage";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+    private final String GO_TO_ADMIN_PAGE_COMMAND = "controller?command=gotoadminpage";
     private final String ID_TOUR = "id_tour";
 
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
@@ -46,10 +46,10 @@ public class UpdateTourStatus implements Command {
             status = TourStatus.valueOf(request.getParameter(TOUR_STATUS));
 
             tourService.isTourStatusUpdate(tourId, status);
-            response.sendRedirect(pathToAdminPage);
+            response.sendRedirect(GO_TO_ADMIN_PAGE_COMMAND);
 
         } catch (ServiceException e) {
-            request.setAttribute(errorMessageS, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             LOGGER.error(SERVER_ERROR, e);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);

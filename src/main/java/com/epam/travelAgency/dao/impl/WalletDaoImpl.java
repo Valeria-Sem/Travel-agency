@@ -55,6 +55,8 @@ public class WalletDaoImpl implements WalletDao {
             }
         } catch (ConnectionPoolException | SQLException e){
            LOGGER.error("WalletDaoImpl (getAllWallets) -> some problems with extracting wallets");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps, res);
@@ -66,7 +68,7 @@ public class WalletDaoImpl implements WalletDao {
 
     @Override
     public WalletEntity saveNewWallet(int userId) throws DAOException {
-        WalletEntity newWallet = null;
+        WalletEntity newWallet;
 
         Connection connection = null;
         ConnectionPool pool = null;
@@ -86,6 +88,7 @@ public class WalletDaoImpl implements WalletDao {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("WalletDaoImpl (save new Wallet) -> some problems with saving wallet");
+            throw new DAOException(e);
 
         } finally {
             if(connection != null){
@@ -118,6 +121,8 @@ public class WalletDaoImpl implements WalletDao {
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("WalletDaoImpl (getWalletById) -> some problems with extracting wallet");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps, res);
@@ -149,6 +154,8 @@ public class WalletDaoImpl implements WalletDao {
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("WalletDaoImpl (getWalletById) -> some problems with extracting wallet");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps, res);
@@ -160,12 +167,11 @@ public class WalletDaoImpl implements WalletDao {
 
     @Override
     public boolean updateBalance(int id, double newBalance) throws DAOException {
-        boolean isUpdated = false;
+        boolean isUpdated;
 
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement ps = null;
-        ResultSet res = null;
 
         try{
             pool = ConnectionPool.getInstance();
@@ -181,7 +187,8 @@ public class WalletDaoImpl implements WalletDao {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("WalletDaoImpl (updateBalance) -> some problems with updating wallet");
-            e.printStackTrace();
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps);
@@ -209,6 +216,8 @@ public class WalletDaoImpl implements WalletDao {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("WalletDaoImpl (deleteWallet) -> some problems with deleting wallet");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);

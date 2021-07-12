@@ -27,17 +27,17 @@ import java.util.Set;
 public class ShowChillToursData implements Command {
     private final Logger LOGGER = Logger.getLogger(ShowChillToursData.class);
 
-    private final String pathToChillPage = "controller?command=gotochillpage";
-    private final String countryS = "countries";
-    private final String category = "Отпуск";
-    private final String adultsS = "adults";
-    private final String childrenS = "children";
-    private final String arrDateS = "arrivalDate";
-    private final String depDateS = "departureDate";
-    private final String chillToursS = "chillTours";
+    private final String CHILL_PAGE_COMMAND = "controller?command=gotochillpage";
+    private final String COUNTRY = "countries";
+    private final String CATEGORY = "Отпуск";
+    private final String ADULTS = "adults";
+    private final String CHILDREN = "children";
+    private final String ARR_DATE = "arrivalDate";
+    private final String DEP_DATE = "departureDate";
+    private final String CHILL_TOURS = "chillTours";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    private final String errorMessage = "errorMsg";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
     private final String SERVER_ERROR= "Sorry server error.";
 
 
@@ -60,25 +60,25 @@ public class ShowChillToursData implements Command {
         Set<TourEntity> chillTours;
 
         try {
-            country = request.getParameter(countryS);
-            adults = Integer.parseInt(request.getParameter(adultsS));
-            children = Integer.parseInt(request.getParameter(childrenS));
-            arrDate = LocalDate.parse(request.getParameter(arrDateS));
-            depDate = LocalDate.parse(request.getParameter(depDateS));
+            country = request.getParameter(COUNTRY);
+            adults = Integer.parseInt(request.getParameter(ADULTS));
+            children = Integer.parseInt(request.getParameter(CHILDREN));
+            arrDate = LocalDate.parse(request.getParameter(ARR_DATE));
+            depDate = LocalDate.parse(request.getParameter(DEP_DATE));
 
             ServiceProvider serviceProvider = ServiceProvider.getInstance();
             TourService tourService = serviceProvider.getTourService();
 
-            chillTours = tourService.getTourByStartParams(category, country, arrDate, depDate, adults, children);
+            chillTours = tourService.getTourByStartParams(CATEGORY, country, arrDate, depDate, adults, children);
 
-            session.setAttribute(chillToursS, chillTours);
+            session.setAttribute(CHILL_TOURS, chillTours);
 
-            response.sendRedirect(pathToChillPage);
+            response.sendRedirect(CHILL_PAGE_COMMAND);
 
         } catch (ServiceException e) {
             LOGGER.error(SERVER_ERROR, e);
 
-            request.setAttribute(errorMessage, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }

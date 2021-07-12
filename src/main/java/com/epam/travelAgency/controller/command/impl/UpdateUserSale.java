@@ -24,8 +24,8 @@ public class UpdateUserSale implements Command {
 
     private final String USER_SALE = "userSale";
     private final String SALE_ATTRIBUTE = "sale";
-    private final String errorMessageS = "errorMsg";
-    private final String commandToUserInfo = "controller?command=showuserinfo";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+    private final String COMMAND_TO_USER_INFO_PAGE = "controller?command=showuserinfo";
     private final String ID_USER = "id_user";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
     private final String SERVER_ERROR= "Sorry server error.";
@@ -57,10 +57,10 @@ public class UpdateUserSale implements Command {
             if(validationService.isSaleValid(String.valueOf(newSale))){
                 sale = saleService.updateSaleInfo(userId ,newSale);
                 session.setAttribute(USER_SALE, sale);
-                response.sendRedirect(commandToUserInfo);
+                response.sendRedirect(COMMAND_TO_USER_INFO_PAGE);
 
             } else {
-                request.setAttribute(errorMessageS, VALIDATION_ERROR);
+                request.setAttribute(ERROR_ATTRIBUTE, VALIDATION_ERROR);
                 RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_USER_INFO_PAGE);
                 dispatcher.forward(request, response);
             }
@@ -68,7 +68,7 @@ public class UpdateUserSale implements Command {
         } catch (ServiceException e) {
             LOGGER.error(SERVER_ERROR, e);
 
-            request.setAttribute(errorMessageS, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
             dispatcher.forward(request, response);
         }

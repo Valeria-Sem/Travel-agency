@@ -46,6 +46,8 @@ public class CategoryDaoImpl implements CategoryDAO {
             }
         } catch (ConnectionPoolException | SQLException e){
             LOGGER.error("CategoryDaoImpl (getAllCategories) -> some problems with extracting categories");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps);

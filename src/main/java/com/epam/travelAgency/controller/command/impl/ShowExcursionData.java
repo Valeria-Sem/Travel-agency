@@ -23,16 +23,16 @@ import java.util.Set;
 public class ShowExcursionData implements Command {
     private final Logger LOGGER = Logger.getLogger(ShowExcursionData.class);
 
-    private final String pathToExcursionPage = "controller?command=gotoexcursionpage";
-    private final String countryS = "countries";
-    private final String category = "Экскурсии";
-    private final String arrDateS = "arrivalDate";
-    private final String depDateS = "departureDate";
-    private final String excursionToursS = "excursionTours";
+    private final String GO_TO_EXCURSION_PAGE_COMMAND = "controller?command=gotoexcursionpage";
+    private final String COUNTRY = "countries";
+    private final String CATEGORY = "Экскурсии";
+    private final String ARR_DATE = "arrivalDate";
+    private final String DEP_DATE = "departureDate";
+    private final String EXCURSION_TOURS = "excursionTours";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    private final String errorMessage = "errorMsg";
-    private final String SERVER_ERROR= "Sorry server error.";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+    private final String SERVER_ERROR= "Sorry server error. Please, come back later.";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -51,19 +51,19 @@ public class ShowExcursionData implements Command {
         TourService tourService = provider.getTourService();
 
         try {
-            country = request.getParameter(countryS);
-            arrDate = LocalDate.parse(request.getParameter(arrDateS));
-            depDate = LocalDate.parse(request.getParameter(depDateS));
+            country = request.getParameter(COUNTRY);
+            arrDate = LocalDate.parse(request.getParameter(ARR_DATE));
+            depDate = LocalDate.parse(request.getParameter(DEP_DATE));
 
-            excursionTours = tourService.getTourByStartParams(category, country, arrDate, depDate);
+            excursionTours = tourService.getTourByStartParams(CATEGORY, country, arrDate, depDate);
 
-            session.setAttribute(excursionToursS, excursionTours);
+            session.setAttribute(EXCURSION_TOURS, excursionTours);
 
-            response.sendRedirect(pathToExcursionPage);
+            response.sendRedirect(GO_TO_EXCURSION_PAGE_COMMAND);
         } catch (ServiceException e) {
             LOGGER.error(SERVER_ERROR, e);
 
-            request.setAttribute(errorMessage, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }

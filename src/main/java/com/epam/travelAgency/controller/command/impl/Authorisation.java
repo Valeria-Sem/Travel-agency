@@ -8,7 +8,6 @@ import com.epam.travelAgency.service.*;
 import com.epam.travelAgency.service.validation.ValidationService;
 import org.apache.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class GoToShoppingPage implements Command {
-    private final String pathToShoppingPage = "WEB-INF/jsp/tours/shopping/shopping.jsp";
+    private final String PATH_TO_SHOPPING_PAGE = "WEB-INF/jsp/tours/shopping/shopping.jsp";
 
-    private final String page = "page";
-    private final String pageCommand = "gotoshoppingpage";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotoshoppingpage";
     private final String ERROR_MSG = "errorMsg";
 
     public GoToShoppingPage() {
@@ -28,9 +28,9 @@ public class GoToShoppingPage implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        session.setAttribute(page, pageCommand);
+        session.setAttribute(PAGE, PAGE_COMMAND);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToShoppingPage);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_SHOPPING_PAGE);
         dispatcher.forward(request, response);
     }
 }

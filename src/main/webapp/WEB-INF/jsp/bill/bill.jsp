@@ -2,8 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:include page="../user/userPage.jsp"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="bill.header" var="headerS"/>
+<fmt:message bundle="${loc}" key="bill.text.coast" var="coastText"/>
+<fmt:message bundle="${loc}" key="bill.text.email" var="emailText"/>
+<fmt:message bundle="${loc}" key="bill.close.btn" var="closeBtn"/>
 
+<jsp:include page="../main/mainPage.jsp"/>
 <html lang="ru"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,16 +41,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5>BILL</h5>
-          <a type="button" href="controller?command=gotouserpage" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></a>
+          <h5><c:out value="${headerS}"/></h5>
+          <a type="button" href="controller?command=gotomainpage" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></a>
         </div>
         <div class="modal-body">
-          <p>Оплата прошла успешно. Цена со скидкой составила - ${discountPrice} $ </p>
-          <p>Подтверждение оплаты было васлано вам на почту</p>
+          <p><c:out value="${coastText}"/> - ${discountPrice} $ </p>
+          <p><c:out value="${emailText}"/></p>
         </div>
         <div class="modal-footer">
-          <a type="button" href="controller?command=gotouserpage" class="btn btn-secondary" data-bs-dismiss="modal">
-            Close
+          <a type="button" href="controller?command=gotomainpage" class="btn btn-secondary" data-bs-dismiss="modal">
+            <c:out value="${closeBtn}"/>
           </a>
         </div>
       </div>

@@ -14,16 +14,15 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class GoToLoginPage implements Command {
-    private final String currUser = "current_user";
-    private final String pathToLoginPage = "/WEB-INF/jsp/authorisation/loginPage.jsp";
-    private final String pathToAdminPage = "controller?command=gotoadminpage";
-    private final String pathToUserPage = "controller?command=gotouserpage";
-    private final String locale = "locale";
-    private final String lang = "lang";
-    private final String page = "page";
+    private final String CURRENT_USER = "current_user";
     private final String ROLE_ATTRIBUTE = "role";
 
-    private final String pageCommand = "gotologinpage";
+    private final String PATH_TO_AUTHORISATION_PAGE = "/WEB-INF/jsp/authorisation/loginPage.jsp";
+    private final String PATH_TO_ADMIN_PAGE = "controller?command=gotoadminpage";
+    private final String PATH_TO_USER_PAGE = "controller?command=gotouserpage";
+
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotologinpage";
 
 
     public GoToLoginPage() {
@@ -37,24 +36,29 @@ public class GoToLoginPage implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         HttpSession session = request.getSession();
 
-        UserEntity currentUser = (UserEntity) session.getAttribute(currUser);
-        UserRole role = (UserRole) session.getAttribute(ROLE_ATTRIBUTE);
+        try {
+            UserEntity currentUser = (UserEntity) session.getAttribute(CURRENT_USER);
+            UserRole role = (UserRole) session.getAttribute(ROLE_ATTRIBUTE);
 
-        session.setAttribute(page, pageCommand);
+            session.setAttribute(PAGE, PAGE_COMMAND);
 
-        if(currentUser != null){
-            switch (role){
-                case AGENT:
-                    response.sendRedirect(pathToAdminPage);
-                    break;
+            if (currentUser != null) {
+                switch (role) {
+                    case AGENT:
+                        response.sendRedirect(PATH_TO_ADMIN_PAGE);
+                        break;
 
-                case CUSTOMER:
-                    response.sendRedirect(pathToUserPage);
-                    break;
+                    case CUSTOMER:
+                        response.sendRedirect(PATH_TO_USER_PAGE);
+                        break;
+                }
+            } else {
+                RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_AUTHORISATION_PAGE);
+                dispatcher.forward(request, response);
             }
-
-        } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(pathToLoginPage);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_AUTHORISATION_PAGE);
             dispatcher.forward(request, response);
         }
     }

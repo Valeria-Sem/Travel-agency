@@ -21,21 +21,22 @@ import java.time.LocalDate;
 public class UpdateUserDetInfo implements Command {
     private final Logger LOGGER = Logger.getLogger(UpdateUserInfo.class);
 
-    private final String currentUser = "current_user";
-    private final String currentUserDet = "current_userDet";
-    private final String name = "name";
-    private final String surname = "surname";
-    private final String dateOfBirth = "date_of_birth";
-    private final String citizenship = "citizenship";
-    private final String passport = "passport";
-    private final String dateOfIssue = "date_of_issue";
-    private final String expirationDate = "expiration_date";
-    private final String errorMessage = "Update error";
-    private final String errorMessageS = "errorMsg";
-    private final String pathToUserPage = "controller?command=gotouserpage";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
     private final String PATH_TO_USER_PAGE = "WEB-INF/jsp/user/userPage.jsp";
-    private final String SERVER_ERROR= "Sorry, server error.";
+
+    private final String CURRENT_USER_DET = "current_userDet";
+    private final String NAME = "name";
+    private final String SURNAME = "surname";
+    private final String DATE_OF_BTH = "date_of_birth";
+    private final String CITIZENSHIP = "citizenship";
+    private final String PASSPORT = "passport";
+    private final String DATE_OF_ISS = "date_of_issue";
+    private final String EXP_DATE = "expiration_date";
+    private final String UPDATE_ERROR = "Update error";
+    private final String GO_TO_USER_PAGE_COMMAND = "controller?command=gotouserpage";
+
+    private final String ERROR_MSG = "errorMsg";
+    private final String SERVER_ERROR_MSG = "Server error. Please come back later";
     private final String VALIDATION_ERROR= "Validation error. Check your passport data!";
 
     @Override
@@ -60,38 +61,39 @@ public class UpdateUserDetInfo implements Command {
         ValidationService validationService = serviceProvider.getValidationService();
 
         try {
-            userName = request.getParameter(name);
-            userSurname = request.getParameter(surname);
-            userDateOfB = LocalDate.parse(request.getParameter(dateOfBirth));
-            userCitizenship = request.getParameter(citizenship);
-            userPassport = request.getParameter(passport);
-            userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue));
-            userEDate = LocalDate.parse(request.getParameter(expirationDate));
+            userName = request.getParameter(NAME);
+            userSurname = request.getParameter(SURNAME);
+            userDateOfB = LocalDate.parse(request.getParameter(DATE_OF_BTH));
+            userCitizenship = request.getParameter(CITIZENSHIP);
+            userPassport = request.getParameter(PASSPORT);
+            userDateOfI = LocalDate.parse(request.getParameter(DATE_OF_ISS));
+            userEDate = LocalDate.parse(request.getParameter(EXP_DATE));
 
             if(validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
                     userPassport, userDateOfI.toString(), userEDate.toString())) {
 
-                UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
+                UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(CURRENT_USER_DET);
                 UserDetailsEntity newUserDet = new UserDetailsEntity(userDet.getId(), userDet.getIdUser(),
                         userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
 
                 if (userDetailsService.isUserDetailsUpdate(newUserDet)) {
-                    session.setAttribute(currentUserDet, newUserDet);
-                    response.sendRedirect(pathToUserPage);
+                    session.setAttribute(CURRENT_USER_DET, newUserDet);
+                    response.sendRedirect(GO_TO_USER_PAGE_COMMAND);
 
                 } else {
-                    request.setAttribute(errorMessageS, errorMessage);
+                    request.setAttribute(ERROR_MSG, UPDATE_ERROR);
                     request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
                 }
             } else {
-                request.setAttribute(errorMessageS, VALIDATION_ERROR);
+                request.setAttribute(ERROR_MSG, VALIDATION_ERROR);
+
                 request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
             }
 
         } catch (ServiceException | NullPointerException e) {
-            LOGGER.error(errorMessage);
+            LOGGER.error(SERVER_ERROR_MSG, e);
 
-            request.setAttribute(errorMessageS, SERVER_ERROR);
+            request.setAttribute(ERROR_MSG, SERVER_ERROR_MSG);
             request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
 

@@ -53,6 +53,7 @@ public class MealsDaoImpl implements MealsDAO {
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("MealsDaoImpl (getMealsById) -> some problems with extracting MEALS");
+            throw new DAOException(e);
 
         } finally {
             if(connection != null){

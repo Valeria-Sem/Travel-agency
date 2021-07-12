@@ -1,6 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="error.oops" var="oops"/>
+<fmt:message bundle="${loc}" key="error.server" var="server"/>
 
 <html>
 <head>
@@ -20,8 +25,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="error-template">
-        <h1>
-          Oops!</h1>
+        <h1><c:out value="${oops}"/></h1>
 
         <div class="error-details">
           <c:if test="${requestScope.errorMsg != null}">
@@ -30,12 +34,14 @@
                 ${requestScope.errorMsg}
             </div>
           </c:if>
-            SERWER ERROR :(
+          <c:if test="${requestScope.errorMsg == null}">
+
+            <div class="alert alert-danger" role="alert">
+              <c:out value="${server}"/>
+            </div>
+          </c:if>
+
         </div>
-<%--        <div class="error-actions">--%>
-<%--          <a href="controller?command=gotomainpage" class="btn btn-primary btn-lg">--%>
-<%--            Take Me Home </a>--%>
-<%--        </div>--%>
       </div>
     </div>
   </div>

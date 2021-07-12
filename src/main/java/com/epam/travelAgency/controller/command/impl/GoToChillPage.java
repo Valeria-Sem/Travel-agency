@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class GoToChillPage implements Command {
-    private final String pathToChillPage = "WEB-INF/jsp/tours/chill/chill.jsp";
+    private final String PATH_TO_CHILL_PAGE = "WEB-INF/jsp/tours/chill/chill.jsp";
 
-    private final String page = "page";
-    private final String pageCommand = "gotochillpage";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotochillpage";
 
     private final String ERROR_MSG = "errorMsg";
 
@@ -34,12 +34,11 @@ public class GoToChillPage implements Command {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         HttpSession session = request.getSession();
 
-        session.setAttribute(page, pageCommand);
+        session.setAttribute(PAGE, PAGE_COMMAND);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToChillPage);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_CHILL_PAGE);
         dispatcher.forward(request, response);
 
     }

@@ -58,7 +58,8 @@ public class DateTourDaoImpl implements DateTourDAO {
 
         } catch (ConnectionPoolException | SQLException e){
             LOGGER.error("DateTourDaoImpl (getArrivalDatesByIdTour) -> some problems with extracting dates");
-            e.printStackTrace();
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps, res);
@@ -94,11 +95,11 @@ public class DateTourDaoImpl implements DateTourDAO {
 
             connection.close();
             ps.close();
-       //     pool.dispose();
 
         } catch (ConnectionPoolException | SQLException e){
             LOGGER.error("DateTourDaoImpl (getDepartureDatesByIdTour) -> some problems with extracting dates");
-            e.printStackTrace();
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps, res);

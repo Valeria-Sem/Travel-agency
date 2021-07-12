@@ -18,14 +18,14 @@ import java.util.List;
 public class GoToUserPage implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToUserPage.class);
 
-    private static final String userPagePath = "WEB-INF/jsp/user/userPage.jsp";
+    private final String USER_PAGE_PATH = "WEB-INF/jsp/user/userPage.jsp";
 
-    private final String page = "page";
-    private final String pageCommand = "gotouserpage";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotouserpage";
 
     private final String USER_TOURS = "userTours";
-    private final String currentUser = "current_user";
-    private final String currentUserDet = "current_userDet";
+    private final String CURRENT_USER = "current_user";
+    private final String CURRENT_USER_DET = "current_userDet";
 
     private final String ERROR_MSG = "errorMsg";
     private final String SERVER_ERROR_MSG = "Server error. Please come back later";
@@ -54,25 +54,25 @@ public class GoToUserPage implements Command {
         TourCustomerService tourCustomerService = provider.getTourCustomerService();
 
         try{
-            user = (UserEntity) session.getAttribute(currentUser);
+            user = (UserEntity) session.getAttribute(CURRENT_USER);
 
             UserDetailsEntity userDet = userDetailsService.getUserDetailsByIdUser(user.getId());
             userTours = tourCustomerService.getAllCustomerTours(user.getId());
 
             session.setAttribute(USER_TOURS, userTours);
 
-            session.setAttribute(currentUserDet, userDet);
+            session.setAttribute(CURRENT_USER_DET, userDet);
 
-            session.setAttribute(page, pageCommand);
+            session.setAttribute(PAGE, PAGE_COMMAND);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(userPagePath);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(USER_PAGE_PATH);
             dispatcher.forward(request, response);
 
         } catch (ServiceException e){
             LOGGER.error(SERVER_ERROR_MSG, e);
 
             request.setAttribute(ERROR_MSG, SERVER_ERROR_MSG);
-            request.getRequestDispatcher(userPagePath).forward(request, response);
+            request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }
 }

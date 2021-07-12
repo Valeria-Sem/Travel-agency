@@ -66,19 +66,19 @@
                     <a class="nav-link" href="controller?command=gotomainpage"><c:out value="${home}"/></a>
                 </li>
 <%--                <div class="vl"></div>--%>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><c:out value="${tours}"/></a>
-                </li>
-<%--                <div class="vl"></div>--%>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><c:out value="${about}"/></a>
-                </li>
-<%--                <div class="vl"></div>--%>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">
-                        <c:out value="${help}"/>
-                    </a>
-                </li>
+<%--                <li class="nav-item">--%>
+<%--                    <a class="nav-link" href="#"><c:out value="${tours}"/></a>--%>
+<%--                </li>--%>
+<%--&lt;%&ndash;                <div class="vl"></div>&ndash;%&gt;--%>
+<%--                <li class="nav-item">--%>
+<%--                    <a class="nav-link" href="#"><c:out value="${about}"/></a>--%>
+<%--                </li>--%>
+<%--&lt;%&ndash;                <div class="vl"></div>&ndash;%&gt;--%>
+<%--                <li class="nav-item">--%>
+<%--                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">--%>
+<%--                        <c:out value="${help}"/>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
             </ul>
 
             <div class="lang-buttons">

@@ -20,20 +20,19 @@ import java.time.LocalDate;
 public class SaveUserDetails implements Command {
     private final Logger LOGGER = Logger.getLogger(SaveUserDetails.class);
 
-    private final String currentUser = "current_user";
-    private final String currentUserDet = "current_userDet";
-    private final String name = "name";
-    private final String surname = "surname";
-    private final String dateOfBirth = "date_of_birth";
-    private final String citizenship = "citizenship";
-    private final String passport = "passport";
-    private final String dateOfIssue = "date_of_issue";
-    private final String expirationDate = "expiration_date";
-    private final String errorMessage = "Update error";
-    private final String findUser = "User with the same email was registered yet";
-    private final String pathToUserPage = "WEB-INF/jsp/user/userPage.jsp";
-    private final String updateUserDet = "controller?command=updateuserdetinfo";
-    private final String commandToUserPage = "controller?command=gotouserpage";
+    private final String CURRENT_USER = "current_user";
+    private final String CURRENT_USER_DET = "current_userDet";
+    private final String NAME = "name";
+    private final String SURNAME = "surname";
+    private final String DATE_OF_BTH = "date_of_birth";
+    private final String CITIZENSHIP = "citizenship";
+    private final String PASSPORT = "passport";
+    private final String DATE_OF_ISS = "date_of_issue";
+    private final String EXP_DATE = "expiration_date";
+    private final String UPDATE_ERROR = "Update error";
+    private final String FIND_USER_ERROR = "User with the same email was registered yet";
+    private final String USER_PAGE_PATH = "WEB-INF/jsp/user/userPage.jsp";
+    private final String GO_TO_USER_PAGE_COMMAND = "controller?command=gotouserpage";
 
     private final String ERROR_MSG = "errorMsg";
     private final String SERVER_ERROR_MSG = "Server error. Please come back later";
@@ -63,34 +62,32 @@ public class SaveUserDetails implements Command {
         ValidationService validationService = serviceProvider.getValidationService();
 
         try {
+            //            UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(CURRENT_USER_DET);
+            userName = request.getParameter(NAME).trim();
+            userSurname = request.getParameter(SURNAME).trim();
+            userDateOfB = LocalDate.parse(request.getParameter(DATE_OF_BTH).trim());
+            userCitizenship = request.getParameter(CITIZENSHIP).trim();
+            userPassport = request.getParameter(PASSPORT).trim();
+            userDateOfI = LocalDate.parse(request.getParameter(DATE_OF_ISS).trim());
+            userEDate = LocalDate.parse(request.getParameter(EXP_DATE).trim());
 
-            UserDetailsEntity userDet = (UserDetailsEntity) session.getAttribute(currentUserDet);
+            if(validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
+                    userPassport, userDateOfI.toString(), userEDate.toString())){
+                UserEntity user = (UserEntity) session.getAttribute(CURRENT_USER);
+                UserDetailsEntity newUserDet = new UserDetailsEntity(user.getId(),
+                        userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
 
-                userName = request.getParameter(name).trim();
-                userSurname = request.getParameter(surname).trim();
-                userDateOfB = LocalDate.parse(request.getParameter(dateOfBirth).trim());
-                userCitizenship = request.getParameter(citizenship).trim();
-                userPassport = request.getParameter(passport).trim();
-                userDateOfI = LocalDate.parse(request.getParameter(dateOfIssue).trim());
-                userEDate = LocalDate.parse(request.getParameter(expirationDate).trim());
+                if(userDetailsService.addUserDetails(newUserDet)){
+                    newUserDet = userDetailsService.getUserDetailsByIdUser(user.getId());
 
-                if(validationService.isPassportDataValid(userName, userSurname, userDateOfB.toString(), userCitizenship,
-                        userPassport, userDateOfI.toString(), userEDate.toString())){
-                    UserEntity user = (UserEntity) session.getAttribute(currentUser);
-                    UserDetailsEntity newUserDet = new UserDetailsEntity(user.getId(),
-                            userName, userSurname, userDateOfB, userCitizenship, userPassport, userDateOfI, userEDate);
+                    session.setAttribute(CURRENT_USER_DET, newUserDet);
 
-                    if(userDetailsService.addUserDetails(newUserDet)){
-                        newUserDet = userDetailsService.getUserDetailsByIdUser(user.getId());
-
-                        session.setAttribute(currentUserDet, newUserDet);
-                    }
-                } else {
-                    request.setAttribute(ERROR_MSG, VALIDATION_ERROR_MSG);
-                    request.getRequestDispatcher(pathToUserPage).forward(request, response);
+                    response.sendRedirect(GO_TO_USER_PAGE_COMMAND);
                 }
-
-                response.sendRedirect(commandToUserPage);
+            } else {
+                request.setAttribute(ERROR_MSG, VALIDATION_ERROR_MSG);
+                request.getRequestDispatcher(USER_PAGE_PATH).forward(request, response);
+            }
 
         } catch (ServiceException e) {
             LOGGER.error(SERVER_ERROR_MSG, e);

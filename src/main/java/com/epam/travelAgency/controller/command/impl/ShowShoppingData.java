@@ -22,17 +22,17 @@ import java.util.Set;
 public class ShowShoppingData implements Command {
     private final Logger LOGGER = Logger.getLogger(ShowShoppingData.class);
 
-    private final String pathToShoppingPage = "controller?command=gotoshoppingpage";
+    private final String GO_TO_SHOPPING_PAGE_COMMAND = "controller?command=gotoshoppingpage";
 
-    private final String countryS = "countries";
-    private final String category = "Шоппинг";
-    private final String arrDateS = "arrivalDate";
-    private final String shoppingToursS = "shoppingTours";
+    private final String COUNTRY = "countries";
+    private final String CATEGORY = "Шоппинг";
+    private final String ARR_DATE = "arrivalDate";
+    private final String SHOPPING_TOURS = "shoppingTours";
 
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    private final String errorMessage = "errorMsg";
-    private final String SERVER_ERROR= "Sorry server error.";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+    private final String SERVER_ERROR= "Sorry server error. Please, come back later.";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -50,19 +50,19 @@ public class ShowShoppingData implements Command {
         TourService tourService = serviceProvider.getTourService();
 
         try {
-            country = request.getParameter(countryS);
-            arrDate = LocalDate.parse(request.getParameter(arrDateS));
+            country = request.getParameter(COUNTRY);
+            arrDate = LocalDate.parse(request.getParameter(ARR_DATE));
 
-            shoppingTours = tourService.getTourByStartParams(category, country, arrDate);
+            shoppingTours = tourService.getTourByStartParams(CATEGORY, country, arrDate);
 
-            session.setAttribute(shoppingToursS, shoppingTours);
+            session.setAttribute(SHOPPING_TOURS, shoppingTours);
 
-            response.sendRedirect(pathToShoppingPage);
+            response.sendRedirect(GO_TO_SHOPPING_PAGE_COMMAND);
 
         } catch (ServiceException e) {
             LOGGER.error(SERVER_ERROR, e);
 
-            request.setAttribute(errorMessage, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
         }
     }

@@ -4,12 +4,31 @@
 
 <jsp:include page="../header/header.jsp"/>
 
-<%--<jsp:useBean id="current_userDet" scope="session" type="com.epam.travelAgency.entity.UserDetailsEntity"/>--%>
 <jsp:useBean id="current_user" scope="session" type="com.epam.travelAgency.entity.UserEntity"/>
 <jsp:useBean id="current_wallet" scope="session" type="com.epam.travelAgency.entity.WalletEntity"/>
 <jsp:useBean id="users" scope="session" type="java.util.List"/>
 <jsp:useBean id="tours" scope="session" type="java.util.List"/>
 <jsp:useBean id="statuses" scope="session" type="java.util.EnumSet"/>
+
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="user.logout" var="logout"/>
+<fmt:message bundle="${loc}" key="admin.panel" var="panel"/>
+<fmt:message bundle="${loc}" key="admin.panel.customers" var="customers"/>
+<fmt:message bundle="${loc}" key="admin.panel.auth" var="auth"/>
+<fmt:message bundle="${loc}" key="admin.panel.balanceSale" var="balanceSale"/>
+<fmt:message bundle="${loc}" key="admin.panel.tours" var="toursP"/>
+<fmt:message bundle="${loc}" key="admin.panel.updateBtn" var="updateBtn"/>
+<fmt:message bundle="${loc}" key="admin.panel.updateBalanceBtn" var="updateBalanceBtn"/>
+<fmt:message bundle="${loc}" key="admin.panel.detailsBtn" var="detailsBtn"/>
+<fmt:message bundle="${loc}" key="admin.panel.status" var="statusL"/>
+<fmt:message bundle="${loc}" key="admin.modal.summ" var="summ"/>
+<fmt:message bundle="${loc}" key="admin.panel.saveBtn" var="saveBtn"/>
+<fmt:message bundle="${loc}" key="admin.panel.saleH" var="saleH"/>
+<fmt:message bundle="${loc}" key="admin.panel.balanceH" var="balanceH"/>
+<fmt:message bundle="${loc}" key="user.login.email-input" var="emailI"/>
+<fmt:message bundle="${loc}" key="user.login.password-input" var="passwordI"/>
+
 
 
 <html>
@@ -35,9 +54,11 @@
 <div class="alert alert-info" role="alert">
 
     <h4 class="alert-heading"> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-    </svg> Панель администратора</h4>
-    <a href="controller?command=logout">logout</a>
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
+    </svg><c:out value="${panel}"/></h4>
+    <a href="controller?command=logout">
+        <c:out value="${logout}"/>
+    </a>
 
 
 </div>
@@ -47,23 +68,21 @@
         <div class="py-5 text-center">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab1" role="tablist">
-                    <a class="nav-link" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab" aria-controls="nav-users" aria-selected="true">Туры</a>
-                    <a class="nav-link" id="nav-booking-tab" data-toggle="tab" href="#nav-booking" role="tab" aria-controls="nav-booking" aria-selected="false">Покупатели</a>
-                    <a class="nav-link active" id="nav-home-tab1" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Авторизационные данные</a>
-<%--                    <a class="nav-link" id="nav-profile-tab1" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Паспортные данные</a>--%>
-                    <a class="nav-link" id="nav-balance-tab" data-toggle="tab" href="#nav-balance" role="tab" aria-controls="nav-balance" aria-selected="false">Баланс & Скидки</a>
+                    <a class="nav-link active" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab" aria-controls="nav-users" aria-selected="true"><c:out value="${toursP}"/></a>
+                    <a class="nav-link" id="nav-booking-tab" data-toggle="tab" href="#nav-booking" role="tab" aria-controls="nav-booking" aria-selected="false"><c:out value="${customers}"/></a>
+                    <a class="nav-link " id="nav-home-tab1" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false"><c:out value="${auth}"/></a>
+                    <a class="nav-link" id="nav-balance-tab" data-toggle="tab" href="#nav-balance" role="tab" aria-controls="nav-balance" aria-selected="false"><c:out value="${balanceSale}"/></a>
                 </div>
             </nav>
 
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade pad" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="col-md-7 col-lg-8">
-                        <h4 class="mb-3">Общие данные</h4>
                         <form class="needs-validation" novalidate="" action="controller?command=updateuserinfo" method="post">
                             <div class="row g-3">
 
                                 <div class="col-12">
-                                    <label for="email" class="form-label">Почта</label>
+                                    <label for="email" class="form-label"><c:out value="${emailI}"/></label>
                                     <div class="input-group has-validation">
                                         <span class="input-group-text">@</span>
                                         <input type="email" class="form-control " id="email" name="email" placeholder="Почта"
@@ -72,7 +91,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="password" class="form-label">Password</label>
+                                    <label for="password" class="form-label"><c:out value="${passwordI}"/></label>
                                     <input type="password" class="form-control" id="password" name="password" value="${current_user.password}"
                                     minlength="8" maxlength="25">
                                     <div class="invalid-feedback">
@@ -81,106 +100,25 @@
                                 </div>
                             </div>
 
-                            <button class="w-100 btn btn-primary btn-lg" type="submit" style="margin-top: 30px">Изменить данные</button>
+                            <button class="w-100 btn btn-primary btn-lg" type="submit" style="margin-top: 30px"><c:out value="${updateBtn}"/></button>
                         </form>
                     </div>
                 </div>
 
-<%--                <div class="tab-pane fade pad" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">--%>
-<%--                    <div class="col-md-7 col-lg-8">--%>
-<%--                        <h4 class="mb-3">Паспортные данные</h4>--%>
-<%--                        <form class="needs-validation" novalidate="">--%>
-<%--                            <div class="row g-3">--%>
-<%--                                <div class="col-sm-6">--%>
-<%--                                    <label for="firstName" class="form-label">First name</label>--%>
-<%--                                    <input type="text" class="form-control caps" id="firstName" placeholder=""--%>
-<%--                                           value="${current_userDet.name}" required="">--%>
-<%--                                    <div class="invalid-feedback">--%>
-<%--                                        Valid first name is required.--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-sm-6">--%>
-<%--                                    <label for="lastName" class="form-label">Last name</label>--%>
-<%--                                    <input type="text" class="form-control caps" id="lastName" placeholder=""--%>
-<%--                                           value="${current_userDet.surname}" required="">--%>
-<%--                                    <div class="invalid-feedback">--%>
-<%--                                        Valid last name is required.--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-12">--%>
-<%--                                    <label for="datepicker1" class="form-label">Дата рождения</label>--%>
-<%--                                    <input type="date" class="form-control" name="arrivalDate" data-format="mm-dd-yyyy"--%>
-<%--                                           aria-label="Дата прилёта"--%>
-<%--                                           id="datepicker1" required=""--%>
-<%--                                           value="${current_userDet.dateOfBirth}"--%>
-<%--                                           pattern="[0-9].[0-9].[0-9]{2,2,4}">--%>
-<%--                                    <div class="invalid-feedback">--%>
-<%--                                        Please enter your shipping address.--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-12">--%>
-<%--                                    <label for="address" class="form-label">Гражданство</label>--%>
-<%--                                    <input type="text" class="form-control caps" id="address"--%>
-<%--                                           value="${current_userDet.citizenship}"--%>
-<%--                                           placeholder="Republic of Belarus" required="">--%>
-<%--                                    <div class="invalid-feedback">--%>
-<%--                                        Please enter your shipping address.--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-12">--%>
-<%--                                    <label for="address2" class="form-label"> Паспорт </label>--%>
-<%--                                    <input type="text" class="form-control caps" id="address2"--%>
-<%--                                           value="${current_userDet.passport}" placeholder="MP1234567">--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-12">--%>
-<%--                                    <label for="datepicker2" class="form-label">Дата выдачи</label>--%>
-<%--                                    <input type="date" class="form-control" name="arrivalDate" data-format="mm-dd-yyyy"--%>
-<%--                                           aria-label="Дата прилёта"--%>
-<%--                                           id="datepicker2" required=""--%>
-<%--                                           value="${current_userDet.dateOfIssue}"--%>
-<%--                                           pattern="[0-9].[0-9].[0-9]{2,2,4}">--%>
-<%--                                    <div class="invalid-feedback">--%>
-<%--                                        Please enter your shipping address.--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-12">--%>
-<%--                                    <label for="datepicker3" class="form-label">Дата окончания</label>--%>
-<%--                                    <input type="date" class="form-control" name="arrivalDate" data-format="mm-dd-yyyy"--%>
-<%--                                           aria-label="Дата прилёта"--%>
-<%--                                           id="datepicker3" required="" pattern="[0-9].[0-9].[0-9]{2,2,4}"--%>
-<%--                                           value="${current_userDet.expirationDate}">--%>
-<%--                                    <div class="invalid-feedback">--%>
-<%--                                        Please enter your shipping address.--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <hr class="my-4">--%>
-<%--                            </div>--%>
-
-<%--                            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>--%>
-<%--                        </form>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
                 <div class="tab-pane fade pad" id="nav-balance" role="tabpanel" aria-labelledby="nav-balance-tab">
                     <div class="container-fluid mt-3">
                         <div class="container">
                             <div class="row text-center">
                                 <div class="row g-2">
                                     <div class="col">
-                                        <h2>Your balance</h2>
+                                        <h2><c:out value="${balanceH}"/></h2>
                                         <h1>${current_wallet.balance} $</h1>
 
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#myModal" style="margin-top: 30px"> Пополнить баланс </button>
+                                                data-bs-target="#myModal" style="margin-top: 30px"> <c:out value="${updateBalanceBtn}"/></button>
                                     </div>
                                     <div class="col">
-                                        <h2>Your sale</h2>
+                                        <h2><c:out value="${saleH}"/></h2>
                                         <h1>${current_sale.sale} %</h1>
                                     </div>
                                 </div>
@@ -197,15 +135,9 @@
                                     <div class="col col-lg-4 description" >
                                         <div class="card text-center mt-5 description-container detparam">
                                             <span class="badge bg-danger"> ${user.email}</span>
-<%--                                            <div class="card-body" >--%>
-
-<%--&lt;%&ndash;                                                <h4 class="card-title" style="margin-top: 10px">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                                    <span class="badge rounded-pill bg-warning text-dark">${user.price} $</span>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                                </h4>&ndash;%&gt;--%>
-<%--                                            </div>--%>
                                             <div class="card-footer">
                                                 <a class="btn btn-outline-primary" href="controller?command=showuserinfo&id_user=${user.id}">
-                                                    Show details
+                                                    <c:out value="${detailsBtn}"/>
                                                 </a>
                                             </div>
                                         </div>
@@ -224,12 +156,6 @@
                                     <div class="col col-lg-4 description" >
                                         <div class="card text-center mt-5 description-container param">
                                             <img src="${tour.imgPath}" alt="" class="card-img-top img">
-<%--                                            <c:if test="${tour.status eq 'HOT'}">--%>
-<%--                                                <span class="badge bg-danger"> ${tour.status}</span>--%>
-<%--                                            </c:if>--%>
-<%--                                            <c:if test="${tour.status eq 'STANDART'}">--%>
-<%--                                                <span class="badge bg-warning"> ${tour.status}</span>--%>
-<%--                                            </c:if>--%>
                                             <c:choose>
                                                 <c:when test="${tour.status eq 'HOT'}">
                                                     <span class="badge bg-danger"> ${tour.status}</span>
@@ -245,16 +171,12 @@
                                                 <h4 class="card-title" style="margin-top: 10px">
                                                     <span class="badge rounded-pill bg-warning text-dark">${tour.price} $</span>
                                                 </h4>
-
-
-
                                             </div>
                                             <div class="card-footer">
                                                 <form action="controller?command=updatetourstatus&id_tour=${tour.id}" method="post">
 
-
                                                 <label for="floatingSelectGrid">
-                                                    Назначить новый статус
+                                                    <c:out value="${statusL}"/>
                                                 </label>
                                                 <select class="form-select" id="floatingSelectGrid"
                                                         required="" name="status"
@@ -265,8 +187,7 @@
                                                 </select>
                                                 <button class="btn btn-outline-primary" style="margin-top: 10px"
                                                 type="submit">
-<%--                                                    <c:out value="${detailsBtn}"/>--%>
-                                                    Update
+                                                    <c:out value="${updateBtn}"/>
                                                 </button>
                                                 </form>
                                             </div>
@@ -292,19 +213,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Пополнение баланса</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><c:out value="${updateBalanceBtn}"/></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="controller?command=updatebalance" method="post">
                 <div class="modal-body">
-                    <label for="bal" class="form-label"> Введите сумму $ </label>
+                    <label for="bal" class="form-label"> <c:out value="${summ}"/> $ </label>
                     <input type="text" class="form-control caps" id="bal" name="newBalance"
                            pattern="[0-9]{1,3}" title="Only digits" minlength="1" maxlength="3">
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" type="submit">Save changes</button>
+                    <button class="btn btn-primary" type="submit"><c:out value="${saveBtn}"/></button>
                 </div>
             </form>
         </div>

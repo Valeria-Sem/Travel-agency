@@ -48,7 +48,9 @@ public class CountriesDaoImp implements CountriesDAO {
                 countries.add(country);
             }
         } catch (ConnectionPoolException | SQLException e){
-            LOGGER.error("UserDetailsDAOImpl (getAllUserDetails) -> some problems with extracting userDet");
+            LOGGER.error(" some problems with extracting countries");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps);

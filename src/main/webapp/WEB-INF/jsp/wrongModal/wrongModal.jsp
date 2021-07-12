@@ -1,9 +1,19 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle scope="session" basename="lang" var="loc"/>
+<fmt:message bundle="${loc}" key="modal.text" var="text"/>
+<fmt:message bundle="${loc}" key="modal.reg" var="reg"/>
+<fmt:message bundle="${loc}" key="modal.error" var="error"/>
+<fmt:message bundle="${loc}" key="bill.close.btn" var="close"/>
+
 <jsp:include page="../authorisation/loginPage.jsp"/>
+
 <html lang="ru"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%--  <meta name="description" content="Пример на bootstrap 5: Форма входа - макет и дизайн формы.">--%>
 
     <title>Форма входа</title>
 
@@ -34,16 +44,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="alert alert-danger" id="staticBackdropLabel">Ошибка авторизации</h5>
+                <h5 class="alert alert-danger" id="staticBackdropLabel"><c:out value="${error}"/></h5>
                 <a type="button" href="controller?command=gotologinpage" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></a>
             </div>
             <div class="modal-body">
-                <p>Пожалуйста, проверте правильность вашего email или пароля.
-                    Если у вас ещё нет аккаунта - <a href="controller?command=gotoregistrstionpage">зарегистрируйтесь</a> </p>
+                <p><c:out value="${text}"/><a href="controller?command=gotoregistrstionpage"><c:out value="${reg}"/></a> </p>
             </div>
             <div class="modal-footer">
-                <a type="button" href="controller?command=gotologinpage" class="btn btn-secondary" data-bs-dismiss="modal"
-                 >Close</a>
+                <a type="button" href="controller?command=gotologinpage" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <c:out value="${close}"/>
+                </a>
             </div>
         </div>
     </div>

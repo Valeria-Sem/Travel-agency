@@ -37,8 +37,8 @@ public class SendEmail implements Command {
     private final String ERROR_MSG = "errorMsg";
     private final String DISCOUNT_PRICE = "discountPrice";
 
-    private final String page = "page";
-    private final String path = "controller?command=";
+//    private final String PAGE = "page";
+//    private final String PATH = "controller?command=";
 
     public SendEmail(){
 
@@ -81,7 +81,7 @@ public class SendEmail implements Command {
             tr.sendMessage(message, message.getAllRecipients());
             tr.close();
 
-            String command = (String) request.getSession().getAttribute(page);
+//            String command = (String) request.getSession().getAttribute(PAGE);
             response.sendRedirect(PATH_TO_BILL);
 
         } catch (MessagingException | NullPointerException e) {

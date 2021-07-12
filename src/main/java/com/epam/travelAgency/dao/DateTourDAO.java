@@ -9,5 +9,4 @@ public interface DateTourDAO {
     TourEntity getTourByDate(LocalDate ArrDate, LocalDate DepDate) throws DAOException;
     List<LocalDate> getArrivalDatesByIdTour(int tourId) throws DAOException;
     List<LocalDate> getDepartureDatesByIdTour(int tourId) throws DAOException;
-
 }

@@ -4,6 +4,8 @@ import com.epam.travelAgency.controller.command.impl.SendEmail;
 import com.epam.travelAgency.dao.DAOException;
 import com.epam.travelAgency.dao.DAOProvider;
 import com.epam.travelAgency.dao.DateDAO;
+import com.epam.travelAgency.entity.UserEntity;
+import com.epam.travelAgency.entity.UserRole;
 import com.epam.travelAgency.service.*;
 
 import javax.mail.Message;
@@ -12,6 +14,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.print.Doc;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -134,25 +137,25 @@ public class TestPool {
 //
 //      //  userDao.addUser(usert);
 //
-        ServiceProvider serviceProvider = ServiceProvider.getInstance();
-        TourService tourService = serviceProvider.getTourService();
-        MealsService mealsService = serviceProvider.getMealsService();
-        HotelService hotelService = serviceProvider.getHotelService();
-        TransportService transportService = serviceProvider.getTransportService();
-        DateTourService dateTourService = serviceProvider.getDateTourService();
-        TourCustomerService tourCustomerService = serviceProvider.getTourCustomerService();
-
-        try {
+//        ServiceProvider serviceProvider = ServiceProvider.getInstance();
+//        TourService tourService = serviceProvider.getTourService();
+//        MealsService mealsService = serviceProvider.getMealsService();
+//        HotelService hotelService = serviceProvider.getHotelService();
+//        TransportService transportService = serviceProvider.getTransportService();
+//        DateTourService dateTourService = serviceProvider.getDateTourService();
+//        TourCustomerService tourCustomerService = serviceProvider.getTourCustomerService();
+//
+//        try {
 //           List<LocalDate> arrivalDates = dateTourService.getArrivalDatesByIdTour(1);
 //           List<LocalDate> departureDates = dateTourService.getDepartureDatesByIdTour(1);
 //
 //            System.out.println(arrivalDates);
 //            System.out.println(departureDates);
-            tourCustomerService.buyTour(1, 23);
-
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+//            tourCustomerService.buyTour(1, 23);
+//
+//        } catch (ServiceException e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println(user.toString());
 //        Iterable<CategoryEntity> categories = categoryService.getAllCategories();
 //

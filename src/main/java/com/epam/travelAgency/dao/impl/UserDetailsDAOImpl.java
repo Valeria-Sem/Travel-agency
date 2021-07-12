@@ -20,7 +20,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             " citizenship, passport, date_of_issue, expiration_date) values(?, ?, ?, ?, ?, ?, ?, ?) ";
     private final String deleteQuery = "delete from user_details where id = ";
     private final String searchUserDetails = "select * from user_details where id_user = " ;
-    private final String quote = "'" ;
     private final String updateQuery ="UPDATE user_details SET name = ?, surname = ?, date_of_birth = ?, citizenship = ?, " +
             "passport = ?, date_of_issue = ?, expiration_date = ? WHERE id = ?";
 

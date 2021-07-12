@@ -25,12 +25,12 @@ import java.util.List;
 public class GoToMainPage implements Command {
     private final Logger LOGGER = Logger.getLogger(GoToMainPage.class);
 
-    private final String pathToMainPage = "WEB-INF/jsp/main/mainPage.jsp";
-    private final String toursL = "hotTours";
-    private final String countriesL = "countries";
-    private final String page = "page";
-    private final String pageCommand = "gotomainpage";
-    private final String errorMessage = "errorMsg";
+    private final String PATH_TO_MAIN_PAGE = "WEB-INF/jsp/main/mainPage.jsp";
+    private final String HOT_TOURS = "hotTours";
+    private final String COUNTRIES = "countries";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotomainpage";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
     private final String SERVER_ERROR= "Sorry, server error.";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
@@ -46,8 +46,8 @@ public class GoToMainPage implements Command {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        List<TourEntity> hotTours = (List<TourEntity>) session.getAttribute(toursL);
-        List<CountriesEntity> countries = (List<CountriesEntity>) session.getAttribute(countriesL);
+        List<TourEntity> hotTours = (List<TourEntity>) session.getAttribute(HOT_TOURS);
+        List<CountriesEntity> countries = (List<CountriesEntity>) session.getAttribute(COUNTRIES);
 
         if(hotTours == null && countries == null){
 
@@ -59,21 +59,21 @@ public class GoToMainPage implements Command {
                 hotTours = tourService.getTourByStatus(TourStatus.HOT);
                 countries = countriesService.getAllCountries();
 
-                session.setAttribute(toursL, hotTours);
-                session.setAttribute(countriesL, countries);
+                session.setAttribute(HOT_TOURS, hotTours);
+                session.setAttribute(COUNTRIES, countries);
 
             } catch (ServiceException e) {
                 LOGGER.error(SERVER_ERROR, e);
 
-                request.setAttribute(errorMessage, SERVER_ERROR);
+                request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
                 RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
                 dispatcher.forward(request, response);
             }
         }
 
-        session.setAttribute(page, pageCommand);
+        session.setAttribute(PAGE, PAGE_COMMAND);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToMainPage);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_MAIN_PAGE);
         dispatcher.forward(request, response);
 
     }

@@ -91,6 +91,8 @@ public class UserDaoImpl implements UserDAO {
             }
         } catch (ConnectionPoolException | SQLException e){
             LOGGER.error("UserDaoImpl (getAllUsers) -> some problems with extracting users");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, ps, res);
@@ -123,6 +125,8 @@ public class UserDaoImpl implements UserDAO {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("UserDaoImpl (addUser) -> some problems with extracting user");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);
@@ -134,7 +138,7 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public UserEntity getUserByEmailAndPassword(String userEmail, String userPassword) throws DAOException{
-        UserEntity user = null;//= Optional.empty();
+        UserEntity user = new UserEntity();
 
         Connection connection = null;
         ConnectionPool pool = null;
@@ -148,16 +152,15 @@ public class UserDaoImpl implements UserDAO {
             res = ps.executeQuery();
 
             while (res.next()){
-                int userId  = res.getInt(id);
-                String userEm = res.getString(email);
-                String userPass = res.getString(password);
-                UserRole userRole = UserRole.valueOf(res.getString(role));
-
-                user = new UserEntity(userId, userEm, userPass, userRole) ; //Optional.of(new UserEntity(userId, userEm, userPass, userRole));
+                user.setId(res.getInt(id));
+                user.setEmail(res.getString(email));
+                user.setPassword(res.getString(password));
+                user.setRole(UserRole.valueOf(res.getString(role)));
 
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("UserDaoImpl (getUserByEmailAndPassword) -> some problems with extracting user");
+            throw new DAOException(e);
 
         } finally {
             if(connection != null){
@@ -170,7 +173,7 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public boolean isUserUpdate(UserEntity userEntity, String newEmail, String newPassword) throws DAOException {
-        boolean isUserUpdate = false;
+        boolean isUserUpdate;
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement statement = null;
@@ -193,6 +196,8 @@ public class UserDaoImpl implements UserDAO {
         } catch (SQLException | ConnectionPoolException e){
             e.printStackTrace();
             LOGGER.error("UserDaoImpl (isUserByEmail) -> some problems with extracting user");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);
@@ -223,6 +228,8 @@ public class UserDaoImpl implements UserDAO {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("UserDaoImpl (isUserByEmail) -> some problems with extracting user");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement, res);
@@ -250,6 +257,8 @@ public class UserDaoImpl implements UserDAO {
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("UserDaoImpl (deleteUser) -> some problems with deleting user");
+            throw new DAOException(e);
+
         } finally {
             if(connection != null){
                 pool.closeConnection(connection, statement);

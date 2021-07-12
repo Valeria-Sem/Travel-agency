@@ -58,6 +58,7 @@ public class HotelDaoImpl implements HotelDAO {
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("MealsDaoImpl (getMealsById) -> some problems with extracting MEALS");
+            throw new DAOException(e);
 
         } finally {
             if(connection != null){

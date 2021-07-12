@@ -53,6 +53,7 @@ public class TransportDaoImpl implements TransportDAO {
             }
         } catch (SQLException | ConnectionPoolException e) {
             LOGGER.error("TransportDaoImpl (getTransportById) -> some problems with extracting transport");
+            throw new DAOException(e);
 
         } finally {
             if(connection != null){

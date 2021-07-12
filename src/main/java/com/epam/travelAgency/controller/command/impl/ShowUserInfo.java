@@ -20,16 +20,16 @@ import java.util.List;
 public class ShowUserInfo implements Command {
     private final Logger LOGGER = Logger.getLogger(ShowUserInfo.class);
 
-    private static final String userPagePath = "WEB-INF/jsp/user/userInfo.jsp";
-    private final String page = "page";
-    private final String pageCommand = "gotouserpage";
+    private final String USER_PAGE_PATH = "WEB-INF/jsp/user/userInfo.jsp";
+    private final String PAGE = "page";
+    private final String PAGE_COMMAND = "gotouserpage";
     private final String ID_USER = "id_user";
     private final String USER_DETAILS = "userDet";
     private final String USER_SALE = "userSale";
 
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
 
-    private final String errorMessage = "errorMsg";
+    private final String ERROR_ATTRIBUTE = "errorMsg";
     private final String SERVER_ERROR= "Sorry server error.";
 
 
@@ -69,15 +69,15 @@ public class ShowUserInfo implements Command {
             session.setAttribute(USER_SALE, sale);
             session.setAttribute(ID_USER, userId);
 
-            session.setAttribute(page, pageCommand);
+            session.setAttribute(PAGE, PAGE_COMMAND);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(userPagePath);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(USER_PAGE_PATH);
             dispatcher.forward(request, response);
 
         } catch (ServiceException e){
             LOGGER.error(SERVER_ERROR, e);
 
-            request.setAttribute(errorMessage, SERVER_ERROR);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_ERROR_PAGE);
             dispatcher.forward(request, response);
         }
