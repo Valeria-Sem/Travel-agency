@@ -40,6 +40,7 @@
 <fmt:message bundle="${loc}" key="user.new.sale" var="newSale"/>
 <fmt:message bundle="${loc}" key="user.tours.count" var="count"/>
 <fmt:message bundle="${loc}" key="bill.close.btn" var="close"/>
+<fmt:message bundle="${loc}" key="user.delete" var="delete"/>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
@@ -59,12 +60,7 @@
 
 </head>
 <body class="bg-light text-center pad">
-<c:if test="${requestScope.errorMsg != null}">
 
-    <div class="alert alert-danger" role="alert">
-            ${errorMsg}
-    </div>
-</c:if>
 <div class="alert alert-info" role="alert">
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
@@ -75,8 +71,15 @@
     <hr>
     <p class="mb-0" style="text-align: center"><c:out value="${text3}"/></p>
     <a href="controller?command=logout"><c:out value="${logout}"/></a>
-
+    <a href="controller?command=deleteuseracc" style="margin-left: 10px"><c:out value="${delete}"/></a>
 </div>
+
+<c:if test="${requestScope.errorMsg != null}">
+
+    <div class="alert alert-danger" role="alert">
+            ${errorMsg}
+    </div>
+</c:if>
 
 <div class="container">
     <main>
@@ -122,27 +125,33 @@
             </div>
 
             <div class="tab-pane fade pad" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
                 <div class="col-md-7 col-lg-8 passp">
                     <h4 class="mb-3"><c:out value="${passportDate}"/></h4>
                     <c:choose>
                         <c:when test="${current_userDet.id == 0}">
-                            <form class="needs-validation" novalidate="" method="post" action="controller?command=saveuserdetails">
+                            <form class="needs-validation" method="post" action="controller?command=saveuserdetails" novalidate>
                                 <div class="row g-3">
                                     <div class="col-sm-6">
                                         <label for="newName" class="form-label"><c:out value="${nameInput}"/></label>
                                         <input type="text" class="form-control caps" id="newName" name="name" placeholder=""
                                                value="${current_userDet.name}"
-                                               pattern="[A-Za-z]" minlength="3" maxlength="25" required="">
+                                               pattern="[A-Za-z]{3,25}"
+                                               required>
                                         <div class="invalid-feedback">
-                                            Valid first name is required.
+                                            Only english letters!
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Ok!
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <label for="newSurname" class="form-label"><c:out value="${surnameInput}"/></label>
                                         <input type="text" class="form-control caps" id="newSurname" name="surname" placeholder=""
-                                               value="${current_userDet.surname}" required="" pattern="[A-Za-z]"
-                                               minlength="3" maxlength="50">
+                                               value="${current_userDet.surname}"
+                                               pattern="[A-Za-z]{3,50}"
+                                               required>
                                         <div class="invalid-feedback">
                                             Valid last name is required.
                                         </div>
@@ -152,9 +161,10 @@
                                         <label for="datepicker121" class="form-label"><c:out value="${dateBInput}"/></label>
                                         <input type="date" class="form-control" name="date_of_birth" data-format="mm-dd-yyyy"
                                                aria-label="Дата прилёта"
-                                               id="datepicker121" required=""
+                                               id="datepicker121"
                                                value="${current_userDet.dateOfBirth}"
-                                               pattern="[0-9].[0-9].[0-9]{2,2,4}">
+                                               pattern="[0-9].[0-9].[0-9]{2,2,4}"
+                                               required>
                                         <div class="invalid-feedback">
                                             Please enter your shipping address.
                                         </div>
@@ -163,9 +173,9 @@
                                     <div class="col-12">
                                         <label for="newcitizenship" class="form-label"><c:out value="${nationalityInput}"/></label>
                                         <input type="text" class="form-control caps" id="newcitizenship" name="citizenship"
-                                               value="${current_userDet.citizenship}" pattern="[A-Za-z ]" minlength="5"
-                                               maxlength="50"
-                                               placeholder="Republic of Belarus" required="">
+                                               value="${current_userDet.citizenship}"
+                                               pattern="[A-Za-z ]{5,50}"
+                                               placeholder="Republic of Belarus" required>
                                         <div class="invalid-feedback">
                                             Please enter your shipping address.
                                         </div>
@@ -174,27 +184,32 @@
                                     <div class="col-12">
                                         <label for="address2w" class="form-label"> <c:out value="${passportInput}"/> </label>
                                         <input type="text" class="form-control caps" id="address2w" name="passport"
-                                               value="${current_userDet.passport}" pattern="[a-zA-Z]+[0-9]{2,7}" placeholder="MP1234567">
+                                               value="${current_userDet.passport}" pattern="^([a-zA-Z]{2}[0-9]{7})?$" placeholder="MP1234567"
+                                               required>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="datepicker2" class="form-label"><c:out value="${dateIInput}"/></label>
                                         <input type="date" class="form-control" name="date_of_issue" data-format="mm-dd-yyyy"
                                                aria-label="Дата прилёта"
-                                               id="datepicker332" required=""
+                                               id="datepicker332"
                                                value="${current_userDet.dateOfIssue}"
-                                               pattern="[0-9].[0-9].[0-9]{2,2,4}">
+                                               pattern="[0-9].[0-9].[0-9]{2,2,4}"
+                                               required>
                                         <div class="invalid-feedback">
                                             Please enter your shipping address.
                                         </div>
                                     </div>
 
+
+
+
                                     <div class="col-12">
                                         <label for="datepicker3r" class="form-label"><c:out value="${dateEInput}"/></label>
                                         <input type="date" class="form-control" name="expiration_date" data-format="mm-dd-yyyy"
                                                aria-label="Дата прилёта"
-                                               id="datepicker3r" required="" pattern="[0-9].[0-9].[0-9]{2,2,4}"
-                                               value="${current_userDet.expirationDate}">
+                                               id="datepicker3r" pattern="[0-9].[0-9].[0-9]{2,2,4}"
+                                               value="${current_userDet.expirationDate}" required>
                                         <div class="invalid-feedback">
                                             Please enter your shipping address.
                                         </div>
@@ -213,7 +228,7 @@
                                 <label for="name" class="form-label"><c:out value="${nameInput}"/></label>
                                 <input type="text" class="form-control caps" id="name" name="name" placeholder=""
                                        value="${current_userDet.name}"
-                                       pattern="[A-Za-z]" minlength="3" maxlength="25" required="">
+                                       pattern="[A-Za-z]{3, 25}" required>
                                 <div class="invalid-feedback">
                                     Valid first name is required.
                                 </div>
@@ -222,8 +237,9 @@
                             <div class="col-sm-6">
                                 <label for="surname" class="form-label"><c:out value="${surnameInput}"/></label>
                                 <input type="text" class="form-control caps" id="surname" name="surname" placeholder=""
-                                       value="${current_userDet.surname}" required="" pattern="[A-Za-z]"
-                                       minlength="3" maxlength="50">
+                                       value="${current_userDet.surname}"
+                                       required
+                                       pattern="[A-Za-z]{3, 50}">
                                 <div class="invalid-feedback">
                                     Valid last name is required.
                                 </div>
@@ -233,7 +249,7 @@
                                 <label for="datepicker1" class="form-label"><c:out value="${dateBInput}"/></label>
                                 <input type="date" class="form-control" name="date_of_birth" data-format="mm-dd-yyyy"
                                        aria-label="Дата прилёта"
-                                       id="datepicker1" required=""
+                                       id="datepicker1" required
                                        value="${current_userDet.dateOfBirth}"
                                        pattern="[0-9].[0-9].[0-9]{2,2,4}">
                                 <div class="invalid-feedback">
@@ -244,9 +260,10 @@
                             <div class="col-12">
                                 <label for="citizenship" class="form-label"><c:out value="${nationalityInput}"/></label>
                                 <input type="text" class="form-control caps" id="citizenship" name="citizenship"
-                                       value="${current_userDet.citizenship}" pattern="[A-Za-z ]" minlength="5"
-                                       maxlength="50"
-                                       placeholder="Republic of Belarus" required="">
+                                       value="${current_userDet.citizenship}"
+                                       pattern="[A-Za-z ]{5, 50}"
+                                       placeholder="Republic of Belarus"
+                                       required>
                                 <div class="invalid-feedback">
                                     Please enter your shipping address.
                                 </div>
@@ -255,14 +272,15 @@
                             <div class="col-12">
                                 <label for="address2" class="form-label"> <c:out value="${passportInput}"/> </label>
                                 <input type="text" class="form-control caps" id="address2" name="passport"
-                                       value="${current_userDet.passport}" pattern="[a-zA-Z]+[0-9]{2,7}" placeholder="MP1234567">
+                                       value="${current_userDet.passport}" pattern="[a-zA-Z]+[0-9]{2,7}" placeholder="MP1234567"
+                                required>
                             </div>
 
                             <div class="col-12">
                                 <label for="datepicker2" class="form-label"><c:out value="${dateIInput}"/></label>
                                 <input type="date" class="form-control" name="date_of_issue" data-format="mm-dd-yyyy"
                                        aria-label="Дата прилёта"
-                                       id="datepicker2" required=""
+                                       id="datepicker2" required
                                        value="${current_userDet.dateOfIssue}"
                                        pattern="[0-9].[0-9].[0-9]{2,2,4}">
                                 <div class="invalid-feedback">
@@ -274,7 +292,7 @@
                                 <label for="datepicker3" class="form-label"><c:out value="${dateEInput}"/></label>
                                 <input type="date" class="form-control" name="expiration_date" data-format="mm-dd-yyyy"
                                        aria-label="Дата прилёта"
-                                       id="datepicker3" required="" pattern="[0-9].[0-9].[0-9]{2,2,4}"
+                                       id="datepicker3" required pattern="[0-9].[0-9].[0-9]{2,2,4}"
                                 value="${current_userDet.expirationDate}">
                                 <div class="invalid-feedback">
                                     Please enter your shipping address.
@@ -382,6 +400,7 @@
     </div>
 </div>
 
+<script src=" ${pageContext.request.contextPath}/user.js"  type="text/javascript"></script>
 
 <%--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>--%>
 <%--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>--%>

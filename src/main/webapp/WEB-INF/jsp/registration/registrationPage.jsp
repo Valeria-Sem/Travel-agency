@@ -73,7 +73,7 @@
                         <c:out value="${passwordInput}"/>
                     </label>
                     <input type="password" name="password" class="form-control" id="password" required=""
-                    style="text-transform: none;" minlength="8" maxlength="25">
+                    style="text-transform: none;" pattern="[0-9a-zA-Z]{8,25}">
                 </div>
             </div>
 

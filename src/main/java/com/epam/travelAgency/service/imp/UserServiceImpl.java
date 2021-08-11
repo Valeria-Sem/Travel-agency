@@ -60,19 +60,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(int id) throws ServiceException {
-        boolean isDeleted;
-
+    public void deleteUser(int id) throws ServiceException {
         DAOProvider provider = DAOProvider.getInstance();
         UserDAO userDao = provider.getUserDAO();
 
         try{
-            isDeleted = userDao.deleteUser(id);
+            userDao.deleteUser(id);
         } catch (DAOException e){
             throw new ServiceException(e);
         }
-
-        return isDeleted;
     }
 
     @Override

@@ -138,7 +138,7 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public UserEntity getUserByEmailAndPassword(String userEmail, String userPassword) throws DAOException{
-        UserEntity user = new UserEntity();
+        UserEntity user = null;
 
         Connection connection = null;
         ConnectionPool pool = null;
@@ -152,10 +152,12 @@ public class UserDaoImpl implements UserDAO {
             res = ps.executeQuery();
 
             while (res.next()){
-                user.setId(res.getInt(id));
-                user.setEmail(res.getString(email));
-                user.setPassword(res.getString(password));
-                user.setRole(UserRole.valueOf(res.getString(role)));
+                user = new UserEntity(res.getInt(id), res.getString(email), res.getString(password),
+                        UserRole.valueOf(res.getString(role)));
+//                user.setId(res.getInt(id));
+//                user.setEmail(res.getString(email));
+//                user.setPassword(res.getString(password));
+//                user.setRole(UserRole.valueOf(res.getString(role)));
 
             }
         } catch (SQLException | ConnectionPoolException e) {
@@ -240,9 +242,7 @@ public class UserDaoImpl implements UserDAO {
     }
 
     @Override
-    public boolean deleteUser(int id) throws DAOException {
-        boolean isDeleted = false;
-
+    public void deleteUser(int id) throws DAOException {
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement statement = null;
@@ -253,8 +253,6 @@ public class UserDaoImpl implements UserDAO {
             statement = connection.prepareStatement(deleteQuery + id);
             statement.executeUpdate();
 
-            isDeleted = true;
-
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error("UserDaoImpl (deleteUser) -> some problems with deleting user");
             throw new DAOException(e);
@@ -264,7 +262,5 @@ public class UserDaoImpl implements UserDAO {
                 pool.closeConnection(connection, statement);
             }
         }
-
-        return isDeleted;
     }
 }

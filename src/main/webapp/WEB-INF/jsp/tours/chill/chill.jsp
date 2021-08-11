@@ -21,6 +21,8 @@
 <fmt:message bundle="${loc}" key="main.hot-text" var="hotText"/>
 <fmt:message bundle="${loc}" key="main.search-btn" var="searchBtn"/>
 <fmt:message bundle="${loc}" key="main.shopping" var="shopping"/>
+<fmt:message bundle="${loc}" key="main.tourEx" var="tourEx"/>
+
 
 <html>
 <head>
@@ -127,8 +129,12 @@
                 <div class="container-fluid mt-5" style="background-color: #eeeeee">
                     <div class="container p-5">
                         <div class="row justify-content-center">
+                            <c:if test="${chillTours.size() == 0}">
+                                <div class="alert alert-warning" role="alert">
+                                    <c:out value="${tourEx}"/>
+                                </div>
+                            </c:if>
                             <c:forEach items="${chillTours}" var="chillTour" >
-
                                 <div class="col col-lg-4 description" >
                                     <div class="card text-center mt-5 description-container param">
                                         <img src="${chillTour.imgPath}" alt="" class="card-img-top img">

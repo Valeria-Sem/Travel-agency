@@ -48,7 +48,7 @@
                 <a type="button" href="controller?command=gotologinpage" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></a>
             </div>
             <div class="modal-body">
-                <p><c:out value="${text}"/><a href="controller?command=gotoregistrstionpage"><c:out value="${reg}"/></a> </p>
+                <p><c:out value="${text}"/><a href="controller?command=gotoregistrationpage"><c:out value="${reg}"/></a> </p>
             </div>
             <div class="modal-footer">
                 <a type="button" href="controller?command=gotologinpage" class="btn btn-secondary" data-bs-dismiss="modal">

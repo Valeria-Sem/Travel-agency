@@ -23,6 +23,8 @@ public class DateTourDaoImpl implements DateTourDAO {
     private final String GET_ARRIVAL_DATES = "select date.date from tour, date_tour, date where tour.id = date_tour.id_tour and " +
             "date.id = date_tour.id_arrival_date and tour.id = ?";
     private final String DATE = "date";
+    private final String DELETE_QUERY = "delete from date_tour where id = ";
+
 
     @Override
     public TourEntity getTourByDate(LocalDate ArrDate, LocalDate DepDate) throws DAOException {
@@ -107,6 +109,35 @@ public class DateTourDaoImpl implements DateTourDAO {
         }
 
         return dates;
+    }
+
+    @Override
+    public boolean deleteTourDatesById(int id) throws DAOException {
+        boolean isDeleted = false;
+
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+            statement = connection.prepareStatement(DELETE_QUERY + id);
+            statement.executeUpdate();
+
+            isDeleted = true;
+
+        } catch (SQLException | ConnectionPoolException e){
+            LOGGER.error(" -> some problems with deleting tour dates");
+            throw new DAOException(e);
+
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
+
+        return isDeleted;
     }
 
 

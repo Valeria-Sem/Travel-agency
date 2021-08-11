@@ -38,6 +38,8 @@ public class CommandProvider {
         commands.put(CommandName.SHOWUSERINFO, new ShowUserInfo());
         commands.put(CommandName.UPDATETOURSTATUS, new UpdateTourStatus());
         commands.put(CommandName.SHOWBILL, new ShowBill());
+        commands.put(CommandName.DELETEUSERACC, new DeleteUserAcc());
+        commands.put(CommandName.DELETEDATESTOUR, new DeleteDatesOfTour());
 
     }
 

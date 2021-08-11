@@ -27,6 +27,8 @@ public class UpdateBalance implements Command {
     private final String UPDATE_ERROR = "Update error";
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
     private final String SERVER_ERROR= "Sorry update server error.";
+    private final String VALIDATION_ERROR= "VALIDATION error. You can add only numbers";
+
     private final String PAGE = "page";
     private final String PATH = "controller?command=";
 
@@ -50,11 +52,16 @@ public class UpdateBalance implements Command {
             newBalance = Double.parseDouble(request.getParameter(NEW_BALANCE));
             newBalance += wallet.getBalance();
 
-            if(walletService.updateBalance(wallet.getId(), newBalance)){
-                wallet.setBalance(newBalance);
-                request.setAttribute(CURRENT_WALLET, wallet);
+            if(validationService.isBalanceValid(String.valueOf(newBalance))){
+                if(walletService.updateBalance(wallet.getId(), newBalance)){
+                    wallet.setBalance(newBalance);
+                    request.setAttribute(CURRENT_WALLET, wallet);
+                } else {
+                    request.setAttribute(ERROR_ATTRIBUTE, UPDATE_ERROR);
+                    request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
+                }
             } else {
-                request.setAttribute(ERROR_ATTRIBUTE, UPDATE_ERROR);
+                request.setAttribute(ERROR_ATTRIBUTE, VALIDATION_ERROR);
                 request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
             }
 

@@ -4,6 +4,7 @@ import com.epam.travelAgency.controller.command.Command;
 import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.entity.UserRole;
 import com.epam.travelAgency.service.validation.impl.ValidationImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,15 +15,24 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class GoToLoginPage implements Command {
+    private final Logger LOGGER = Logger.getLogger(GoToLoginPage.class);
+
     private final String CURRENT_USER = "current_user";
     private final String ROLE_ATTRIBUTE = "role";
 
     private final String PATH_TO_AUTHORISATION_PAGE = "/WEB-INF/jsp/authorisation/loginPage.jsp";
+    private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error/errorPage.jsp";
+
     private final String PATH_TO_ADMIN_PAGE = "controller?command=gotoadminpage";
     private final String PATH_TO_USER_PAGE = "controller?command=gotouserpage";
+    private final String AUTH_COMMAND = "controller?command=authorisation";
 
     private final String PAGE = "page";
     private final String PAGE_COMMAND = "gotologinpage";
+
+    private final String ERROR_ATTRIBUTE = "errorMsg";
+
+    private final String SERVER_ERROR= "Sorry, login server error.";
 
 
     public GoToLoginPage() {
@@ -57,9 +67,10 @@ public class GoToLoginPage implements Command {
                 dispatcher.forward(request, response);
             }
         } catch (NullPointerException e){
-            e.printStackTrace();
-            RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_AUTHORISATION_PAGE);
-            dispatcher.forward(request, response);
+            request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+
+            LOGGER.error(SERVER_ERROR, e);
         }
     }
 }

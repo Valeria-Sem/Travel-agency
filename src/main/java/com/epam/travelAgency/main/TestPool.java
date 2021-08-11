@@ -4,6 +4,7 @@ import com.epam.travelAgency.controller.command.impl.SendEmail;
 import com.epam.travelAgency.dao.DAOException;
 import com.epam.travelAgency.dao.DAOProvider;
 import com.epam.travelAgency.dao.DateDAO;
+import com.epam.travelAgency.dao.impl.UserDaoImpl;
 import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.entity.UserRole;
 import com.epam.travelAgency.service.*;
@@ -187,5 +188,13 @@ public class TestPool {
 //        } catch (MessagingException e) {
 //            e.printStackTrace();
 //        }
+
+        UserDaoImpl dao = new UserDaoImpl();
+        try {
+            boolean v = dao.deleteUser(33);
+            System.out.println(v);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
     }
 }

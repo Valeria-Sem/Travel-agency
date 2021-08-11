@@ -23,6 +23,7 @@
 <fmt:message bundle="${loc}" key="main.hot-text" var="hotText"/>
 <fmt:message bundle="${loc}" key="main.search-btn" var="searchBtn"/>
 <fmt:message bundle="${loc}" key="main.shopping" var="shopping"/>
+<fmt:message bundle="${loc}" key="main.tourEx" var="tourEx"/>
 <html>
 <head>
     <meta charset="utf-8">
@@ -89,8 +90,12 @@
                 <div class="container-fluid mt-5" style="background-color: #eeeeee">
                     <div class="container p-5">
                         <div class="row justify-content-center">
+                            <c:if test="${shoppingTours.size() == 0}">
+                                <div class="alert alert-warning" role="alert">
+                                    <c:out value="${tourEx}"/>
+                                </div>
+                            </c:if>
                             <c:forEach items="${shoppingTours}" var="shoppingTour" >
-
                                 <div class="col col-lg-4 description" >
                                     <div class="card text-center mt-5 description-container param">
                                         <img src="${shoppingTour.imgPath}" alt="" class="card-img-top img">

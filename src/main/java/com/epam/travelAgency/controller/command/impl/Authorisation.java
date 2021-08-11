@@ -62,7 +62,7 @@ public class Authorisation implements Command {
             email = request.getParameter(EMAIL_ATTRIBUTE).trim();
             password = request.getParameter(PASSWORD_ATTRIBUTE).trim();
 
-            if(validationService.isAuthorisationDataValid(email, password)){
+        //    if(validationService.isAuthorisationDataValid(email, password)){
                 user = userService.getUserByEmailAndPassword(email, password);
 
                 if(user != null){
@@ -80,10 +80,10 @@ public class Authorisation implements Command {
                 } else{
                     response.sendRedirect(SHOW_WRONG_MODAL_COMMAND);
                 }
-            } else {
-                request.setAttribute(ERROR_ATTRIBUTE, VALIDATION_ERROR_MESSAGE);
-                response.sendRedirect(GO_TO_LOGIN_PAGE_COMMAND);
-            }
+//            } else {
+//                request.setAttribute(ERROR_ATTRIBUTE, VALIDATION_ERROR_MESSAGE);
+//                response.sendRedirect(GO_TO_LOGIN_PAGE_COMMAND);
+//            }
         } catch (ServiceException e){
             LOGGER.error(SERVER_ERROR_MESSAGE, e);
 

@@ -27,7 +27,8 @@
     <h1>
         Oops!</h1>
     <h2>
-        <c:out value="${requestScope.errorMsg}" />
+<%--        <c:out value="${requestScope.errorMsg}" />--%>
+
     </h2>
                 <div class="error-actions">
                     <a href="controller?command=gotomainpage" class="btn btn-primary btn-lg">

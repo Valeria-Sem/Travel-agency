@@ -16,6 +16,7 @@ public class BuyTour implements Command {
     private final Logger LOGGER = Logger.getLogger(BuyTour.class);
 
     private final String PATH_TO_ERROR_PAGE = "WEB-INF/jsp/error/errorPage.jsp";
+    private final String PATH_TO_USER_PAGE = "WEB-INF/jsp/user/userPage.jsp";
 
     private final String TOUR_ATTRIBUTE = "tour";
     private final String CURRENT_USER_ATTRIBUTE = "current_user";
@@ -65,36 +66,41 @@ public class BuyTour implements Command {
                 sale = (SaleEntity) session.getAttribute(CURRENT_SALE_ATTRIBUTE);
                 wallet = (WalletEntity) session.getAttribute(CURRENT_WALLET_ATTRIBUTE);
 
-                if (tourCustomerService.buyTour(tour.getId(), user.getId())) {
+                double newSale = sale.getSale() * 0.01;
+                discount = tour.getPrice() * newSale;
+                discountPrice = tour.getPrice() - discount;
 
-                    double newSale = sale.getSale() * 0.01;
-                    discount = tour.getPrice() * newSale;
-                    discountPrice = tour.getPrice() - discount;
-                    newBalance = wallet.getBalance() - discountPrice;
+                if (wallet.getBalance() >= discountPrice) {
+                    if (tourCustomerService.buyTour(tour.getId(), user.getId())) {
+                        newBalance = wallet.getBalance() - discountPrice;
 
-                    if(walletService.updateBalance(wallet.getId(), newBalance)){
-                        wallet.setBalance(newBalance);
-                        request.setAttribute(CURRENT_WALLET_ATTRIBUTE, wallet);
+                        if (walletService.updateBalance(wallet.getId(), newBalance)) {
+                            wallet.setBalance(newBalance);
+                            request.setAttribute(CURRENT_WALLET_ATTRIBUTE, wallet);
 
-                        newTourCount += sale.getToursCount();
-                        sale = saleService.updateToursCount(user.getId(), newTourCount);
+                            newTourCount += sale.getToursCount();
+                            sale = saleService.updateToursCount(user.getId(), newTourCount);
 
-                        session.setAttribute(CURRENT_SALE_ATTRIBUTE, sale);
-                        session.setAttribute(DATES_PARAM, request.getParameter(DATES_PARAM));
-                        session.setAttribute(DISCOUNT_PRICE, discountPrice);
-                        response.sendRedirect(SEND_EMAIL_COMMAND);
+                            session.setAttribute(CURRENT_SALE_ATTRIBUTE, sale);
+                            session.setAttribute(DATES_PARAM, request.getParameter(DATES_PARAM));
+                            session.setAttribute(DISCOUNT_PRICE, discountPrice);
+                            response.sendRedirect(SEND_EMAIL_COMMAND);
+
+                        } else {
+                            request.setAttribute(ERROR_MSG_ATTRIBUTE, PAYMENT_ERROR_MSG);
+                            request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
+                        }
 
                     } else {
-                        request.setAttribute(ERROR_MSG_ATTRIBUTE,PAYMENT_ERROR_MSG );
+                        request.setAttribute(ERROR_MSG_ATTRIBUTE, SQL_SERVER_ERROR_MSG);
+
                         request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
                     }
 
                 } else {
-                    request.setAttribute(ERROR_MSG_ATTRIBUTE, SQL_SERVER_ERROR_MSG);
-
-                    request.getRequestDispatcher(PATH_TO_ERROR_PAGE).forward(request, response);
+                    request.setAttribute(ERROR_MSG_ATTRIBUTE, PAYMENT_ERROR_MSG);
+                    request.getRequestDispatcher(PATH_TO_USER_PAGE).forward(request, response);
                 }
-
             } else {
                 response.sendRedirect(GO_TO_LOGIN_PAGE_COMMAND);
             }

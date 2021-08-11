@@ -27,6 +27,7 @@
 <fmt:message bundle="${loc}" key="details.hotel" var="hotelT"/>
 <fmt:message bundle="${loc}" key="details.descriptionText" var="descriptionText"/>
 <fmt:message bundle="${loc}" key="details.price" var="priseS"/>
+<fmt:message bundle="${loc}" key="user.delete" var="delete"/>
 
 <html>
 <head>
@@ -175,6 +176,11 @@
                             <button class="btn btn-primary" type="submit" style="margin-top: 30px" disabled>
                                 <c:out value="${buyBtn}"/>
                             </button>
+                            <c:if test="current_user.role = AGENT">
+                                <a class="btn btn-primary" href="controller?command=deletedatestour&id=" style="margin-top: 30px" disabled>
+                                    <c:out value="${delete}"/>
+                                </a>
+                            </c:if>
                         </form>
                         <footer class="my-5 pt-5 text-muted text-center text-small">
                             <p class="mb-1">© 2020–2021 Happy Tour :) <img src="https://www.nicepng.com/png/full/208-2082453_aphamok-travel-tours-and-travels-icon.png"
