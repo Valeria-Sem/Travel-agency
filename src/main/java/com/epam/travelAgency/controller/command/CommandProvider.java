@@ -42,6 +42,7 @@ public class CommandProvider {
         commands.put(CommandName.DELETEDATESTOUR, new DeleteDatesOfTour());
         commands.put(CommandName.GOTODATESPAGE, new GoToDatesPage());
         commands.put(CommandName.ADDDATES, new AddDates());
+        commands.put(CommandName.DELETETOUR, new DeleteTour());
 
     }
 

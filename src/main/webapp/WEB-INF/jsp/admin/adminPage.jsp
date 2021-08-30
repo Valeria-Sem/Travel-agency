@@ -13,6 +13,7 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
 <fmt:message bundle="${loc}" key="user.logout" var="logout"/>
+<fmt:message bundle="${loc}" key="user.delete" var="deleteBtn"/>
 <fmt:message bundle="${loc}" key="admin.panel" var="panel"/>
 <fmt:message bundle="${loc}" key="admin.panel.customers" var="customers"/>
 <fmt:message bundle="${loc}" key="admin.panel.auth" var="auth"/>
@@ -28,6 +29,7 @@
 <fmt:message bundle="${loc}" key="admin.panel.balanceH" var="balanceH"/>
 <fmt:message bundle="${loc}" key="user.login.email-input" var="emailI"/>
 <fmt:message bundle="${loc}" key="user.login.password-input" var="passwordI"/>
+<fmt:message bundle="${loc}" key="tour.creator" var="creatorBtn"/>
 
 
 
@@ -148,6 +150,10 @@
                     </div>
                 </div>
                 <div class="tab-pane fade show active pad" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
+                    <a class="btn btn-outline-primary" href="controller?command=gotocreatorpage" style="margin-top: 20px">
+                        <c:out value="${creatorBtn}"/>
+                    </a>
+
                     <div class="container-fluid mt-5 " style="background-color: #E6E6FA">
                         <div class="container p-5">
                             <div class="row justify-content-center" style="margin: -50px;">
@@ -171,6 +177,10 @@
                                                 <h4 class="card-title" style="margin-top: 10px">
                                                     <span class="badge rounded-pill bg-warning text-dark">${tour.price} $</span>
                                                 </h4>
+
+                                                <a href="controller?command=deletetour&id_tour=${tour.id}" style="margin-top: 20px">
+                                                    <c:out value="${deleteBtn}"/>
+                                                </a>
                                             </div>
                                             <div class="card-footer">
                                                 <form action="controller?command=updatetourstatus&id_tour=${tour.id}" method="post">

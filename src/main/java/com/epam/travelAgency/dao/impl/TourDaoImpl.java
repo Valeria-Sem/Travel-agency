@@ -34,7 +34,7 @@ public class TourDaoImpl implements TourDAO {
     private final String q7 = " order by tour.price asc;";
     private final String GET_TOUR_BY_ID_QUERY = "select * from tour where id = ?";
     private final String UPDATE_TOUR_STATUS_QUERY = "update tour set status = ? where id = ?";
-
+    private final String DELETE_QUERY = "delete from tour where id = ?";
 
     private final String quote ="'";
     private final String bracket = ")";
@@ -359,5 +359,31 @@ public class TourDaoImpl implements TourDAO {
         }
 
         return tours;
+    }
+
+    @Override
+    public void deleteTourById(int tourId) throws DAOException {
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+
+            statement = connection.prepareStatement(DELETE_QUERY);
+            statement.setInt(1, tourId);
+
+            statement.executeUpdate();
+
+        } catch (SQLException | ConnectionPoolException e){
+            LOGGER.error(" -> some problems with tour deleting");
+            throw new DAOException(e);
+
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
     }
 }

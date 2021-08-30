@@ -18,4 +18,5 @@ public interface TourService {
     Set<TourEntity> getTourByStartParams(String category, String country,
                                          LocalDate arrDate,LocalDate depDate) throws ServiceException;
     Set<TourEntity> getTourByStartParams(String category, String country, LocalDate arrDate) throws ServiceException;
+    void deleteTourById(int tourId) throws ServiceException;
 }

@@ -3,6 +3,7 @@ package com.epam.travelAgency.service.imp;
 import com.epam.travelAgency.dao.DAOException;
 import com.epam.travelAgency.dao.DAOProvider;
 import com.epam.travelAgency.dao.TourDAO;
+import com.epam.travelAgency.dao.UserDAO;
 import com.epam.travelAgency.entity.TourEntity;
 import com.epam.travelAgency.entity.TourStatus;
 import com.epam.travelAgency.service.ServiceException;
@@ -128,5 +129,17 @@ public class TourServiceImpl implements TourService {
         }
 
         return tours;
+    }
+
+    @Override
+    public void deleteTourById(int tourId) throws ServiceException {
+        DAOProvider provider = DAOProvider.getInstance();
+        TourDAO tourDAO = provider.getTourDAO();
+
+        try{
+            tourDAO.deleteTourById(tourId);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
     }
 }
