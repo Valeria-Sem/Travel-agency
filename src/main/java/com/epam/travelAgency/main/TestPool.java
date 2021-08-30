@@ -191,8 +191,7 @@ public class TestPool {
 
         UserDaoImpl dao = new UserDaoImpl();
         try {
-            boolean v = dao.deleteUser(33);
-            System.out.println(v);
+            dao.deleteUser(33);
         } catch (DAOException e) {
             e.printStackTrace();
         }

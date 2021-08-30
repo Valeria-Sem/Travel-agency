@@ -10,7 +10,7 @@ public class ValidationImpl implements ValidationService {
     private final static String STRING_PATTERN = "[a-zA-Z]{3,}";
     private final static String PASSWORD_PATTERN = "[a-zA-Z\\d_-]{8,25}";
     private final static String PASSPORT_PATTERN = "[a-zA-Z]+[0-9]{2,7}";
-    private final static String SALE_PATTERN = "\\d";
+    private final static String SALE_PATTERN = "\\d+";
     private final static String BALANCE_PATTERN = "\\d+(\\.\\d+)?";
     private final static String CITIZENSHIP_PATTERN = "[a-zA-Z ]*";
     private final static String DATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
@@ -40,7 +40,7 @@ public class ValidationImpl implements ValidationService {
         boolean result = false;
 
         if (sale != null && !sale.isEmpty() ) {
-            result = sale.matches(SALE_PATTERN) && Integer.parseInt(sale) < MAX_SALE;
+            result = sale.matches(SALE_PATTERN) && Integer.parseInt(sale) <= MAX_SALE;
         }
 
         return result;

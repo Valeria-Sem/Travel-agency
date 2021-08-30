@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDAO {
     private final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private final String queryForGetAllUsers = "select * from user";
-    private final String insertQuery = "insert into user (email, password, role) values(?, ?, ?) ";
+    private final String INSERT_QUERY = "insert into user (email, password, role) values(?, ?, ?) ";
     private final String deleteQuery = "delete from user where id = ";
     private final String loginQueryByEmail = "select * from user where email = '" ;
     private final String loginQueryByPassword ="' and password = '";
@@ -113,7 +113,7 @@ public class UserDaoImpl implements UserDAO {
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
 
-            statement = connection.prepareStatement(insertQuery);
+            statement = connection.prepareStatement(INSERT_QUERY);
 
             statement.setString(1, userEntity.getEmail());
             statement.setString(2, userEntity.getPassword());

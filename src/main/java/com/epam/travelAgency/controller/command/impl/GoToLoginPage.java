@@ -66,7 +66,7 @@ public class GoToLoginPage implements Command {
                 RequestDispatcher dispatcher = request.getRequestDispatcher(PATH_TO_AUTHORISATION_PAGE);
                 dispatcher.forward(request, response);
             }
-        } catch (NullPointerException e){
+        } catch (Exception e){
             request.setAttribute(ERROR_ATTRIBUTE, SERVER_ERROR);
             request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
 

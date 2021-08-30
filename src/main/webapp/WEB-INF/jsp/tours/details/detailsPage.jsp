@@ -12,7 +12,6 @@
 <jsp:useBean id="depDates" scope="session" type="java.util.List"/>
 
 
-
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle scope="session" basename="lang" var="loc"/>
 <fmt:message bundle="${loc}" key="main.arrival-date" var="arrDateT"/>
@@ -28,6 +27,8 @@
 <fmt:message bundle="${loc}" key="details.descriptionText" var="descriptionText"/>
 <fmt:message bundle="${loc}" key="details.price" var="priseS"/>
 <fmt:message bundle="${loc}" key="user.delete" var="delete"/>
+<fmt:message bundle="${loc}" key="dates.new.creator" var="title"/>
+
 
 <html>
 <head>
@@ -169,16 +170,23 @@
                                            value="${arrDates.get(loop.index)};${depDates.get(loop.index)}" name="dates" id="flexRadioDefault1">
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         <c:out value="${arrDateT}"/>  ${arrDates.get(loop.index)} <c:out value="${depDateT}"/>  ${depDates.get(loop.index)}
+
                                     </label>
+                                    <c:if test="${current_user.role eq 'AGENT'}">
+                                        <a href="controller?command=deletedatestour&id_tour=${tour.id}&arr_date=${arrDates.get(loop.index)}&dep_date=${depDates.get(loop.index)}"
+                                           style="margin-left: 20px" >
+                                            <c:out value="${delete}"/>
+                                        </a>
+                                    </c:if>
                                 </div>
                             </c:forEach>
 
                             <button class="btn btn-primary" type="submit" style="margin-top: 30px" disabled>
                                 <c:out value="${buyBtn}"/>
                             </button>
-                            <c:if test="current_user.role = AGENT">
-                                <a class="btn btn-primary" href="controller?command=deletedatestour&id=" style="margin-top: 30px" disabled>
-                                    <c:out value="${delete}"/>
+                            <c:if test="${current_user.role eq 'AGENT'}">
+                                <a class="btn btn-primary" href="controller?command=gotodatespage&id_tour=${tour.id}" style="margin-top: 30px" disabled>
+                                    <c:out value="${title}"/>
                                 </a>
                             </c:if>
                         </form>

@@ -40,6 +40,8 @@ public class CommandProvider {
         commands.put(CommandName.SHOWBILL, new ShowBill());
         commands.put(CommandName.DELETEUSERACC, new DeleteUserAcc());
         commands.put(CommandName.DELETEDATESTOUR, new DeleteDatesOfTour());
+        commands.put(CommandName.GOTODATESPAGE, new GoToDatesPage());
+        commands.put(CommandName.ADDDATES, new AddDates());
 
     }
 

@@ -23,7 +23,14 @@ public class DateTourDaoImpl implements DateTourDAO {
     private final String GET_ARRIVAL_DATES = "select date.date from tour, date_tour, date where tour.id = date_tour.id_tour and " +
             "date.id = date_tour.id_arrival_date and tour.id = ?";
     private final String DATE = "date";
-    private final String DELETE_QUERY = "delete from date_tour where id = ";
+    private final String DELETE_QUERY = "delete from date_tour where id_tour = ? and id_arrival_date = ? and id_departure_date = ?";
+    private final String INSERT_QUERY = "insert into date_tour (id_arrival_date, id_departure_date, id_tour) values (?, ?, ?)";
+
+    private final String ID = "id";
+    private final String ID_TOUR = "id_tour";
+    private final String ID_ARRIVAL_DATE = "id_arrival_date";
+    private final String ID_DEPARTURE_DATE = "id_departure_date";
+
 
 
     @Override
@@ -112,9 +119,8 @@ public class DateTourDaoImpl implements DateTourDAO {
     }
 
     @Override
-    public boolean deleteTourDatesById(int id) throws DAOException {
-        boolean isDeleted = false;
-
+    public boolean addTourDates(int idTour, int idArrDate, int idDepDateT) throws DAOException {
+        boolean isAdded = false;
         Connection connection = null;
         ConnectionPool pool = null;
         PreparedStatement statement = null;
@@ -122,10 +128,46 @@ public class DateTourDaoImpl implements DateTourDAO {
         try{
             pool = ConnectionPool.getInstance();
             connection = pool.takeConnection();
-            statement = connection.prepareStatement(DELETE_QUERY + id);
+
+            statement = connection.prepareStatement(INSERT_QUERY);
+
+            statement.setInt(1, idArrDate);
+            statement.setInt(2, idDepDateT);
+            statement.setInt(3, idTour);
+
             statement.executeUpdate();
 
-            isDeleted = true;
+            isAdded = true;
+
+        } catch (SQLException | ConnectionPoolException e){
+            LOGGER.error(" -> some problems with adding dates");
+            throw new DAOException(e);
+
+        } finally {
+            if(connection != null){
+                pool.closeConnection(connection, statement);
+            }
+        }
+
+        return isAdded;
+    }
+
+    @Override
+    public void deleteTourDates(int idTour, int idArrDateT, int idDepDateT) throws DAOException {
+        Connection connection = null;
+        ConnectionPool pool = null;
+        PreparedStatement statement = null;
+
+        try{
+            pool = ConnectionPool.getInstance();
+            connection = pool.takeConnection();
+
+            statement = connection.prepareStatement(DELETE_QUERY);
+            statement.setInt(1, idTour);
+            statement.setInt(2, idArrDateT);
+            statement.setInt(3, idDepDateT);
+
+            statement.executeUpdate();
 
         } catch (SQLException | ConnectionPoolException e){
             LOGGER.error(" -> some problems with deleting tour dates");
@@ -136,8 +178,6 @@ public class DateTourDaoImpl implements DateTourDAO {
                 pool.closeConnection(connection, statement);
             }
         }
-
-        return isDeleted;
     }
 
 

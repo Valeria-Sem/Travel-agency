@@ -84,7 +84,7 @@ public class SendEmail implements Command {
 //            String command = (String) request.getSession().getAttribute(PAGE);
             response.sendRedirect(PATH_TO_BILL);
 
-        } catch (MessagingException | NullPointerException e) {
+        } catch (MessagingException e) {
             e.printStackTrace();
             request.setAttribute(ERROR_MSG ,"Some troubles with sending bill to your email.");
 

@@ -6,7 +6,6 @@ import com.epam.travelAgency.entity.UserEntity;
 import com.epam.travelAgency.entity.WalletEntity;
 import com.epam.travelAgency.service.*;
 import com.epam.travelAgency.service.validation.ValidationService;
-import com.sun.jmx.remote.protocol.rmi.ServerProvider;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
